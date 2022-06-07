@@ -1,7 +1,13 @@
 /// <reference types="Cypress"/>
+const Page = require('./page');
 
-class Login {
+class Login extends Page{
     url = 'login'
+
+    navigate(){
+        super.navigate(this.url)
+    }
+
     get emailField(){
         return cy.get("input[name='email']")
     }

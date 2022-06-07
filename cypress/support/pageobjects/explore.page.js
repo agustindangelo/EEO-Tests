@@ -1,6 +1,7 @@
 /// <reference types="Cypress"/>
+const Page = require('./page');
 
-class Explore {
+class Explore extends Page{
     url = ''
     getNthEvent(nth){
         return cy.get(`.sc-kDTinF:nth-child(${nth})`)
@@ -43,6 +44,10 @@ class Explore {
         addToCalendarBtn: () => { return cy.contains('Añadir al calendario') },
         googleCalendarOption: () => { return cy.contains('Google') },
         outlookCalendarOption: () => { return cy.contains('Outlook') }
+    }
+
+    navigate(){
+        super.navigate(this.url)
     }
 
     enterNombre(nombre){
@@ -143,4 +148,4 @@ class Explore {
     }
 }
 
-module.exports = new Login
+module.exports = new Explore
