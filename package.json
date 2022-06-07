@@ -1,0 +1,38 @@
+{
+  "name": "pass-it-on-demos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "wdio": "wdio run wdio.conf.js",
+      "cy:ui": "npx cypress open",
+      "cy:run": "npx cypress run",
+      "cy:dashboard": "npx cypress run --record --key d7aa6b38-13c0-4a9f-8996-83e7df0960b3"
+  },
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/agustindangelo/pass-it-on-demos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+      "url": "https://github.com/agustindangelo/pass-it-on-demos/issues"
+  },
+  "homepage": "https://github.com/agustindangelo/pass-it-on-demos#readme",
+  "devDependencies": {
+      "@faker-js/faker": "^7.1.0",
+      "@wdio/allure-reporter": "^7.19.7",
+      "@wdio/cli": "^7.19.7",
+      "@wdio/local-runner": "^7.19.7",
+      "@wdio/mocha-framework": "^7.19.7",
+      "@wdio/spec-reporter": "^7.19.7",
+      "chromedriver": "^101.0.0",
+      "wdio-chromedriver-service": "^7.3.2"
+  },
+  "dependencies": {
+      "cypress": "^10.0.3",
+      "cypress-file-upload": "^5.0.8",
+      "wdio-video-reporter": "^3.2.1"
+  }
+}
