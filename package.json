@@ -28,8 +28,6 @@
     "@wdio/mocha-framework": "^7.19.7",
     "@wdio/spec-reporter": "^7.19.7",
     "chromedriver": "^101.0.0",
-    "cypress-dotenv": "^2.0.0",
-    "dotenv": "^16.0.1",
     "wdio-chromedriver-service": "^7.3.2"
   },
   "dependencies": {
