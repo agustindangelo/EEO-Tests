@@ -129,7 +129,7 @@ export class CreateEvent extends Page{
      * @param {string} timezone Accepted values: 'online', 'inplace', 'hybrid'
      */
     selectEventType(eventType){
-        switch(timezone.toLowerCase()){
+        switch(eventType.toLowerCase()){
             case 'online': {
                 this.eventInformation.eventTypeOption.online().click()
                 break;
