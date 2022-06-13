@@ -1,25 +1,24 @@
 /// <reference types="Cypress"/>
+import Page from './page'
 
-class CreateEvent{
-
-    url= 'events/create'
+export class EventEdit extends Page {
 
     get nameField(){
         return cy.get('#name')
     }
 
-    get browseFileField(){
-        return cy.contains('Browse files')
+    get browseFileField() {
+        return cy.get('input[type="file"]')
     }
 
     get eventDescriptionField(){
         return cy.get('#description')
     }
 
-    get eventAditionalInformationField(){
-        return cy.get('#aditionalInformation')
+    get eventAdditionalInformationField() {
+        return cy.get('#additionalInformation')
     }
-    //not finished or implemented yet
+
     eventInformation = {
         date:{
             toggler: () => { cy.get('button.toggler') },
@@ -41,5 +40,3 @@ class CreateEvent{
         saveButton:null
     }
 }
-
-module.exports = new CreateEvent

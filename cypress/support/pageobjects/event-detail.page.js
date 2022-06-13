@@ -3,25 +3,23 @@ import Page from './page'
 
 class EventDetail extends Page {
 
-    // url=`events/${eventId}`
-
-    name(){
+    get name(){
         return cy.get('h1')
     }
 
-    attendees() {
+    get attendees() {
         return cy.contains('asistentes')
     }
 
-    about(){
+    get about(){
         return cy.get('h3').contains('Acerca del evento').next()
     }
 
-    additionalInformation() {
+    get additionalInformation() {
         return cy.get('h3').contains('Información adicional').next()
     }
 
-    eventDay(){
+    get eventDay(){
         return cy.get('.sc-iAvgwm.lkxBiu')
     }
 
@@ -31,11 +29,11 @@ class EventDetail extends Page {
         argUruTime: () => { this.eventDay().get('span').eq(2) }
     }
 
-    editButton() {
+    get editButton() {
         return cy.get('button').contains('Edit')
     }
 
-    visibilitySwitch() {
+    get visibilitySwitch() {
         return cy.get('input[name="published"]')
     }
 }

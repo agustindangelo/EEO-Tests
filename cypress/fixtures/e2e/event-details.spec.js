@@ -6,23 +6,25 @@ import Login from '../../support/pageobjects/login.page'
 describe('verify', () => {
 
   it('should display values', () => {
-    const Login = new Login();
-    Login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'));
+    // these are just preliminary tests to verify the page object
+
+    const login = new Login();
+    login.navigate()
+    login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'));
 
     const events = new Events();
     const eventDetail = new EventDetail();
 
-    events.navigate()
     events.getNthEvent(1).click()
 
-    console.log(eventDetail.name)
+    eventDetail.name.should('be', 'TEST11')
+    eventDetail.name.should('be', 'TEST11')
     console.log(eventDetail.attendees)
     console.log(eventDetail.about)
-    console.log(eventDetail.additionalInformation)
+    // console.log(eventDetail.additionalInformation)
     console.log(eventDetail.eventDay)
     console.log(eventDetail.time.mexicanTime)
 
-    eventDetail.visibilitySwitch().should('be', 'checked')
-    eventDetail.editButton().click()
+    eventDetail.visibilitySwitch.should('not.be.checked')
   })
 })

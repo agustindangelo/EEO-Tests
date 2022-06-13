@@ -21,8 +21,12 @@ export class Events extends Page{
         return cy.contains('Log out')
     }
 
+    get eventsList() {
+        return cy.get('div.maxContainer').eq(1)
+    }
+
     getNthEvent(nth){
-        return cy.get(`div.maxContainer .sc-jIkXHa.RvbSq:nth-child(${nth})`)
+        return this.eventsList.find('div').eq(nth-1)
     }
     
     getNthEventState(nth){

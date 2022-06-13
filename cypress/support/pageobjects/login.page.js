@@ -1,7 +1,7 @@
 /// <reference types="Cypress"/>
 const Page = require('./page');
 
-class Login extends Page{
+export class Login extends Page{
     url = 'login'
 
     /**
@@ -55,4 +55,4 @@ class Login extends Page{
     }
 }
 
-module.exports = new Login
+export default Login;
