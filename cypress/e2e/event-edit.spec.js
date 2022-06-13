@@ -1,4 +1,4 @@
-import EventEdit from '../../support/pageobjects/event-edit.page'
+import EventEdit from '../support/pageobjects/event-edit.page'
 
 describe('verify pageobject', () => {
 

@@ -7,7 +7,7 @@ module.exports = defineConfig({
         
       })
     },
-    specPattern: 'cypress/fixtures/e2e/**/*.spec.js',
+    specPattern: 'cypress/e2e/**/*.spec.js',
     baseUrl: 'http://localhost:3000/',
     watchForFileChanges: true,
     defaultCommandTimeout: 4000,

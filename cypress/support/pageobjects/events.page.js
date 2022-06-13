@@ -6,7 +6,7 @@ export class Events extends Page{
     url = 'events'
 
     get createEventBtn(){
-        return cy.contains('+ Create New Event')
+        return cy.get('main .maxContainer').eq(0).find('button')
     }
     
     get userBtn(){

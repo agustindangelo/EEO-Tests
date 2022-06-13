@@ -1,9 +1,13 @@
 /// <reference types="Cypress"/>
 const Page = require('./page');
 
-export class CreateEvent extends Page{
+export class CreateEvent extends Page {
 
-    url= 'events/create'
+    url = 'events/create'
+
+    navigate() {
+        super.navigate(this.url)
+    }
 
     get userInitialsButton(){
         return cy.get('button.initials')
@@ -25,17 +29,20 @@ export class CreateEvent extends Page{
         return cy.get('#description')
     }
 
-    get eventAditionalInformationField(){
+    get eventAdditionalInformationField(){
         return cy.get('#aditionalInformation')
     }
 
     eventInformation={
         date:{
             toggler: () => { cy.get('button.toggler') },
-            calendarBody: () => { cy.get('div.calendarBody') }
+            calendarBody: () => { cy.get('div.calendarBody') },
+            calendarFooter: () => { cy.get('footer.calendarFooter') },
+            selectBtn: () => { this.calendarFooter().find('select') },
+            clearBtn: () => { this.calendarFooter().find('clear') }
         },
         time:{
-            start: () => { cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root') },
+            start: () => { cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root') }, // selector is OK on browser, but not working here
             end: () => { cy.get(':nth-child(2) > .MuiFormControl-root') } 
         },
         timezone: {
@@ -87,8 +94,8 @@ export class CreateEvent extends Page{
         this.eventDescriptionField.type(description)
     }
 
-    enterAditionalInfo(info){
-        this.eventAditionalInformationField.type(info)
+    enterAdditionalInfo(info){
+        this.eventAdditionalInformationField.type(info)
     }
 
     /**
@@ -96,7 +103,7 @@ export class CreateEvent extends Page{
      * @param {string} imgPath event's image file path
      */
     uploadEventImage(imgPath){
-        this.browseFileField.selectFile(filePath)
+        this.browseFileField.selectFile(imgPath)
     }
 
     /**
@@ -104,7 +111,7 @@ export class CreateEvent extends Page{
      * @param {string} time 'HH:MM' format
      */
     setStartTime(time){
-        this.eventInformation.time.start().click().type(time)
+        this.eventInformation.time.start().type(time)
     }
 
     /**
@@ -112,7 +119,7 @@ export class CreateEvent extends Page{
      * @param {string} time 'HH:MM' format
      */
     setEndTime(time){
-        this.eventInformation.time.start().click().type(time)
+        this.eventInformation.time.end().type(time)
     }
 
     /**
@@ -197,9 +204,11 @@ export class CreateEvent extends Page{
      */
     createNewEvent(name, image, description, additionalInfo, startTime, endTime, timezone, link, makeItVisible){
         this.enterEventName(name)
-        this.uploadEventImage(image)
+        if (image) {
+            this.uploadEventImage(image)
+        }
         this.enterEventDescription(description)
-        this.enterAditionalInfo(additionalInfo)
+        this.enterAdditionalInfo(additionalInfo)
         this.setStartTime(startTime)
         this.setEndTime(endTime)
         this.selectTimezone(timezone)
@@ -212,9 +221,7 @@ export class CreateEvent extends Page{
     cancelEventCreation(){
         this.cancelButton().click()
         this.warnings.deleteEvent.yesButton().click()
-
     }
-
 }
 
 export default CreateEvent;

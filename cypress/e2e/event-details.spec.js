@@ -1,7 +1,7 @@
 /// <reference types="Cypress"/>
-import EventDetail from '../../support/pageobjects/event-detail.page'
-import Events from '../../support/pageobjects/events.page'
-import Login from '../../support/pageobjects/login.page'
+import EventDetail from '../support/pageobjects/event-detail.page'
+import Events from '../support/pageobjects/events.page'
+import Login from '../support/pageobjects/login.page'
 
 describe('verify', () => {
 
