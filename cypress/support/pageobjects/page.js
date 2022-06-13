@@ -10,6 +10,6 @@ module.exports = class Page {
     * @param path path of the sub page (e.g. /path/to/page.html)
     */
     navigate (path) {
-        cy.visit(`path`)
+        cy.visit(`${path}`)
     }
 }
