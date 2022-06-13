@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# cypress secrets
+cypress.env.json
+
 #cypress failed tests reports
 cypress/videos
 cypress/screenshots
