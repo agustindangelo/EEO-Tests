@@ -28,10 +28,10 @@
     "@wdio/mocha-framework": "^7.19.7",
     "@wdio/spec-reporter": "^7.19.7",
     "chromedriver": "^101.0.0",
+    "cypress": "^10.1.0",
     "wdio-chromedriver-service": "^7.3.2"
   },
   "dependencies": {
-    "cypress": "^10.0.3",
     "cypress-file-upload": "^5.0.8",
     "wdio-video-reporter": "^3.2.1"
   }
