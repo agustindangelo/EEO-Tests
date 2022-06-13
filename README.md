@@ -1,7 +1,7 @@
 # EEO Demos
 
 Two automated test suites are going to be developed. 
-Cypress tests are located in `cypress/e2e/fixtures/` and WebdriverIO tests are located in `wdio/test/specs/`
+Cypress tests are located in `cypress/e2e` and WebdriverIO tests are located in `wdio/test/specs`
 
 # Install dependencies
 ```
