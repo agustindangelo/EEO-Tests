@@ -1,7 +1,7 @@
 /// <reference types="Cypress"/>
 const Page = require('./page');
 
-class Events extends Page{
+export class Events extends Page{
 
     url = 'events'
 
@@ -96,4 +96,4 @@ class Events extends Page{
 
 }
 
-module.exports = new Events
+export default Events;
