@@ -1,8 +1,17 @@
 /// <reference types="Cypress"/>
+const Page = require('./page');
 
-class CreateEvent{
+export class CreateEvent extends Page{
 
     url= 'events/create'
+
+    get userInitialsButton(){
+        return cy.get('button.initials')
+    }
+
+    get logOutBtn(){
+        return cy.contains('Log out')
+    }
 
     get nameField(){
         return cy.get('#name')
@@ -19,27 +28,193 @@ class CreateEvent{
     get eventAditionalInformationField(){
         return cy.get('#aditionalInformation')
     }
-    //not finished or implemented yet
-    eventInformation = {
+
+    eventInformation={
         date:{
             toggler: () => { cy.get('button.toggler') },
             calendarBody: () => { cy.get('div.calendarBody') }
         },
         time:{
-            start: () => { cy.get('input[type="tel"]').eq(0) }, //set a time value with cy.invoke('attr', 'value', 'HH:MM')
-            end: () => { cy.get('input[type="tel"]').eq(1) } //set a time value with cy.invoke('attr', 'value', 'HH:MM')
+            start: () => { cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root') },
+            end: () => { cy.get(':nth-child(2) > .MuiFormControl-root') } 
         },
-        timezone:null,
+        timezone: {
+            ddl: () => { cy.get('div[aria-labelledby="timezone select-options"]') },
+            option: (zone) => { cy.contains(zone) }
+        },
         eventTypeOption:{
-
+            online: () => { cy.get('input[type="radio"]').eq(0) },
+            inplace: () => { cy.get('input[type="radio"]').eq(1) },
+            hybrid: () => { cy.get('input[type="radio"]').eq(2) },
         },
-        location:null,
-        link:null,
-        address:null,
-        makeItVisibleOption:null,
-        cancelButton:null,
-        saveButton:null
+        link: () => { cy.get('input[name="link"]') },
+        location: {
+            ddl: () => { cy.get('div[aria-labelledby="location select-options"]') },
+            option: (city) => { cy.contains('city') }
+        },
+        address: () => { cy.get('input[name="address"]') },
+        makeItVisibleOption: () => { cy.get('input[name="published"]') },
+        cancelButton: () => { cy.contains('Save') },
+        saveButton: () => { cy.contains('Cancel') },
     }
+
+    warnings={
+        missingFields:{
+            errorMessage: () => { cy.contains('Missing fields') },
+            okButton: () => { cy.contains('OK') }
+        },
+        saveAsDraft: {
+            message: () => { cy.contains('Save as draft') },
+            okButton: () => { cy.contains('Ok, save as draft') },
+            cancelButton: () => { cy.contains('No, cancel') },
+        },
+        deleteEvent: {
+            message: () => { cy.contains('Delete this event?') },
+            yesButton: () => { cy.contains('Yes, delete') },
+            cancelButton: () => { cy.contains('No, cancel') },
+        }
+    }
+
+    navigate(){
+        super.navigate(this.url)
+    }
+
+    enterEventName(name){
+        this.nameField.type(name)
+    }
+
+    enterEventDescription(description){
+        this.eventDescriptionField.type(description)
+    }
+
+    enterAditionalInfo(info){
+        this.eventAditionalInformationField.type(info)
+    }
+
+    /**
+     * 
+     * @param {string} imgPath event's image file path
+     */
+    uploadEventImage(imgPath){
+        this.browseFileField.selectFile(filePath)
+    }
+
+    /**
+     * 
+     * @param {string} time 'HH:MM' format
+     */
+    setStartTime(time){
+        this.eventInformation.time.start().click().type(time)
+    }
+
+    /**
+     * 
+     * @param {string} time 'HH:MM' format
+     */
+    setEndTime(time){
+        this.eventInformation.time.start().click().type(time)
+    }
+
+    /**
+     * 
+     * @param {string} timezone Accepted values: 'ARG/URU', 'COL', 'MEX'
+     */
+    selectTimezone(timezone){
+        this.eventInformation.timezone.ddl().click()
+        this.eventInformation.timezone.option(timezone).click()
+    }
+
+    /**
+     * 
+     * @param {string} timezone Accepted values: 'online', 'inplace', 'hybrid'
+     */
+    selectEventType(eventType){
+        switch(timezone.toLowerCase()){
+            case 'online': {
+                this.eventInformation.eventTypeOption.online().click()
+                break;
+            }
+            case 'inplace': {
+                this.eventInformation.eventTypeOption.inplace().click()
+                break;
+            }
+            case 'hybrid': {
+                this.eventInformation.eventTypeOption.hybrid().click()
+                break;
+            }
+            default: break;
+        }    
+    }
+    
+    /**
+     * 
+     * @param {string} link url of the online/hybrid event
+     */
+    enterEventLink(link){
+        this.eventInformation.link().type(link)
+    }
+
+    /**
+     * 
+     * @param {string} city Accepted values:  'Bogotá', 'Buenos Aires', 'Medellin', 'Monterrey', 'Montevideo', 'Rosario', 'Other'
+     */
+    selectLocation(city){
+        this.eventInformation.location.ddl().click()
+        this.eventInformation.location.option(city).click()
+    }
+
+    enterEventAddress(address){
+        this.eventInformation.address().type(address)
+    }
+
+    makeEventVisible(){
+        this.eventInformation.makeItVisibleOption().click()
+    }
+
+    clickCancelButton(){
+        this.cancelButton().click()
+    }
+
+    clickSaveButton(){
+        this.saveButton().click()
+    }
+
+    saveEventAsDraft(){
+        this.warnings.saveAsDraft.okButton().click()
+    }
+
+    /**
+     * It creates a new event using the current date (MM/DD/YYYY)
+     * @param {string} name 
+     * @param {string} image 
+     * @param {string} description 
+     * @param {string} additionalInfo 
+     * @param {string} startTime 'HH:MM' format
+     * @param {string} endTime 'HH:MM' format
+     * @param {string} timezone Accepted values: 'ARG/URU', 'COL', 'MEX'
+     * @param {string} link 
+     * @param {boolean} makeItVisible 
+     */
+    createNewEvent(name, image, description, additionalInfo, startTime, endTime, timezone, link, makeItVisible){
+        this.enterEventName(name)
+        this.uploadEventImage(image)
+        this.enterEventDescription(description)
+        this.enterAditionalInfo(additionalInfo)
+        this.setStartTime(startTime)
+        this.setEndTime(endTime)
+        this.selectTimezone(timezone)
+        this.enterEventLink(link)
+        if (makeItVisible) { this.makeEventVisible() }
+        this.clickSaveButton()
+        this.saveEventAsDraft()
+    }
+
+    cancelEventCreation(){
+        this.cancelButton().click()
+        this.warnings.deleteEvent.yesButton().click()
+
+    }
+
 }
 
-module.exports = new CreateEvent
+export default CreateEvent;
