@@ -35,50 +35,50 @@ class CreateEvent extends Page {
 
     eventInformation={
         date:{
-            toggler: () => { cy.get('button.toggler') },
-            calendarBody: () => { cy.get('div.calendarBody') },
-            calendarFooter: () => { cy.get('footer.calendarFooter') },
-            selectBtn: () => { this.calendarFooter().find('select') },
-            clearBtn: () => { this.calendarFooter().find('clear') }
+            toggler: () => { return cy.get('button.toggler') },
+            calendarBody: () => { return cy.get('div.calendarBody') },
+            calendarFooter: () => { return cy.get('footer.calendarFooter') },
+            selectBtn: () => { return this.calendarFooter().find('select') },
+            clearBtn: () => { return this.calendarFooter().find('clear') }
         },
         time:{
-            start: () => { cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root') }, // selector is OK on browser, but not working here
-            end: () => { cy.get(':nth-child(2) > .MuiFormControl-root') } 
+            start: () => { return cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root') },
+            end: () => { return cy.get(':nth-child(2) > .MuiFormControl-root > .MuiOutlinedInput-root')}
         },
         timezone: {
-            ddl: () => { cy.get('div[aria-labelledby="timezone select-options"]') },
-            option: (zone) => { cy.contains(zone) }
+            ddl: () => { return cy.get('div[aria-labelledby="timezone select-options"]') },
+            option: (zone) => { return cy.contains(zone) }
         },
         eventTypeOption:{
-            online: () => { cy.get('input[type="radio"]').eq(0) },
-            inplace: () => { cy.get('input[type="radio"]').eq(1) },
-            hybrid: () => { cy.get('input[type="radio"]').eq(2) },
+            online: () => { return cy.get('input[type="radio"]').eq(0) },
+            inplace: () => { return cy.get('input[type="radio"]').eq(1) },
+            hybrid: () => { return cy.get('input[type="radio"]').eq(2) },
         },
-        link: () => { cy.get('input[name="link"]') },
+        link: () => { return cy.get('input[name="link"]') },
         location: {
-            ddl: () => { cy.get('div[aria-labelledby="location select-options"]') },
-            option: (city) => { cy.contains('city') }
+            ddl: () => { return cy.get('div[aria-labelledby="location select-options"]') },
+            option: (city) => { return cy.contains('city') }
         },
-        address: () => { cy.get('input[name="address"]') },
-        makeItVisibleOption: () => { cy.get('input[name="published"]') },
-        cancelButton: () => { cy.contains('Save') },
-        saveButton: () => { cy.contains('Cancel') },
+        address: () => { return cy.get('input[name="address"]') },
+        makeItVisibleOption: () => { return cy.get('input[name="published"]') },
+        cancelButton: () => { return cy.contains('Save') },
+        saveButton: () => { return cy.contains('Cancel') },
     }
 
     warnings={
         missingFields:{
-            errorMessage: () => { cy.contains('Missing fields') },
-            okButton: () => { cy.contains('OK') }
+            errorMessage: () => { return cy.contains('Missing fields') },
+            okButton: () => { return cy.contains('OK') }
         },
         saveAsDraft: {
-            message: () => { cy.contains('Save as draft') },
-            okButton: () => { cy.contains('Ok, save as draft') },
-            cancelButton: () => { cy.contains('No, cancel') },
+            message: () => { return cy.contains('Save as draft') },
+            okButton: () => { return cy.contains('Ok, save as draft') },
+            cancelButton: () => { return cy.contains('No, cancel') },
         },
         deleteEvent: {
-            message: () => { cy.contains('Delete this event?') },
-            yesButton: () => { cy.contains('Yes, delete') },
-            cancelButton: () => { cy.contains('No, cancel') },
+            message: () => { return cy.contains('Delete this event?') },
+            yesButton: () => { return cy.contains('Yes, delete') },
+            cancelButton: () => { return cy.contains('No, cancel') },
         }
     }
 
@@ -111,7 +111,7 @@ class CreateEvent extends Page {
      * @param {string} time 'HH:MM' format
      */
     setStartTime(time){
-        this.eventInformation.time.start().type(time)
+        this.eventInformation.time.start().click().type(time)
     }
 
     /**
@@ -119,7 +119,7 @@ class CreateEvent extends Page {
      * @param {string} time 'HH:MM' format
      */
     setEndTime(time){
-        this.eventInformation.time.end().type(time)
+        this.eventInformation.time.end().click().type(time)
     }
 
     /**
@@ -179,11 +179,11 @@ class CreateEvent extends Page {
     }
 
     clickCancelButton(){
-        this.cancelButton().click()
+        this.eventInformation.cancelButton().click()
     }
 
     clickSaveButton(){
-        this.saveButton().click()
+        this.eventInformation.saveButton().click()
     }
 
     saveEventAsDraft(){

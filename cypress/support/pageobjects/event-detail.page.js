@@ -30,11 +30,15 @@ class EventDetail extends Page {
     }
 
     get editButton() {
-        return cy.get('button').contains('Edit')
+        return cy.get('.MuiButton-root').contains('Edit')
     }
 
     get visibilitySwitch() {
         return cy.get('input[name="published"]')
+    }
+
+    openEditForm(){
+        this.editButton.click()
     }
 }
 
