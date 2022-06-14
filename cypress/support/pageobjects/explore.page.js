@@ -182,4 +182,4 @@ class Explore extends Page{
     }
 }
 
-module.exports = new Explore
+export default Explore

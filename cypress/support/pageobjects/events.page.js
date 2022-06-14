@@ -1,7 +1,7 @@
 /// <reference types="Cypress"/>
 const Page = require('./page');
 
-export class Events extends Page{
+class Events extends Page{
 
     url = 'events'
 

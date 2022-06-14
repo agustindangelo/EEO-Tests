@@ -1,7 +1,7 @@
 /// <reference types="Cypress"/>
-import Page from './page'
+const Page = require('./page');
 
-export class EventEdit extends Page {
+class EventEdit extends Page {
 
     get nameField(){
         return cy.get('#name')
@@ -40,3 +40,5 @@ export class EventEdit extends Page {
         saveButton:null
     }
 }
+
+export default EventEdit

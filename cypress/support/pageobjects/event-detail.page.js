@@ -1,5 +1,5 @@
 /// <reference types="Cypress"/>
-import Page from './page'
+const Page = require('./page');
 
 class EventDetail extends Page {
 
