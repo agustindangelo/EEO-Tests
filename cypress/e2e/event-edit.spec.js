@@ -16,10 +16,14 @@ describe('Happy path when editing an event', () => {
 
     it('should change the end time of the first event', () => {
         const startHour = getInteger(0,23)
-        const endHour = getInteger(startHour,23)
+        const endHour = getInteger(parseInt(startHour),23)
         const startMinute= getInteger(0,59)
         const endMinute= getInteger(0,59)
-
+        cy.log(`${startHour}:${startMinute}`)
+        cy.log(`${hourToAmPm(startHour)}:${startMinute}`)
+        cy.log(`${endHour}:${endMinute}`)
+        cy.log(`${hourToAmPm(endHour)}:${endMinute}`)
+        
         events.openEventDetails(1)
         eventDetails.openEditForm()
         eventEdit.setStartTime(`${startHour}:${startMinute}`)
