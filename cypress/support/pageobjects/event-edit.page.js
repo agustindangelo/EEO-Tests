@@ -28,7 +28,10 @@ class EventEdit extends Page {
             start: () => { return cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root') },
             end: () => { return cy.get(':nth-child(2) > .MuiFormControl-root > .MuiOutlinedInput-root')}
         },
-        timezone:null,
+        timezone:{
+            ddl: () => { return cy.get('div[aria-labelledby="timezone select-options"]') },
+            option: (zone) => { return cy.get('li[role="option"]').contains(zone) }
+        },
         eventTypeOption:{
 
         },
@@ -54,6 +57,15 @@ class EventEdit extends Page {
      */
     setEndTime(hour){
         this.eventInformation.time.end().click().clear().type(hour)
+    }
+
+    /**
+     * 
+     * @param {string} timezone Accepted values: 'ARG/URU', 'COL', 'MEX'
+     */
+     selectTimezone(timezone){
+        this.eventInformation.timezone.ddl().click()
+        this.eventInformation.timezone.option(timezone).click()
     }
 
     clickCancelButton(){
