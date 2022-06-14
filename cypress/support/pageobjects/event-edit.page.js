@@ -25,8 +25,8 @@ class EventEdit extends Page {
             calendarBody: () => { cy.get('div.calendarBody') }
         },
         time:{
-            start: () => { cy.get('input[type="tel"]').eq(0) }, //set a time value with cy.invoke('attr', 'value', 'HH:MM')
-            end: () => { cy.get('input[type="tel"]').eq(1) } //set a time value with cy.invoke('attr', 'value', 'HH:MM')
+            start: () => { cy.get('input[type="text"]').eq(0) }, //set a time value with cy.invoke('attr', 'value', 'HH:MM')
+            end: () => { cy.get('input[type="text"]').eq(1) } //set a time value with cy.invoke('attr', 'value', 'HH:MM')
         },
         timezone:null,
         eventTypeOption:{
@@ -36,8 +36,32 @@ class EventEdit extends Page {
         link:null,
         address:null,
         makeItVisibleOption:null,
-        cancelButton:null,
-        saveButton:null
+        cancelButton: () => { cy.contains('Save') },
+        saveButton: () => { cy.contains('Cancel') },
+    }
+
+    /**
+     * 
+     * @param {string} time 'HH:MM' format
+     */
+     setStartTime(time){
+        this.eventInformation.time.start().type(time)
+    }
+
+    /**
+     * 
+     * @param {string} time 'HH:MM' format
+     */
+    setEndTime(time){
+        this.eventInformation.time.end().type(time)
+    }
+
+    clickCancelButton(){
+        this.eventInformation.cancelButton().click()
+    }
+
+    clickSaveButton(){
+        this.eventInformation.saveButton().click()
     }
 }
 

@@ -33,6 +33,10 @@ class Events extends Page{
         return cy.get(`div.maxContainer .sc-jIkXHa.RvbSq:nth-child(${nth}) .eventCardBadge`)
     }
 
+    getNthEventDate(nth){
+        return cy.get(`.eventCardDate > span`).eq((nth))
+    }
+
     getNthEventOptions(nth){
         return cy.get(`div.maxContainer .sc-jIkXHa.RvbSq:nth-child(${nth}) svg`).last()
     }
@@ -71,6 +75,10 @@ class Events extends Page{
     logOut(){
         this.clickUserOption()
         this.clickLogOut()
+    }
+    
+    openEventDetails(event){
+        this.getNthEvent(event).click()
     }
 
     openEventOptions(event){
