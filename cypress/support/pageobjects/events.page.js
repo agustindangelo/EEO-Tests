@@ -21,13 +21,7 @@ class Events extends Page{
         return cy.contains('Log out')
     }
 
-    get eventsList() {
-        return cy.get('div.maxContainer').eq(1)
-    }
-
-    getNthEvent(nth){
-        return this.eventsList.find('div').eq(nth-1)
-    }
+    getNthEvent = (nth) => cy.get('div.maxContainer').eq(1).children('div').eq(nth-1)
     
     getNthEventState(nth){
         return cy.get(`div.maxContainer .sc-jIkXHa.RvbSq:nth-child(${nth}) .eventCardBadge`)
@@ -41,6 +35,10 @@ class Events extends Page{
         return cy.get(`div.maxContainer .sc-jIkXHa.RvbSq:nth-child(${nth}) svg`).last()
     }
 
+    getTitleOfNthEvent(nth) {
+        return this.getNthEvent(nth).find('.eventCardTitle')
+    }
+
     get exportEventOption(){
         return cy.contains('Export attendee list')
     }
@@ -49,11 +47,11 @@ class Events extends Page{
         return cy.contains('Delete')
     }
 
-    deleteForm = {
-        message: () => { return cy.contains('Delete this event?') },
-        label: () => { return cy.contains('This action cannot be restored') },
-        yesOption: () => { return cy.contains('Yes, delete') },
-        noOption: () => { return cy.contains('No, cancel') },
+    deletePrompt = {
+        "message": () => cy.contains('Delete this event?'),
+        "label": () => cy.contains('This action cannot be restored'),
+        "yesOption": () => cy.contains('Yes, delete'),
+        "noOption": () => cy.contains('No, cancel'),
     }
 
     navigate(){
@@ -86,26 +84,26 @@ class Events extends Page{
     }
 
     exportAtendeeList(){
-        this.exportEventOption().click()
+        this.exportEventOption.click()
     }
 
     clickDeleteEventOption(event){
         this.openEventOptions(event)
-        this.deleteEventOption().click()
+        this.deleteEventOption.click()
     }
 
-    cancelEventDeletion(event){
-        this.openEventOptions(event)
-        this.deleteEventOption().click()
-        this.deteteform.noOption().click()
-    }
+    // not using these
+    // cancelEventDeletion(event){
+    //     this.openEventOptions(event)
+    //     this.deleteEventOption.click()
+    //     this.deleteForm.noOption().click()
+    // }
 
-    deleteEvent(event){
-        this.openEventOptions(event)
-        this.deleteEventOption().click()
-        this.deteteform.yesOption().click()
-    }
-
+    // deleteEvent(event){
+    //     this.openEventOptions(event)
+    //     this.deleteEventOption.click()
+    //     this.deleteForm.yesOption().click()
+    // }
 }
 
 export default Events;

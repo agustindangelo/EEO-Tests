@@ -15,7 +15,7 @@ describe('verify', () => {
     const events = new Events();
     const eventDetail = new EventDetail();
 
-    events.getNthEvent(1).click()
+    events.openNthEvent(1)
 
     eventDetail.name.should('be', 'TEST11')
     eventDetail.name.should('be', 'TEST11')
