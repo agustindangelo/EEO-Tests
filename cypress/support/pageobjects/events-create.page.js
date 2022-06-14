@@ -222,6 +222,10 @@ class CreateEvent extends Page {
         this.cancelButton().click()
         this.warnings.deleteEvent.yesButton().click()
     }
+
+    openNthEvent(nth) {
+        this.getNthEvent(nth)
+    }
 }
 
 export default CreateEvent
