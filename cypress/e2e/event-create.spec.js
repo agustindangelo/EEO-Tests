@@ -1,18 +1,15 @@
 /// <reference types="Cypress"/>
 import CreateEvent from '../support/pageobjects/events-create.page'
-import Login from '../support/pageobjects/login.page'
 import Events from '../support/pageobjects/events.page'
 import { getInteger, hourToAmPm } from '../support/util'
 
 describe('Happy path when creating a new event', () => {
 
-    const login = new Login();
     const events = new Events();
     const createEvent = new CreateEvent();
 
     beforeEach(() => {
-        login.navigate()
-        login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'));
+        cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
     })
 
     it('should create a public event', () => {
@@ -25,7 +22,7 @@ describe('Happy path when creating a new event', () => {
 
         createEvent.createNewEvent(
             'new event [AUT]',
-            'C:/Pass-It-On/EEO-Demo/pass-it-on-demos/cypress/support/resources/newEvent.png',
+            './cypress/support/resources/newEvent.png',
             'test description',
             'test info',
             `${startHour}:${startMinute}`,
@@ -42,7 +39,7 @@ describe('Happy path when creating a new event', () => {
         events.getEventStateByEventName('new event [AUT]').should('not.contain.text', 'DRAFT')
     })
     
-    it('should create a draft event', () => {
+    it.only('should create a draft event', () => {
         const startHour = getInteger(0,23)
         const endHour = getInteger(parseInt(startHour),23)
         const startMinute= getInteger(0,59)
@@ -52,7 +49,7 @@ describe('Happy path when creating a new event', () => {
 
         createEvent.createNewEvent(
             'new draft event [AUT]',
-            'C:/Pass-It-On/EEO-Demo/pass-it-on-demos/cypress/support/resources/newEvent.png',
+            './cypress/support/resources/newEvent.png',
             'test description',
             'test info',
             `${startHour}:${startMinute}`,

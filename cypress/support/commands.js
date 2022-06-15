@@ -25,8 +25,23 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add("loginByApi", (username, password = Cypress.env("defaultPassword")) => {
-  return cy.request("POST", `${Cypress.env("apiUrl")}/login`, {
-    username,
-    password,
-  });
+//   return cy.request("POST", `${Cypress.env("apiUrl")}/login`, {
+//     username,
+//     password,
+//   });
+    cy.request('POST', 'http://localhost:4000/', {
+                "operationName": "LoginMutation",
+                "variables": {
+                    "input": {
+                        "email": username,
+                        "password": password
+                    }
+                },
+                "query": "mutation LoginMutation($input: LoginInput!) {\n  login(input: $input) {\n    user {\n      name\n      email\n      __typename\n    }\n    authentication {\n      token\n      __typename\n    }\n    __typename\n  }\n}\n"
+            }).then(res => {
+                localStorage.setItem(
+                'authData' , JSON.stringify({"name": res.body.data.login.user.name,"token": res.body.data.login.authentication.token,"email": res.body.data.login.user.email})
+                )
+            })
+            cy.visit('/events')
 });
