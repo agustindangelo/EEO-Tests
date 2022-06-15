@@ -27,33 +27,33 @@ class Explore extends Page{
 
     formularioIncripcion={
         nombre:{
-            field: () => { return cy.contains('Nombre').first() },
-            errorMessage: () => { return cy.contains('Por favor, ingresa un Nombre válido') }   
+            field: () => cy.contains('Nombre').first(),
+            errorMessage: () => cy.contains('Por favor, ingresa un Nombre válido')   
         },
         email:{
-            field: () => { return cy.contains('Email').first() },
-            errorMessage: () => { return cy.contains('Por favor, ingresa un Email válido') }   
+            field: () => cy.contains('Email').first(),
+            errorMessage: () => cy.contains('Por favor, ingresa un Email válido') 
         },
         pais: {
-            ddl: () => { return cy.get("input[name='country']") },
-            option: (nth) => { return cy.get(`#menu-country li:nth-child(${nth})`) },
-            errorMessage: () => { cy.contains('Por favor, ingresa un País válido') }
+            ddl: () => cy.get("input[name='country']"),
+            option: (nth) => cy.get(`#menu-country li:nth-child(${nth})`),
+            errorMessage: () => cy.contains('Por favor, ingresa un País válido')
         },
         ciudad: {
-            ddl: () => { return cy.get("input[name='city']") },
-            option: (nth) => { return cy.get(`#menu-city li:nth-child(${nth})`) },
-            errorMessage: () => { cy.contains('Por favor, ingresa una Ciudad válida') }
+            ddl: () => cy.get("input[name='city']"),
+            option: (nth) => cy.get(`#menu-city li:nth-child(${nth})`),
+            errorMessage: () => cy.contains('Por favor, ingresa una Ciudad válida')
         },
         profession: {
-            ddl: () => { return cy.get("input[name='profession']") },
-            option: (nth) => { return cy.get(`#menu-profession li:nth-child(${nth})`) },
-            errorMessage: () => { cy.contains('Por favor, ingresa una profesión válida') }
+            ddl: () => cy.get("input[name='profession']"),
+            option: (nth) => cy.get(`#menu-profession li:nth-child(${nth})`),
+            errorMessage: () => cy.contains('Por favor, ingresa una profesión válida')
         },
-        inscribirseBtn: () => { return cy.contains('Inscribirse').last() }, //cy.get('button > span:nth-child(2)')
-        successInscriptionMessage: () => { return cy.contains('¡Nos vemos allí!') },
-        addToCalendarBtn: () => { return cy.contains('Añadir al calendario') },
-        googleCalendarOption: () => { return cy.contains('Google') },
-        outlookCalendarOption: () => { return cy.contains('Outlook') }
+        inscribirseBtn: () => cy.contains('Inscribirse').last(), //cy.get('button > span:nth-child(2)')
+        successInscriptionMessage: () => cy.contains('¡Nos vemos allí!'),
+        addToCalendarBtn: () => cy.contains('Añadir al calendario'),
+        googleCalendarOption: () => cy.contains('Google'),
+        outlookCalendarOption: () => cy.contains('Outlook')
     }
 
     /**

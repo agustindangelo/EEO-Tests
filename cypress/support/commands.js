@@ -1,21 +1,3 @@
-<<<<<<< HEAD
-///<reference types="Cypress" />
-
-Cypress.Commands.add('login', (email, password) => {
-    cy.request("POST", `http://localhost:4000/login`, {
-        "operationName": "LoginMutation",
-        "variables": {
-            "input": {
-                "email": email,
-                "password": password
-            }
-        },
-        "query": "mutation LoginMutation($input: LoginInput!) {\n  login(input: $input) {\n    user {\n      name\n      email\n      __typename\n    }\n    authentication {\n      token\n      __typename\n    }\n    __typename\n  }\n}\n"
-    });
-    cy.visit('/events')
-})
-
-=======
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -48,4 +30,3 @@ Cypress.Commands.add("loginByApi", (username, password = Cypress.env("defaultPas
     password,
   });
 });
->>>>>>> bbc8d8b9700906976741a512385e8e43ebe2e848

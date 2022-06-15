@@ -24,9 +24,9 @@ class EventDetail extends Page {
     }
 
     time = { 
-        mexicanTime: () => { this.eventDay().get('span').eq(0) },
-        colombianTime: () => { this.eventDay().get('span').eq(1) },
-        argUruTime: () => { this.eventDay().get('span').eq(2) }
+        mexicanTime: () => this.eventDay().get('span').eq(0),
+        colombianTime: () => this.eventDay().get('span').eq(1),
+        argUruTime: () => this.eventDay().get('span').eq(2)
     }
 
     get editButton() {

@@ -21,16 +21,16 @@ class EventEdit extends Page {
 
     eventInformation = {
         date:{
-            toggler: () => { return cy.get('button.toggler') },
-            calendarBody: () => { return cy.get('div.calendarBody') }
+            toggler: () => cy.get('button.toggler'),
+            calendarBody: () => cy.get('div.calendarBody')
         },
         time:{
-            start: () => { return cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root') },
-            end: () => { return cy.get(':nth-child(2) > .MuiFormControl-root > .MuiOutlinedInput-root')}
+            start: () => cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root'),
+            end: () => cy.get(':nth-child(2) > .MuiFormControl-root > .MuiOutlinedInput-root')
         },
         timezone:{
-            ddl: () => { return cy.get('div[aria-labelledby="timezone select-options"]') },
-            option: (zone) => { return cy.get('li[role="option"]').contains(zone) }
+            ddl: () => cy.get('div[aria-labelledby="timezone select-options"]'),
+            option: (zone) => cy.get('li[role="option"]').contains(zone)
         },
         eventTypeOption:{
 
@@ -39,8 +39,8 @@ class EventEdit extends Page {
         link:null,
         address:null,
         makeItVisibleOption:null,
-        cancelButton: () => { return cy.contains('Cancel') },
-        saveButton: () => { return cy.contains('Save') },
+        cancelButton: () => cy.contains('Cancel'),
+        saveButton: () => cy.contains('Save'),
     }
 
     /**
