@@ -35,54 +35,54 @@ class CreateEvent extends Page {
 
     eventInformation={
         date:{
-            toggler: () => { return cy.get('button.toggler') },
-            calendarBody: () => { return cy.get('div.calendarBody') },
-            calendarFooter: () => { return cy.get('footer.calendarFooter') },
-            selectBtn: () => { return this.calendarFooter().find('select') },
-            clearBtn: () => { return this.calendarFooter().find('clear') }
+            toggler: () => cy.get('button.toggler'),
+            calendarBody: () => cy.get('div.calendarBody'),
+            calendarFooter: () => cy.get('footer.calendarFooter'),
+            selectBtn: () => this.calendarFooter().find('select'),
+            clearBtn: () => this.calendarFooter().find('clear')
         },
         time:{
-            start: () => { return cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root') },
-            end: () => { return cy.get(':nth-child(2) > .MuiFormControl-root > .MuiOutlinedInput-root')}
+            start: () => cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root'),
+            end: () => cy.get(':nth-child(2) > .MuiFormControl-root > .MuiOutlinedInput-root')
         },
         timezone: {
-            ddl: () => { return cy.get('div[aria-labelledby="timezone select-options"]') },
-            option: (zone) => { return cy.get('li[role="option"]').contains(zone) }
+            ddl: () => cy.get('div[aria-labelledby="timezone select-options"]'),
+            option: (zone) => cy.get('li[role="option"]').contains(zone)
         },
         eventTypeOption:{
-            online: () => { return cy.get('input[type="radio"]').eq(0) },
-            inplace: () => { return cy.get('input[type="radio"]').eq(1) },
-            hybrid: () => { return cy.get('input[type="radio"]').eq(2) },
+            online: () => cy.get('input[type="radio"]').eq(0),
+            inplace: () => cy.get('input[type="radio"]').eq(1),
+            hybrid: () => cy.get('input[type="radio"]').eq(2),
         },
-        link: () => { return cy.get('input[name="link"]') },
+        link: () => cy.get('input[name="link"]'),
         location: {
-            ddl: () => { return cy.get('div[aria-labelledby="location select-options"]') },
-            option: (city) => { return cy.contains('city') }
+            ddl: () => cy.get('div[aria-labelledby="location select-options"]'),
+            option: (city) => cy.contains('city')
         },
-        address: () => { return cy.get('input[name="address"]') },
-        makeItVisibleOption: () => { return cy.get('input[name="published"]') },
-        cancelButton: () => { return cy.contains('Cancel') },
-        saveButton: () => { return cy.contains('Save') },
+        address: () => cy.get('input[name="address"]'),
+        makeItVisibleOption: () => cy.get('input[name="published"]'),
+        cancelButton: () => cy.contains('Cancel'),
+        saveButton: () => cy.contains('Save'),
     }
 
     warnings={
         missingFields:{
-            errorMessage: () => { return cy.contains('Missing fields') },
-            okButton: () => { return cy.contains('OK') }
+            errorMessage: () => cy.contains('Missing fields'),
+            okButton: () => cy.contains('OK')
         },
         eventPublished:{
             message: () => cy.contains('Event published successfully!'),
             okButton: () => cy.contains('OK, got it!')
         },
         saveAsDraft: {
-            message: () => { return cy.contains('Save as draft') },
-            okButton: () => { return cy.contains('Ok, save as draft') },
-            cancelButton: () => { return cy.contains('No, cancel') },
+            message: () => cy.contains('Save as draft'),
+            okButton: () => cy.contains('Ok, save as draft'),
+            cancelButton: () => cy.contains('No, cancel'),
         },
         deleteEvent: {
-            message: () => { return cy.contains('Delete this event?') },
-            yesButton: () => { return cy.contains('Yes, delete') },
-            cancelButton: () => { return cy.contains('No, cancel') },
+            message: () => cy.contains('Delete this event?'),
+            yesButton: () => cy.contains('Yes, delete'),
+            cancelButton: () => cy.contains('No, cancel'),
         }
     }
 
