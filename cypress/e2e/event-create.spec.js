@@ -2,29 +2,72 @@
 import CreateEvent from '../support/pageobjects/events-create.page'
 import Login from '../support/pageobjects/login.page'
 import Events from '../support/pageobjects/events.page'
+import { getInteger, hourToAmPm } from '../support/util'
 
-describe('verify pageobject', () => {
+describe('Happy path when creating a new event', () => {
 
-    it('should create an event', () => {
-        const login = new Login();
-        const events = new Events();
-        const createEvent = new CreateEvent();
+    const login = new Login();
+    const events = new Events();
+    const createEvent = new CreateEvent();
 
+    beforeEach(() => {
         login.navigate()
         login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'));
+    })
 
+    it('should create a public event', () => {
+        const startHour = getInteger(0,23)
+        const endHour = getInteger(parseInt(startHour),23)
+        const startMinute= getInteger(0,59)
+        const endMinute= getInteger(0,59)
+        
         events.createEventBtn.click()
 
-        // time selectors not working
         createEvent.createNewEvent(
-            'test name',
-            '../resources/screenshot.png',
+            'new event [AUT]',
+            'C:/Pass-It-On/EEO-Demo/pass-it-on-demos/cypress/support/resources/newEvent.png',
             'test description',
             'test info',
-            '12:00',
-            '13:00',
-            'America/BuenosAires',
-            'localhost:3000'
+            `${startHour}:${startMinute}`,
+            `${endHour}:${endMinute}`,
+            'ARG/URU',
+            'newevent-automation.com',
+            true //set the event as public
         )
+        events.navigate() //the new event shoud be added to the events page
+        events.getEventByName('new event [AUT]').should('be.visible')
+        let eventDate = new Date().toDateString().split(' ') //the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
+        events.getEventDateByEventName('new event [AUT]').should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
+        events.getEventDateByEventName('new event [AUT]').should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`).and('contain.text', `${hourToAmPm(endHour)}:${endMinute}`) //validating the start and end time
+        events.getEventStateByEventName('new event [AUT]').should('not.contain.text', 'DRAFT')
+    })
+    
+    it('should create a draft event', () => {
+        const startHour = getInteger(0,23)
+        const endHour = getInteger(parseInt(startHour),23)
+        const startMinute= getInteger(0,59)
+        const endMinute= getInteger(0,59)
+        
+        events.createEventBtn.click()
+
+        createEvent.createNewEvent(
+            'new draft event [AUT]',
+            'C:/Pass-It-On/EEO-Demo/pass-it-on-demos/cypress/support/resources/newEvent.png',
+            'test description',
+            'test info',
+            `${startHour}:${startMinute}`,
+            `${endHour}:${endMinute}`,
+            'ARG/URU',
+            'newevent-automation-draft.com',
+            false //set the event as draft
+        )
+        events.navigate() //the new event shoud be added to the events page
+        let eventDate = new Date().toDateString().split(' ') //the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
+        events.getNthEventDate(0).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
+        events.getNthEventDate(1).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`).and('contain.text', `${hourToAmPm(endHour)}:${endMinute}`) //validating the start and end time
+        events.getNthEventName(1).should('contain.text', 'new draft event [AUT]')
+        events.getNthEventState(1).should('contain.text', 'DRAFT')
     }) 
+
+    //add AfterEach() and delete the events created with the tests
 }) 

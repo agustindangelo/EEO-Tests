@@ -21,14 +21,26 @@ class Events extends Page{
         return cy.contains('Log out')
     }
 
-    getNthEvent = (nth) => cy.get('div.maxContainer').eq(1).children('div').eq(nth-1)
+    getNthEventName = (nth) => cy.get('div .eventCardTitle').eq(nth-1)
     
+    getNthEvent = (nth) => cy.get('div.maxContainer').eq(1).children('div').eq(nth-1)
+
     getNthEventState(nth){
-        return cy.get(`div.maxContainer .sc-jIkXHa.RvbSq:nth-child(${nth}) .eventCardBadge`)
+        return cy.get(`div.maxContainer .eventCardBadge`).eq(nth-1)
     }
 
     getNthEventDate(nth){
         return cy.get(`.eventCardDate > span`).eq((nth))
+    }
+
+    getEventByName = (name) => cy.contains(name).parent('div').parent('div')
+
+    getEventStateByEventName(name){
+        return this.getEventByName(name).children('div').eq(3).children('div')
+    }
+
+    getEventDateByEventName(name){
+        return this.getEventByName(name).children('div').eq(1).children('div')
     }
 
     getNthEventOptions(nth){

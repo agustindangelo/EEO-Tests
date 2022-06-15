@@ -22,7 +22,7 @@ class CreateEvent extends Page {
     }
 
     get browseFileField(){
-        return cy.contains('Browse files')
+        return cy.get('input[type="file"]')
     }
 
     get eventDescriptionField(){
@@ -47,7 +47,7 @@ class CreateEvent extends Page {
         },
         timezone: {
             ddl: () => { return cy.get('div[aria-labelledby="timezone select-options"]') },
-            option: (zone) => { return cy.contains(zone) }
+            option: (zone) => { return cy.get('li[role="option"]').contains(zone) }
         },
         eventTypeOption:{
             online: () => { return cy.get('input[type="radio"]').eq(0) },
@@ -61,14 +61,18 @@ class CreateEvent extends Page {
         },
         address: () => { return cy.get('input[name="address"]') },
         makeItVisibleOption: () => { return cy.get('input[name="published"]') },
-        cancelButton: () => { return cy.contains('Save') },
-        saveButton: () => { return cy.contains('Cancel') },
+        cancelButton: () => { return cy.contains('Cancel') },
+        saveButton: () => { return cy.contains('Save') },
     }
 
     warnings={
         missingFields:{
             errorMessage: () => { return cy.contains('Missing fields') },
             okButton: () => { return cy.contains('OK') }
+        },
+        eventPublished:{
+            message: () => cy.contains('Event published successfully!'),
+            okButton: () => cy.contains('OK, got it!')
         },
         saveAsDraft: {
             message: () => { return cy.contains('Save as draft') },
@@ -213,9 +217,16 @@ class CreateEvent extends Page {
         this.setEndTime(endTime)
         this.selectTimezone(timezone)
         this.enterEventLink(link)
-        if (makeItVisible) { this.makeEventVisible() }
-        this.clickSaveButton()
-        this.saveEventAsDraft()
+        if (makeItVisible) { 
+            this.makeEventVisible() 
+            this.clickSaveButton()
+            this.warnings.eventPublished.okButton().click()
+        }
+        else{
+            this.clickSaveButton()
+            this.saveEventAsDraft() 
+        }
+        
     }
 
     cancelEventCreation(){
