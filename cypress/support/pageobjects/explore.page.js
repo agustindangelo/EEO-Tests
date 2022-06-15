@@ -25,10 +25,9 @@ class Explore extends Page{
         return cy.contains('Inscribirse').first() //cy.get('button > span:nth-child(1)')
     }
 
-    // may be useful later
-    // selectNthOptionFromDropdown(nth) { 
-    //     cy.get('[role="listbox"] li').eq(nth-1).click()
-    // }
+    get dropdownList() {
+        return cy.get("ul[role='listbox']")
+    }
 
     formularioInscripcion = {
         "nombre": {
@@ -103,35 +102,14 @@ class Explore extends Page{
         this.formularioInscripcion.email.field().type(email)
     }
 
-    /**
-     * Receives the name of a country as a parameter and then it is selected with the 'Pais' dropdownlist in the inscription form
-     * @param {string} pais the name of a country. Accepted values: 'Argentina', 'Uruguay' and 'Chile'
-     */
-    // selectPais(pais){
-    //     switch(pais.toLowerCase()){
-    //         case 'argentina': {
-    //             this.formularioInscripcion.pais.option('1').click()
-    //             break;
-    //         }
-    //         case 'uruguay': {
-    //             this.formularioInscripcion.pais.option('2').click()
-    //             break;
-    //         }
-    //         case 'ireland': {
-    //             this.formularioInscripcion.pais.option('3').click()
-    //             break;
-    //         }
-    //         default: break;
-    //     }
-    // }
-    selectPais(pais) {
+   selectPais(pais) {
         this.formularioInscripcion.pais.field().click()
-        cy.contains(pais).click({ force: true })
+        this.dropdownList.contains(pais).click()
     }
 
     selectCiudad(ciudad) {
         this.formularioInscripcion.ciudad.field().click()
-        cy.contains(ciudad).click({ force: true })
+        cy.contains(ciudad).click()
     }
     
     enterEmpresa(empresa) {
@@ -140,27 +118,27 @@ class Explore extends Page{
 
     selectProfesion(profesion) {
         this.formularioInscripcion.profesion.field().click()
-        cy.contains(profesion).click({ force: true })
+        this.dropdownList.contains(profesion).click()
     }
 
     selectExperiencia(experiencia) {
         this.formularioInscripcion.experiencia.field().click()
-        cy.contains(experiencia).click({ force: true })
+        this.dropdownList.contains(experiencia).click()
     }
 
     selectNivelDeIngles(nivel) {
         this.formularioInscripcion.nivelDeIngles.field().click()
-        cy.contains(nivel).click({ force: true })
+        this.dropdownList.contains(nivel).click()
     }
 
     selectConoceEndava(conoce) {
         this.formularioInscripcion.conocesEndava.field().click()
-        cy.contains(conoce).scrollIntoView().click({ force: true })
+        this.dropdownList.contains(conoce).click()
     }
 
     selectComoTeEnteraste(comoSeEntero) {
         this.formularioInscripcion.comoTeEnteraste.field().click()
-        cy.contains(comoSeEntero).scrollIntoView().click({ force: true })
+        this.dropdownList.contains(comoSeEntero).click({ force: true })
     }
 
     acceptPolicies() {
@@ -170,28 +148,6 @@ class Explore extends Page{
     acceptPersonalDataCondition() {
         this.formularioInscripcion.personalDataCheckbox().click()
     }
-
-    /**
-     * Receives the profession's name as a parameter and then it is selected with the 'Profesion / Ocupación' dropdownlist in the inscription form
-     * @param {string} profession The profession of the user interested in the event. Accepted values: 'developer', 'tester' and 'ceo'.
-     */
-    // selectProfesion(profession){
-    //     switch(profession.toLowerCase()){
-    //         case 'developer': {
-    //             this.formularioInscripcion.profession.option('1').click()
-    //             break;
-    //         }
-    //         case 'tester': {
-    //             this.formularioInscripcion.profession.option('2').click()
-    //             break;
-    //         }
-    //         case 'ceo': {
-    //             this.formularioInscripcion.profession.option('3').click()
-    //             break;
-    //         }
-    //         default: break;
-    //     }
-    // }
 
     /**
      * Gets a name, an email, a country and a profession in order to fulfill the required fields to register an user to an event. Then, the 'Inscribirse' button is clicked.
