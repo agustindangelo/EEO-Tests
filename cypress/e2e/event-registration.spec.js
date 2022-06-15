@@ -11,7 +11,7 @@ describe('Event registration functionality', () => {
 
         // fill form fields
         explore.enterNombre('agustin')
-        explore.enterEmail('agustin@agustin.com')
+        explore.enterEmail('agustin@agustin.com') // TO DO: randomize this email
         explore.selectPais('Argentina')
         explore.selectCiudad('Paraná')
         explore.enterEmpresa('en la fortaleza')
@@ -27,5 +27,9 @@ describe('Event registration functionality', () => {
 
         cy.contains('¡Nos vemos allí!')
         cy.contains('Aceptar').click()
+    })
+
+    it('should not be able to register twice to an event', () => {
+
     })
 })

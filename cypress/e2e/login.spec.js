@@ -30,7 +30,21 @@ describe('Happy paths for loging in and loging out', () => {
                     "password": Cypress.env('USER_PASSWORD')
                 }
             },
-            "query": "mutation LoginMutation($input: LoginInput!) {\n  login(input: $input) {\n    user {\n      name\n      email\n      __typename\n    }\n    authentication {\n      token\n      __typename\n    }\n    __typename\n  }\n}\n"
+            "query": `
+                mutation LoginMutation($input: LoginInput!) {
+                    login(input: $input) {
+                        user {
+                            name
+                            email
+                            __typename
+                        }
+                        authentication {
+                            token
+                            __typename
+                        }
+                        __typename
+                    }
+                }`
         }).then(res => {
             localStorage.setItem(
                'authData' , JSON.stringify({"name": res.body.data.login.user.name,"token": res.body.data.login.authentication.token,"email": res.body.data.login.user.email})
