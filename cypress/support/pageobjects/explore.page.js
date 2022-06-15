@@ -10,7 +10,7 @@ class Explore extends Page{
      * @returns the DOM element of event's card
      */
     getNthEvent(nth){
-        return cy.get(`.sc-kDTinF:nth-child(${nth})`)
+        return cy.get('a.eventCard').eq(nth-1);
     }
     
     /** Gest the state of the 'nth' event displayed in the explore page
@@ -25,35 +25,59 @@ class Explore extends Page{
         return cy.contains('Inscribirse').first() //cy.get('button > span:nth-child(1)')
     }
 
-    formularioIncripcion={
-        nombre:{
-            field: () => cy.contains('Nombre').first(),
-            errorMessage: () => cy.contains('Por favor, ingresa un Nombre válido')   
+    // may be useful later
+    // selectNthOptionFromDropdown(nth) { 
+    //     cy.get('[role="listbox"] li').eq(nth-1).click()
+    // }
+
+    formularioInscripcion = {
+        "nombre": {
+            "field": () => cy.get("input[name='name']"),
+            "errorMessage": () => this.nombre.field().parent().siblings('p')
         },
-        email:{
-            field: () => cy.contains('Email').first(),
-            errorMessage: () => cy.contains('Por favor, ingresa un Email válido') 
+        "email": {
+            "field": () => cy.get("input[name='email']"),
+            "errorMessage": () => this.email.field().parent().siblings('p')
         },
-        pais: {
-            ddl: () => cy.get("input[name='country']"),
-            option: (nth) => cy.get(`#menu-country li:nth-child(${nth})`),
-            errorMessage: () => cy.contains('Por favor, ingresa un País válido')
+        "pais": {
+            "field": () => cy.get("input[name='country']").siblings('div'),
+            "errorMessage": () => this.pais.field().parent().siblings('p')
         },
-        ciudad: {
-            ddl: () => cy.get("input[name='city']"),
-            option: (nth) => cy.get(`#menu-city li:nth-child(${nth})`),
-            errorMessage: () => cy.contains('Por favor, ingresa una Ciudad válida')
+        "ciudad": {
+            "field": () => cy.get("input[name='city']").siblings('div'),
+            "errorMessage": () => this.ciudad.field().parent().siblings('p')
         },
-        profession: {
-            ddl: () => cy.get("input[name='profession']"),
-            option: (nth) => cy.get(`#menu-profession li:nth-child(${nth})`),
-            errorMessage: () => cy.contains('Por favor, ingresa una profesión válida')
+        "empresa": {
+            "field": () => cy.get("[name='company']"),
+            "errorMessage": () => this.empresa.field().parent().siblings('p')
         },
-        inscribirseBtn: () => cy.contains('Inscribirse').last(), //cy.get('button > span:nth-child(2)')
-        successInscriptionMessage: () => cy.contains('¡Nos vemos allí!'),
-        addToCalendarBtn: () => cy.contains('Añadir al calendario'),
-        googleCalendarOption: () => cy.contains('Google'),
-        outlookCalendarOption: () => cy.contains('Outlook')
+        "profesion": {
+            "field": () => cy.get("input[name='profession']").siblings('div'),
+            "errorMessage": () => this.profesion.field().parent().siblings('p')
+        },
+        "experiencia": {
+            "field": () => cy.get("input[name='experience']").siblings('div'),
+            "errorMessage": () => this.experiencia.field().parent().siblings('p')
+        },
+        "nivelDeIngles": {
+            "field": () => cy.get("input[name='englishLevel']").siblings('div'),
+            "errorMessage": () => this.nivelDeIngles.field().parent().siblings('p')
+        },
+        "conocesEndava": {
+            "field": () => cy.get("input[name='knowsEndava']").siblings('div'),
+            "errorMessage": () => this.conocesEndava.field().parent().siblings('p')
+        },
+        "comoTeEnteraste": {
+            "field": () => cy.get("input[name='hearFromEvent']").siblings('div'),
+            "errorMessage": () => this.nivelDeIngles.field().parent().siblings('p')
+        },
+        "termsCheckbox": () => cy.get('input[name="terms"]'),
+        "personalDataCheckbox": () => cy.get('input[name="personalData"]'),
+        "inscribirseBtn": () => cy.get('button[type="submit"]'),
+        "successInscriptionMessage": () => cy.contains('¡Nos vemos allí!'),
+        "addToCalendarBtn": () => cy.contains('Añadir al calendario'),
+        "googleCalendarOption": () => cy.contains('Google'),
+        "outlookCalendarOption": () => cy.contains('Outlook')
     }
 
     /**
@@ -68,7 +92,7 @@ class Explore extends Page{
      * @param {string} nombre The name of the person who is interested in the event
      */
     enterNombre(nombre){
-        this.formularioIncripcion.nombre.field().type(nombre)
+        this.formularioInscripcion.nombre.field().type(nombre)
     }
 
     /**
@@ -76,73 +100,98 @@ class Explore extends Page{
      * @param {string} email The email of the person who is interested in the event
      */
     enterEmail(email){
-        this.formularioIncripcion.email.field().type(email)
+        this.formularioInscripcion.email.field().type(email)
     }
 
     /**
      * Receives the name of a country as a parameter and then it is selected with the 'Pais' dropdownlist in the inscription form
      * @param {string} pais the name of a country. Accepted values: 'Argentina', 'Uruguay' and 'Chile'
      */
-    selectPais(pais){
-        switch(pais.toLowerCase()){
-            case 'argentina': {
-                this.formularioIncripcion.pais.option('1').click()
-                break;
-            }
-            case 'uruguay': {
-                this.formularioIncripcion.pais.option('2').click()
-                break;
-            }
-            case 'ireland': {
-                this.formularioIncripcion.pais.option('3').click()
-                break;
-            }
-            default: break;
-        }
+    // selectPais(pais){
+    //     switch(pais.toLowerCase()){
+    //         case 'argentina': {
+    //             this.formularioInscripcion.pais.option('1').click()
+    //             break;
+    //         }
+    //         case 'uruguay': {
+    //             this.formularioInscripcion.pais.option('2').click()
+    //             break;
+    //         }
+    //         case 'ireland': {
+    //             this.formularioInscripcion.pais.option('3').click()
+    //             break;
+    //         }
+    //         default: break;
+    //     }
+    // }
+    selectPais(pais) {
+        this.formularioInscripcion.pais.field().click()
+        cy.contains(pais).click({ force: true })
     }
 
-    /**
-     * The first city of the 'Ciudad' dropdownlist is selected in the inscription form
-     */
-    selectCiudad(){
-        this.formularioIncripcion.ciudad.option('1').click()
+    selectCiudad(ciudad) {
+        this.formularioInscripcion.ciudad.field().click()
+        cy.contains(ciudad).click({ force: true })
+    }
+    
+    enterEmpresa(empresa) {
+        this.formularioInscripcion.empresa.field().type(empresa)
+    }
+
+    selectProfesion(profesion) {
+        this.formularioInscripcion.profesion.field().click()
+        cy.contains(profesion).click({ force: true })
+    }
+
+    selectExperiencia(experiencia) {
+        this.formularioInscripcion.experiencia.field().click()
+        cy.contains(experiencia).click({ force: true })
+    }
+
+    selectNivelDeIngles(nivel) {
+        this.formularioInscripcion.nivelDeIngles.field().click()
+        cy.contains(nivel).click({ force: true })
+    }
+
+    selectConoceEndava(conoce) {
+        this.formularioInscripcion.conocesEndava.field().click()
+        cy.contains(conoce).scrollIntoView().click({ force: true })
+    }
+
+    selectComoTeEnteraste(comoSeEntero) {
+        this.formularioInscripcion.comoTeEnteraste.field().click()
+        cy.contains(comoSeEntero).scrollIntoView().click({ force: true })
+    }
+
+    acceptPolicies() {
+        this.formularioInscripcion.termsCheckbox().click()
+    }
+
+    acceptPersonalDataCondition() {
+        this.formularioInscripcion.personalDataCheckbox().click()
     }
 
     /**
      * Receives the profession's name as a parameter and then it is selected with the 'Profesion / Ocupación' dropdownlist in the inscription form
      * @param {string} profession The profession of the user interested in the event. Accepted values: 'developer', 'tester' and 'ceo'.
      */
-    selectProfesion(profession){
-        switch(profession.toLowerCase()){
-            case 'developer': {
-                this.formularioIncripcion.profession.option('1').click()
-                break;
-            }
-            case 'tester': {
-                this.formularioIncripcion.profession.option('2').click()
-                break;
-            }
-            case 'ceo': {
-                this.formularioIncripcion.profession.option('3').click()
-                break;
-            }
-            default: break;
-        }
-    }
-
-    /**
-     * The 'Inscribirse' button is clicked in the inscription page
-     */
-    clickInscribirseEvento(){
-        this.inscribirseEventoBtn.click()
-    }
-
-    /**
-     * The 'Inscribirse' button is clicked in the inscription form
-     */
-    clickInscribirseEventoForm(){
-        this.formularioIncripcion.inscribirseBtn().click()
-    }
+    // selectProfesion(profession){
+    //     switch(profession.toLowerCase()){
+    //         case 'developer': {
+    //             this.formularioInscripcion.profession.option('1').click()
+    //             break;
+    //         }
+    //         case 'tester': {
+    //             this.formularioInscripcion.profession.option('2').click()
+    //             break;
+    //         }
+    //         case 'ceo': {
+    //             this.formularioInscripcion.profession.option('3').click()
+    //             break;
+    //         }
+    //         default: break;
+    //     }
+    // }
 
     /**
      * Gets a name, an email, a country and a profession in order to fulfill the required fields to register an user to an event. Then, the 'Inscribirse' button is clicked.
@@ -164,17 +213,15 @@ class Explore extends Page{
     }
 
     /**
-     * Gets the calendar option as an input in order to select it with the 'Añadir al calendario' field
-     * @param {string} option The calendar option selected. Accepted values: 'Google' and 'Outlook' 
-     */
+     * Gets the calendar option as an input in order to select it with the 'Añadir al calendario' field * @param {string} option The calendar option selected. Accepted values: 'Google' and 'Outlook' */
     clickCalendarOpcion(option){
         switch(option.toLowerCase()){
             case 'google': {
-                this.formularioIncripcion.googleCalendarOption().click()
+                this.formularioInscripcion.googleCalendarOption().click()
                 break;
             }
             case 'outlook': {
-                this.formularioIncripcion.outlookCalendarOption().click()
+                this.formularioInscripcion.outlookCalendarOption().click()
                 break;
             }
             default: break;
