@@ -1,3 +1,17 @@
+//  Faker is currently having some issues so a custom function is used instead. See: https://github.com/faker-js/faker/issues/1073
+// import { faker } from '@faker-js/faker'
+// export const getRandomEmail = () => faker.internet.email()
+
+// Generates a random "Gmail"
+export const getRandomEmail = () => {
+  let chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
+  var string = '';
+  for(var ii=0; ii<15; ii++){
+      string += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return string + '@gmail.com'
+}
+
 export const getInteger = (min, max) => {
     let value = Math.floor(Math.random() * (max - min + 1) ) + min;
     if ((value + '').length == 1) { return '0' + value }

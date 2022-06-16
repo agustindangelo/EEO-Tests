@@ -1,17 +1,18 @@
 /// <reference types="Cypress"/>
 import Explore from '../support/pageobjects/explore.page'
+import { getRandomEmail } from '../support/util.js';
 
 describe('Event registration functionality', () => {
     it('should register as an attendee for the first event on the explore page', function () {
+        // arrange
         const explore = new Explore();
-
         explore.navigate();
         explore.getNthEvent(1).click()
         explore.inscribirseEventoBtn.click()
 
-        // fill form fields
+        // act
         explore.enterNombre('agustin')
-        explore.enterEmail('agustin@agustin.com') // TO DO: randomize this email
+        explore.enterEmail(getRandomEmail())
         explore.selectPais('Argentina')
         explore.selectCiudad('Paraná')
         explore.enterEmpresa('en la fortaleza')
@@ -25,6 +26,7 @@ describe('Event registration functionality', () => {
         explore.acceptPersonalDataCondition()
         explore.formularioInscripcion.inscribirseBtn().click()
 
+        // assert
         cy.contains('¡Nos vemos allí!')
         cy.contains('Aceptar').click()
     })

@@ -30,18 +30,32 @@ Cypress.Commands.add("loginByApi", (username, password = Cypress.env("defaultPas
 //     password,
 //   });
     cy.request('POST', 'http://localhost:4000/', {
-                "operationName": "LoginMutation",
-                "variables": {
-                    "input": {
-                        "email": username,
-                        "password": password
+        "operationName": "LoginMutation",
+        "variables": {
+            "input": {
+                "email": Cypress.env('USER_EMAIL'),
+                "password": Cypress.env('USER_PASSWORD')
+            }
+        },
+        "query": `
+            mutation LoginMutation($input: LoginInput!) {
+                login(input: $input) {
+                    user {
+                        name
+                        email
+                        __typename
                     }
-                },
-                "query": "mutation LoginMutation($input: LoginInput!) {\n  login(input: $input) {\n    user {\n      name\n      email\n      __typename\n    }\n    authentication {\n      token\n      __typename\n    }\n    __typename\n  }\n}\n"
-            }).then(res => {
-                localStorage.setItem(
-                'authData' , JSON.stringify({"name": res.body.data.login.user.name,"token": res.body.data.login.authentication.token,"email": res.body.data.login.user.email})
-                )
-            })
-            cy.visit('/events')
+                    authentication {
+                        token
+                        __typename
+                    }
+                    __typename
+                }
+            }`
+    }).then(res => {
+        localStorage.setItem(
+        'authData' , JSON.stringify({"name": res.body.data.login.user.name,"token": res.body.data.login.authentication.token,"email": res.body.data.login.user.email})
+        )
+    })
+    cy.visit('/events')
 });
