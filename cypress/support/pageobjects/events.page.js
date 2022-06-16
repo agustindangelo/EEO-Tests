@@ -60,10 +60,10 @@ class Events extends Page{
     }
 
     deletePrompt = {
-        "message": () => cy.contains('Delete this event?'),
-        "label": () => cy.contains('This action cannot be restored'),
-        "yesOption": () => cy.contains('Yes, delete'),
-        "noOption": () => cy.contains('No, cancel'),
+        message: () => cy.contains('Delete this event?'),
+        label: () => cy.contains('This action cannot be restored'),
+        yesOption: () => cy.contains('Yes, delete'),
+        noOption: () => cy.contains('No, cancel'),
     }
 
     navigate(){
@@ -104,18 +104,6 @@ class Events extends Page{
         this.deleteEventOption.click()
     }
 
-    // not using these
-    // cancelEventDeletion(event){
-    //     this.openEventOptions(event)
-    //     this.deleteEventOption.click()
-    //     this.deleteForm.noOption().click()
-    // }
-
-    // deleteEvent(event){
-    //     this.openEventOptions(event)
-    //     this.deleteEventOption.click()
-    //     this.deleteForm.yesOption().click()
-    // }
 }
 
 export default Events;
