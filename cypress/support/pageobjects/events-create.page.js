@@ -65,12 +65,12 @@ class CreateEvent extends Page {
         saveButton: () => cy.contains('Save'),
     }
 
-    warnings={
-        missingFields:{
+    warnings = {
+        missingFields: {
             errorMessage: () => cy.contains('Missing fields'),
             okButton: () => cy.contains('OK')
         },
-        eventPublished:{
+        eventPublished: {
             message: () => cy.contains('Event published successfully!'),
             okButton: () => cy.contains('OK, got it!')
         },
@@ -84,10 +84,6 @@ class CreateEvent extends Page {
             yesButton: () => cy.contains('Yes, delete'),
             cancelButton: () => cy.contains('No, cancel'),
         }
-    }
-
-    navigate(){
-        super.navigate(this.url)
     }
 
     enterEventName(name){
@@ -232,10 +228,6 @@ class CreateEvent extends Page {
     cancelEventCreation(){
         this.cancelButton().click()
         this.warnings.deleteEvent.yesButton().click()
-    }
-
-    openNthEvent(nth) {
-        this.getNthEvent(nth)
     }
 }
 

@@ -12,8 +12,6 @@ describe('Happy path when editing an event', () => {
     })
 
     it('should change the end time of the first event', () => {
-        
-        
         const startHour = getInteger(0,23)
         const endHour = getInteger(parseInt(startHour),23)
         const startMinute= getInteger(0,59)

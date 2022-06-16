@@ -31,7 +31,26 @@ describe('Event registration functionality', () => {
         cy.contains('Aceptar').click()
     })
 
-    it('should not be able to register twice to an event', () => {
+    // it('should not be able to register twice to an event', () => {
+        // arrange
+        // const explore = new Explore();
+        // explore.navigate();
+        // explore.getNthEvent(1).click()
+        // explore.inscribirseEventoBtn.click()
 
-    })
+        // // act
+        // explore.enterNombre('agustin')
+        // explore.enterEmail(getRandomEmail())
+        // explore.selectPais('Argentina')
+        // explore.selectCiudad('Paraná')
+        // explore.enterEmpresa('en la fortaleza')
+        // explore.selectProfesion('Tester')
+        // explore.selectExperiencia('Sin experiencia')
+        // explore.selectNivelDeIngles('Principiante')
+
+        // // assert
+        // cy.contains('¡Nos vemos allí!')
+        // cy.contains('Aceptar').click()
+
+    // })
 })

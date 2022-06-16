@@ -12,11 +12,11 @@ describe('Happy path when creating a new event', () => {
         cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
     })
 
-    it('should create a public event', () => {
+    it.only('should create a public event', () => {
         const startHour = getInteger(0,23)
         const endHour = getInteger(parseInt(startHour),23)
-        const startMinute= getInteger(0,59)
-        const endMinute= getInteger(0,59)
+        const startMinute = getInteger(0,59)
+        const endMinute = getInteger(0,59)
         
         events.createEventBtn.click()
 
@@ -39,11 +39,11 @@ describe('Happy path when creating a new event', () => {
         events.getEventStateByEventName('new event [AUT]').should('not.contain.text', 'DRAFT')
     })
     
-    it.only('should create a draft event', () => {
+    it('should create a draft event', () => {
         const startHour = getInteger(0,23)
         const endHour = getInteger(parseInt(startHour),23)
-        const startMinute= getInteger(0,59)
-        const endMinute= getInteger(0,59)
+        const startMinute = getInteger(0,59)
+        const endMinute = getInteger(0,59)
         
         events.createEventBtn.click()
 
