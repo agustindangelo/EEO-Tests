@@ -13,7 +13,9 @@ Create a `cypress.env.json` file at the root of the project and paste with the f
 ```json
 {
   "USER_EMAIL": "<your-email>",
-  "USER_PASSWORD": "<your-password>"
+  "USER_NAME": "<your-username>",
+  "USER_PASSWORD": "<your-password>",
+  "LOCAL_API_URL": "http://localhost:4000"
 }
 ```
 
@@ -22,10 +24,11 @@ With the graphical test runner:
 npm run cy:ui
 ```
 
-Run the tests from the CLI
+Run the tests from the CLI and generate Mochawesome report
 ```
 npm run cy:run
 ```
+tests execution reports should be available at `mochawesome-report/`
 
 # Run WebdriverIO tests
 ```
