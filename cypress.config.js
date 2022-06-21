@@ -1,6 +1,16 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
+    // use mochawesome reporter as usually
+  reporter: "mochawesome",
+  reporterOptions: {
+    // disable overwrite to generate many JSON reports
+    "overwrite": false,
+    // do not generate intermediate HTML reports
+    "html": false,
+    // generate intermediate JSON reports
+    "json": true
+  },
   e2e: {
     setupNodeEvents(on, config) {
       on("task", {

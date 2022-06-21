@@ -114,3 +114,4 @@ cypress/screenshots
 wdio/video-results/
 wdio/allure-results/
 node_modules
+mochawesome-report/
