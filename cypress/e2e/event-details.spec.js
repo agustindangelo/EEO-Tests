@@ -1,30 +1,33 @@
 /// <reference types="Cypress"/>
 import EventDetail from '../support/pageobjects/event-detail.page'
 import Events from '../support/pageobjects/events.page'
-import Login from '../support/pageobjects/login.page'
 
-describe('verify', () => {
+describe('Verify data displayed on the event details page', () => {
+  let eventName = 'event for event details test'
 
-  it('should display values', () => {
-    // these are just preliminary tests to verify the page object
+  before(() => {
+    // precondition: the user is logged in
+    cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
 
-    const login = new Login();
-    login.navigate()
-    login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'));
+    // precondition: at least one event has been registered
+    cy.createEventByApi(eventName, false)
+  })
 
+  it('should display correct event data', () => {
     const events = new Events();
     const eventDetail = new EventDetail();
+    events.navigate();
+    events.getEventByName(eventName).click();
 
-    events.openNthEvent(1)
+    eventDetail.name.should('have.text', eventName);
+    eventDetail.attendees.should('contain.text', '0 asistentes');
+    eventDetail.about.should('have.text', 'description');
+    eventDetail.link.should('have.text', 'event-api.com');
+    eventDetail.additionalInformation.should('have.text', 'bla');
+    eventDetail.visibilitySwitch.should('not.be.checked');
+  })
 
-    eventDetail.name.should('be', 'TEST11')
-    eventDetail.name.should('be', 'TEST11')
-    console.log(eventDetail.attendees)
-    console.log(eventDetail.about)
-    // console.log(eventDetail.additionalInformation)
-    console.log(eventDetail.eventDay)
-    console.log(eventDetail.time.mexicanTime)
-
-    eventDetail.visibilitySwitch.should('not.be.checked')
+  after(() => {
+    cy.deleteEventThroughAPI(eventName);
   })
 })

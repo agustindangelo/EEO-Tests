@@ -37,6 +37,10 @@ class EventDetail extends Page {
         return cy.get('input[name="published"]')
     }
 
+    get link() {
+        return cy.contains('virtual').find('a')
+    }
+
     openEditForm(){
         this.editButton.click()
     }
