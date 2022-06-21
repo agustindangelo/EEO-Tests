@@ -27,7 +27,7 @@ describe('Happy path when editing an event', () => {
         eventEdit.selectTimezone('ARG/URU')
         eventEdit.clickSaveButton()
         events.navigate()
-        events.getNthEventDate(1).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`).and('contain.text', `${hourToAmPm(endHour)}:${endMinute}`)
+        events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`).and('contain.text', `${hourToAmPm(endHour)}:${endMinute}`)
     })
     
     afterEach(function () {
