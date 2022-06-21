@@ -12,6 +12,9 @@ class Explore extends Page{
     getNthEvent(nth){
         return cy.get('a.eventCard').eq(nth-1);
     }
+
+    getEventByName = (name) => cy.get('a.eventCard').contains(name)
+
     
     /** Gest the state of the 'nth' event displayed in the explore page
      * @param {string} nth The number of a registered event, which is displayed sorted for the user
@@ -76,7 +79,8 @@ class Explore extends Page{
         successInscriptionMessage: () => cy.contains('¡Nos vemos allí!'),
         addToCalendarBtn: () => cy.contains('Añadir al calendario'),
         googleCalendarOption: () => cy.contains('Google'),
-        outlookCalendarOption: () => cy.contains('Outlook')
+        outlookCalendarOption: () => cy.contains('Outlook'),
+        duplicatedInscription: () => cy.get('div#duplicated')
     }
 
     /**
