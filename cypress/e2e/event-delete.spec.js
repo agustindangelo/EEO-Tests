@@ -1,37 +1,59 @@
 /// <reference types="Cypress"/>
-import Login from '../support/pageobjects/login.page'
 import Events from '../support/pageobjects/events.page'
 
 describe('Event deletion related tests', () => {
-    beforeEach(() => {
-        const login = new Login();
-        const events = new Events();
-
-        login.navigate()
-        login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'));
-
-        events.getTitleOfNthEvent(1).invoke('text').as('titleOfEventToDelete')
-    });
-    
-    it('should cancel event deletion', function () { // make sure to use traditional function here
-        const events = new Events();
-
-        events.getNthEvent(1).find('button').click()
-        events.deleteEventOption.click()
-        events.deletePrompt.message().should('be.visible')
-        events.deletePrompt.noOption().click()
-
-        events.getTitleOfNthEvent(1).should('have.text', this.titleOfEventToDelete)
+    const events = new Events();
+    var nameOfNewEvent = 'Event to be deleted';
+    beforeEach(()=>{
+        cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
     })
 
-    it('should delete the first event', function () { // make sure to use traditional function here
-        const events = new Events();
+    describe('Draft event', ()=>{
+        beforeEach(() => {
+            cy.createEventByApi(nameOfNewEvent, false)
+            events.navigate()
+        });
+        
+        it('should cancel event deletion', function () { // make sure to use traditional function here
+    
+            events.getEventByName(nameOfNewEvent).find('button').click()
+            events.deleteEventOption.click()
+            events.deletePrompt.message().should('be.visible')
+            events.deletePrompt.noOption().click()
+    
+            events.getEventByName(nameOfNewEvent).should('be.visible')
+    
+            //delete the created event
+            cy.deleteEventThroughAPI(nameOfNewEvent)
+            events.navigate()
+        })
+    
+        it('should delete an draft event', function () { // make sure to use traditional function here
+    
+            events.getEventByName(nameOfNewEvent).find('button').click()
+            events.deleteEventOption.click()
+            events.deletePrompt.message().should('be.visible')
+            events.deletePrompt.yesOption().click()
+            cy.contains('Changes saved succesfully')
+    
+        })
+    })
 
-        events.getNthEvent(1).find('button').click()
-        events.deleteEventOption.click()
-        events.deletePrompt.message().should('be.visible')
-        events.deletePrompt.yesOption().click()
-        cy.contains('Changes saved succesfully')
+    describe('Public event', ()=>{
+        
+        beforeEach(() => {
+            cy.createEventByApi(nameOfNewEvent, true)
+            events.navigate()
+        });
 
+        it('should not be able to delete a public event', function () { // make sure to use traditional function here
+            events.getEventByName(nameOfNewEvent).find('button').click()
+            events.deleteEventOption.should('not.exist')
+            
+            //delete the created event
+            cy.deleteEventThroughAPI(nameOfNewEvent)
+            events.navigate()
+        })    
+       
     })
 })
