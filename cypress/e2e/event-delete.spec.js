@@ -24,7 +24,7 @@ describe('Event deletion related tests', () => {
         events.getTitleOfNthEvent(1).should('have.text', this.titleOfEventToDelete)
     })
 
-    it.only('should delete the first event', function () { // make sure to use traditional function here
+    it('should delete the first event', function () { // make sure to use traditional function here
         const events = new Events();
 
         events.getNthEvent(1).find('button').click()

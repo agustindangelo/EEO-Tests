@@ -124,3 +124,39 @@ Cypress.Commands.add("registerToEventByApi", (eventId, email) => {
         
 })
 
+Cypress.Commands.add('deleteEventThroughAPI', (eventName) => {
+    var eventId;
+    // get event ID by event name
+    cy.request('POST', Cypress.env('LOCAL_API_URL'), {
+        "query": `{
+            getEvents {
+                records {
+                    id
+                    name
+                }
+            }
+        }`
+    }).then(res => {
+        const eventsArray = res.body.data.getEvents.records
+        const newEvent = eventsArray.filter(event => event.name == eventName)[0]
+        eventId = newEvent.id
+
+        // use the id found to delete the event
+        cy.request('POST', Cypress.env('LOCAL_API_URL'), {
+            "operationName": "deleteEvent",
+            "variables": {
+                "input": {
+                    "id": eventId
+                }
+            },
+            "query": `
+                mutation deleteEvent($input: DeleteEventInput!) {
+                    deleteEvent(input: $input) {
+                        deletedCount
+                    }
+                }
+            `
+        })
+    });
+
+});
