@@ -40,7 +40,7 @@ describe('Happy paths', () => {
             cy.registerToEventByApi(eventId, getRandomEmail())
             })
         })
-    it('an event must be deleted', ()=>{
+    it.only('an event must be deleted', ()=>{
         cy.deleteEventThroughAPI(eventName)
     })    
     })

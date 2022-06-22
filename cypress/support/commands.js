@@ -87,7 +87,6 @@ Cypress.Commands.add("registerToEventByApi", (eventId, email) => {
     let year = dateArray[2]
     let eventDate = year + '-' + month + '-' + day + "T16:50:10.274Z" 
     let eventDateStarts = year + '-' + month + '-' + day + "T09:00:00.245-03:00"
-    let eventDateEnds = year + '-' + month + '-' + day + "T11:00:00.066-03:00" 
 
     return cy.request('POST', Cypress.env('LOCAL_API_URL'), {
         "operationName": "createEvent",
@@ -104,7 +103,6 @@ Cypress.Commands.add("registerToEventByApi", (eventId, email) => {
                     "end": eventDate
                 },
                 "startTime": eventDateStarts,
-                "endTime": eventDateEnds,
                 "timezone": "America/Buenos_Aires",
                 "creator": "julian.lostumbo@endava.com",
                 "description": "description",

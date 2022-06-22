@@ -25,7 +25,7 @@ describe('Login tests', () => {
             cy.url().should('include', 'login')
         })
     
-        it('login using the API', () => {
+        it.only('login using the API', () => {
             cy.request('POST', 'http://localhost:4000/', {
                 "operationName": "LoginMutation",
                 "variables": {
