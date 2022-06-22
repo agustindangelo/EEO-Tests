@@ -15,9 +15,7 @@ describe('Happy path when creating a new event', () => {
 
     it.only('should create a public event', () => {
         const startHour = getInteger(0,23)
-        const endHour = getInteger(parseInt(startHour),23)
         const startMinute = getInteger(0,59)
-        const endMinute = getInteger(0,59)
 
         nameOfNewEvent = 'new event [AUT]';
         
@@ -29,8 +27,6 @@ describe('Happy path when creating a new event', () => {
             'test description',
             'test info',
             `${startHour}:${startMinute}`,
-            `${endHour}:${endMinute}`,
-            'ARG/URU',
             'newevent-automation.com',
             true //set the event as public
         )
@@ -38,15 +34,13 @@ describe('Happy path when creating a new event', () => {
         events.getEventByName(nameOfNewEvent).should('be.visible')
         let eventDate = new Date().toDateString().split(' ') //the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
         events.getEventDateByEventName(nameOfNewEvent).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
-        events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`).and('contain.text', `${hourToAmPm(endHour)}:${endMinute}`) //validating the start and end time
+        events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
         events.getEventStateByEventName(nameOfNewEvent).should('not.contain.text', 'DRAFT')
     })
     
     it('should create a draft event', function () {
         const startHour = getInteger(0,23)
-        const endHour = getInteger(parseInt(startHour),23)
         const startMinute = getInteger(0,59)
-        const endMinute = getInteger(0,59)
 
         nameOfNewEvent = 'new draft event [AUT]';
         
@@ -58,15 +52,13 @@ describe('Happy path when creating a new event', () => {
             'test description',
             'test info',
             `${startHour}:${startMinute}`,
-            `${endHour}:${endMinute}`,
-            'ARG/URU',
             'newevent-automation-draft.com',
             false //set the event as draft
         )
         events.navigate() //the new event shoud be added to the events page
         let eventDate = new Date().toDateString().split(' ') //the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
         events.getNthEventDate(0).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
-        events.getNthEventDate(1).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`).and('contain.text', `${hourToAmPm(endHour)}:${endMinute}`) //validating the start and end time
+        events.getNthEventDate(1).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
         events.getNthEventName(1).should('contain.text', nameOfNewEvent)
         events.getNthEventState(1).should('contain.text', 'DRAFT')
     }) 

@@ -26,11 +26,11 @@ class CreateEvent extends Page {
     }
 
     get eventDescriptionField(){
-        return cy.get('#description')
+        return cy.get('.ql-editor').eq(0)
     }
 
     get eventAdditionalInformationField(){
-        return cy.get('#aditionalInformation')
+        return cy.get('.ql-editor').eq(1)
     }
 
     eventInformation={
@@ -38,16 +38,13 @@ class CreateEvent extends Page {
             toggler: () => cy.get('button.toggler'),
             calendarBody: () => cy.get('div.calendarBody'),
             calendarFooter: () => cy.get('footer.calendarFooter'),
-            selectBtn: () => this.calendarFooter().find('select'),
-            clearBtn: () => this.calendarFooter().find('clear')
+            currentDate: () => cy.get('.sc-dmRaPn.lbgGuQ'),
+            selectBtn: () => this.eventInformation.date.calendarFooter().contains('select'),
+            clearBtn: () => this.eventInformation.date.calendarFooter().contains('clear')
         },
-        time:{
-            start: () => cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root'),
-            end: () => cy.get(':nth-child(2) > .MuiFormControl-root > .MuiOutlinedInput-root')
-        },
+        time: () => cy.get('input[type="tel"]'),
         timezone: {
-            ddl: () => cy.get('div[aria-labelledby="timezone select-options"]'),
-            option: (zone) => cy.get('li[role="option"]').contains(zone)
+            ddl: () => cy.get('#select-options'),
         },
         eventTypeOption:{
             online: () => cy.get('input[type="radio"]').eq(0),
@@ -111,25 +108,17 @@ class CreateEvent extends Page {
      * @param {string} time 'HH:MM' format
      */
     setStartTime(time){
-        this.eventInformation.time.start().click().type(time)
+        this.eventInformation.time().click().type(time)
     }
 
-    /**
-     * 
-     * @param {string} time 'HH:MM' format
-     */
-    setEndTime(time){
-        this.eventInformation.time.end().click().type(time)
-    }
-
-    /**
-     * 
-     * @param {string} timezone Accepted values: 'ARG/URU', 'COL', 'MEX'
-     */
-    selectTimezone(timezone){
-        this.eventInformation.timezone.ddl().click()
-        this.eventInformation.timezone.option(timezone).click()
-    }
+    // /**
+    //  * 
+    //  * @param {string} timezone Accepted values: 'ARG/URU', 'COL', 'MEX'
+    //  */
+    // selectTimezone(timezone){
+    //     this.eventInformation.timezone.ddl().click()
+    //     this.eventInformation.timezone.option(timezone).click()
+    // }
 
     /**
      * 
@@ -190,6 +179,12 @@ class CreateEvent extends Page {
         this.warnings.saveAsDraft.okButton().click()
     }
 
+    selectCurrentDate() {
+        this.eventInformation.date.toggler().click()
+        this.eventInformation.date.currentDate().click()
+        this.eventInformation.date.selectBtn().click()
+    }
+
     /**
      * It creates a new event using the current date (MM/DD/YYYY)
      * @param {string} name 
@@ -202,16 +197,16 @@ class CreateEvent extends Page {
      * @param {string} link 
      * @param {boolean} makeItVisible 
      */
-    createNewEvent(name, image, description, additionalInfo, startTime, endTime, timezone, link, makeItVisible){
+    createNewEvent(name, image, description, additionalInfo, startTime, link, makeItVisible){
         this.enterEventName(name)
         if (image) {
             this.uploadEventImage(image)
         }
+        this.selectCurrentDate()
         this.enterEventDescription(description)
         this.enterAdditionalInfo(additionalInfo)
         this.setStartTime(startTime)
-        this.setEndTime(endTime)
-        this.selectTimezone(timezone)
+        // this.selectTimezone(timezone)
         this.enterEventLink(link)
         if (makeItVisible) { 
             this.makeEventVisible() 
