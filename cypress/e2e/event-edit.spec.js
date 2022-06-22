@@ -7,8 +7,11 @@ describe('Happy path when editing an event', () => {
     const events = new Events();
     const eventDetails = new EventDetail();
     const eventEdit = new EventEdit();
+    var nameOfNewEvent = 'Event for inscription';
     beforeEach(() => {
         cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
+        cy.createEventByApi(nameOfNewEvent, false)
+        events.navigate()
     })
 
     it('should change the end time of the first event', () => {
@@ -17,13 +20,17 @@ describe('Happy path when editing an event', () => {
         const startMinute= getInteger(0,59)
         const endMinute= getInteger(0,59)
         
-        events.openEventDetails(1)
+        events.getEventByName(nameOfNewEvent).click()
         eventDetails.openEditForm()
         eventEdit.setStartTime(`${startHour}:${startMinute}`)
         eventEdit.setEndTime(`${endHour}:${endMinute}`)
         eventEdit.selectTimezone('ARG/URU')
         eventEdit.clickSaveButton()
         events.navigate()
-        events.getNthEventDate(1).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`).and('contain.text', `${hourToAmPm(endHour)}:${endMinute}`)
-    }) 
+        events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`).and('contain.text', `${hourToAmPm(endHour)}:${endMinute}`)
+    })
+    
+    afterEach(function () {
+        cy.deleteEventThroughAPI(nameOfNewEvent)
+    })
 }) 
