@@ -38,7 +38,7 @@ class CreateEvent extends Page {
             toggler: () => cy.get('button.toggler'),
             calendarBody: () => cy.get('div.calendarBody'),
             calendarFooter: () => cy.get('footer.calendarFooter'),
-            currentDate: () => cy.get('.sc-dmRaPn.lbgGuQ'),
+            currentDate: (day) => cy.get(`button[data-day="${day}"]`),//cy.get('.sc-dmRaPn.lbgGuQ'),
             selectBtn: () => this.eventInformation.date.calendarFooter().contains('select'),
             clearBtn: () => this.eventInformation.date.calendarFooter().contains('clear')
         },
@@ -179,9 +179,9 @@ class CreateEvent extends Page {
         this.warnings.saveAsDraft.okButton().click()
     }
 
-    selectCurrentDate() {
+    selectCurrentDate(day) {
         this.eventInformation.date.toggler().click()
-        this.eventInformation.date.currentDate().click()
+        this.eventInformation.date.currentDate(day).click()
         this.eventInformation.date.selectBtn().click()
     }
 
@@ -191,18 +191,19 @@ class CreateEvent extends Page {
      * @param {string} image 
      * @param {string} description 
      * @param {string} additionalInfo 
+     * @param {int} day 
      * @param {string} startTime 'HH:MM' format
      * @param {string} endTime 'HH:MM' format
      * @param {string} timezone Accepted values: 'ARG/URU', 'COL', 'MEX'
      * @param {string} link 
      * @param {boolean} makeItVisible 
      */
-    createNewEvent(name, image, description, additionalInfo, startTime, link, makeItVisible){
+    createNewEvent(name, image, description, additionalInfo, day, startTime, link, makeItVisible){
         this.enterEventName(name)
         if (image) {
             this.uploadEventImage(image)
         }
-        this.selectCurrentDate()
+        this.selectCurrentDate(day)
         this.enterEventDescription(description)
         this.enterAdditionalInfo(additionalInfo)
         this.setStartTime(startTime)

@@ -16,6 +16,8 @@ describe('Happy path when creating a new event', () => {
     it('should create a public event', () => {
         const startHour = getInteger(0,23)
         const startMinute = getInteger(0,59)
+        let date = new Date()
+        date = date.getDate()
 
         nameOfNewEvent = 'new event [AUT]';
         
@@ -26,6 +28,7 @@ describe('Happy path when creating a new event', () => {
             './cypress/support/resources/newEvent.png',
             'test description',
             'test info',
+            date,
             `${startHour}:${startMinute}`,
             'newevent-automation.com',
             true //set the event as public
@@ -41,7 +44,8 @@ describe('Happy path when creating a new event', () => {
     it('should create a draft event', function () {
         const startHour = getInteger(0,23)
         const startMinute = getInteger(0,59)
-
+        let date = new Date()
+        date = date.getDate()
         nameOfNewEvent = 'new draft event [AUT]';
         
         events.createEventBtn.click()
@@ -51,6 +55,7 @@ describe('Happy path when creating a new event', () => {
             './cypress/support/resources/newEvent.png',
             'test description',
             'test info',
+            date,
             `${startHour}:${startMinute}`,
             'newevent-automation-draft.com',
             false //set the event as draft

@@ -2,11 +2,13 @@
 import Login from '../support/pageobjects/login.page'
 import Events from '../support/pageobjects/events.page'
 import Explore from '../support/pageobjects/explore.page'
+import CreateEvent from '../support/pageobjects/events-create.page'
 import { getRandomEmail } from '../support/util.js';
 
 describe('Happy paths', () => {
     const login = new Login()
     const events = new Events()
+    const createEvent = new CreateEvent();
     var eventName = 'Evento API'
 
     beforeEach(() => {
@@ -40,10 +42,10 @@ describe('Happy paths', () => {
             cy.registerToEventByApi(eventId, getRandomEmail())
             })
         })
-    it.only('an event must be deleted', ()=>{
+    it('an event must be deleted', ()=>{
         cy.deleteEventThroughAPI(eventName)
-    })    
     })
+})
 // # mutation login($input: LoginInput!) {
 // #   login(input: $input) {
 // #     authentication {
