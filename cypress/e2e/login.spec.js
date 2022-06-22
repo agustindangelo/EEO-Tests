@@ -9,7 +9,7 @@ describe('Login tests', () => {
     const login = new Login()
     const events = new Events()
 
-    describe('Happy paths for loging in and loging out',()=>{
+    describe(['Login'],'Happy paths for loging in and loging out',()=>{
         it(['HappyPath'],'should log in', () => {
             login.navigate()
             login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
@@ -58,7 +58,7 @@ describe('Login tests', () => {
         })
     })
 
-    describe('Invalid login', ()=>{
+    describe(['Login'],'Invalid login', ()=>{
 
         it('should display an error message when leaving fields empty', ()=>{
             login.navigate()

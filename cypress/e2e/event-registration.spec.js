@@ -1,6 +1,6 @@
 /// <reference types="Cypress"/>
 import Explore from '../support/pageobjects/explore.page'
-import { getRandomEmail } from '../support/util.js';
+import { getRandomEmail, invalidEmail } from '../support/util.js';
 
 describe('Event registration functionality', () => {
     var nameOfNewEvent = 'Event for inscription';
@@ -67,8 +67,107 @@ describe('Event registration functionality', () => {
 
         // assert
         explore.formularioInscripcion.duplicatedInscription().should('contain.text', email).and('contain.text', ' ya esta registrado para este evento.')
+    })
 
+    it('should not be able to register to an event when leaving the fields empty', function () {
+        //An event is created
+        cy.createEventByApi(nameOfNewEvent, true)
 
+        //Now the user navigates to the inscription form of the created event
+        explore.navigate();
+        explore.getEventByName(nameOfNewEvent).click()
+        explore.inscribirseEventoBtn.click()
+
+        // act
+        explore.formularioInscripcion.inscribirseBtn().click()
+
+        // assert
+        explore.formularioInscripcion.emptyFieldsErrorMessage()
+            .should('have.text', 'Por favor completa los campos')
+        explore.formularioInscripcion.nombre.errorMessage()
+            .should('be.visible')
+                .and('have.text', 'Completá este campo')
+        explore.formularioInscripcion.email.errorMessage()
+            .should('be.visible')
+                .and('have.text', 'Completá este campo')
+        explore.formularioInscripcion.pais.errorMessage()
+            .should('be.visible')
+                .and('have.text', 'Completá este campo')
+        explore.formularioInscripcion.ciudad.errorMessage()
+            .should('be.visible')
+                .and('have.text', 'Completá este campo')
+        explore.formularioInscripcion.profesion.errorMessage()
+            .should('be.visible')
+                .and('have.text', 'Completá este campo')
+        explore.formularioInscripcion.experiencia.errorMessage()
+            .should('be.visible')
+                .and('have.text', 'Completá este campo')
+        explore.formularioInscripcion.nivelDeIngles.errorMessage()
+            .should('be.visible')
+                .and('have.text', 'Completá este campo')
+        explore.formularioInscripcion.conocesEndava.errorMessage()
+            .should('be.visible')
+                .and('have.text', 'Completá este campo')
+        explore.formularioInscripcion.comoTeEnteraste.errorMessage()
+            .should('be.visible')
+                .and('have.text', 'Completá este campo')
+        
+    })
+
+    it.only('should not be able to register when entering an invalid email', () => {
+        //An event is created
+        cy.createEventByApi(nameOfNewEvent, true)
+
+        //Now the user navigates to the inscription form of the created event
+        explore.navigate();
+        explore.getEventByName(nameOfNewEvent).click()
+        explore.inscribirseEventoBtn.click()
+
+        // event registration
+        explore.enterNombre('agustin')
+        explore.enterEmail(invalidEmail())
+        explore.selectPais('Argentina')
+        explore.selectCiudad('Paraná')
+        explore.enterEmpresa('en la fortaleza')
+        explore.selectProfesion('Tester')
+        explore.selectExperiencia('Sin experiencia')
+        explore.selectNivelDeIngles('Principiante')
+        explore.selectConoceEndava('Si')
+        explore.selectComoTeEnteraste('Soy Endavan')
+        explore.acceptPolicies()
+        explore.acceptPersonalDataCondition()
+        explore.formularioInscripcion.inscribirseBtn().click()
+
+        // assert
+        explore.formularioInscripcion.emptyFieldsErrorMessage()
+            .should('have.text', 'Por favor completa los campos')
+    })
+
+    it.only('should not be able to register when leaving the checkboxes unchecked', () => {
+        //An event is created
+        cy.createEventByApi(nameOfNewEvent, true)
+
+        //Now the user navigates to the inscription form of the created event
+        explore.navigate();
+        explore.getEventByName(nameOfNewEvent).click()
+        explore.inscribirseEventoBtn.click()
+
+        // event registration
+        explore.enterNombre('agustin')
+        explore.enterEmail(getRandomEmail())
+        explore.selectPais('Argentina')
+        explore.selectCiudad('Paraná')
+        explore.enterEmpresa('en la fortaleza')
+        explore.selectProfesion('Tester')
+        explore.selectExperiencia('Sin experiencia')
+        explore.selectNivelDeIngles('Principiante')
+        explore.selectConoceEndava('Si')
+        explore.selectComoTeEnteraste('Soy Endavan')
+        explore.formularioInscripcion.inscribirseBtn().click()
+
+        // assert
+        explore.formularioInscripcion.emptyFieldsErrorMessage()
+            .should('have.text', 'Por favor completa los campos')
     })
 
     afterEach(function () {

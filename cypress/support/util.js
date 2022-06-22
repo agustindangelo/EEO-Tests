@@ -23,3 +23,10 @@ export const hourToAmPm = (hour) => {
     if (hour > 12) { hour = hour - 12 }
     return hour
   }
+
+  export const invalidEmail = () => {
+    let emails = [' ', 'asdsa', '1234', '@.com', 'asdsa.com', 'asdsa@sadsad', 'sadsad@asdsad.', '.com', 'asas@', '@sadsa', '@sadsa.']
+    let randomPos = Math.floor(Math.random() * (emails.length-1) ) + 1
+    let email = emails[randomPos]
+    return email
+  }

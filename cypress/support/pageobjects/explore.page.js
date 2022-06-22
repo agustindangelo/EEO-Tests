@@ -35,43 +35,43 @@ class Explore extends Page{
     formularioInscripcion = {
         nombre: {
             field: () => cy.get("input[name='name']"),
-            errorMessage: () => this.nombre.field().parent().siblings('p')
+            errorMessage: () => this.formularioInscripcion.nombre.field().parent().siblings('p')
         },
         email: {
             field: () => cy.get("input[name='email']"),
-            errorMessage: () => this.email.field().parent().siblings('p')
+            errorMessage: () => this.formularioInscripcion.email.field().parent().siblings('p')
         },
         pais: {
             field: () => cy.get("input[name='country']").siblings('div'),
-            errorMessage: () => this.pais.field().parent().siblings('p')
+            errorMessage: () => this.formularioInscripcion.pais.field().parent().siblings('p')
         },
         ciudad: {
             field: () => cy.get("input[name='city']").siblings('div'),
-            errorMessage: () => this.ciudad.field().parent().siblings('p')
+            errorMessage: () => this.formularioInscripcion.ciudad.field().parent().siblings('p')
         },
         empresa: {
             field: () => cy.get("[name='company']"),
-            errorMessage: () => this.empresa.field().parent().siblings('p')
+            errorMessage: () => this.formularioInscripcion.empresa.field().parent().siblings('p')
         },
         profesion: {
             field: () => cy.get("input[name='profession']").siblings('div'),
-            errorMessage: () => this.profesion.field().parent().siblings('p')
+            errorMessage: () => this.formularioInscripcion.profesion.field().parent().siblings('p')
         },
         experiencia: {
             field: () => cy.get("input[name='experience']").siblings('div'),
-            errorMessage: () => this.experiencia.field().parent().siblings('p')
+            errorMessage: () => this.formularioInscripcion.experiencia.field().parent().siblings('p')
         },
         nivelDeIngles: {
             field: () => cy.get("input[name='englishLevel']").siblings('div'),
-            errorMessage: () => this.nivelDeIngles.field().parent().siblings('p')
+            errorMessage: () => this.formularioInscripcion.nivelDeIngles.field().parent().siblings('p')
         },
         conocesEndava: {
             field: () => cy.get("input[name='knowsEndava']").siblings('div'),
-            errorMessage: () => this.conocesEndava.field().parent().siblings('p')
+            errorMessage: () => this.formularioInscripcion.conocesEndava.field().parent().siblings('p')
         },
         comoTeEnteraste: {
             field: () => cy.get("input[name='hearFromEvent']").siblings('div'),
-            errorMessage: () => this.nivelDeIngles.field().parent().siblings('p')
+            errorMessage: () => this.formularioInscripcion.nivelDeIngles.field().parent().siblings('p')
         },
         termsCheckbox: () => cy.get('input[name="terms"]'),
         personalDataCheckbox: () => cy.get('input[name="personalData"]'),
@@ -80,7 +80,8 @@ class Explore extends Page{
         addToCalendarBtn: () => cy.contains('Añadir al calendario'),
         googleCalendarOption: () => cy.contains('Google'),
         outlookCalendarOption: () => cy.contains('Outlook'),
-        duplicatedInscription: () => cy.get('div#duplicated')
+        duplicatedInscription: () => cy.get('div#duplicated'),
+        emptyFieldsErrorMessage: () =>  cy.get('.errorMsg') 
     }
 
     /**
