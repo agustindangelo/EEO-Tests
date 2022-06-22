@@ -13,7 +13,7 @@ describe('Verify data displayed on the event details page', () => {
     cy.createEventByApi(eventName, false)
   })
 
-  it('should display correct event data', () => {
+  it(['HappyPath'],'should display correct event data', () => {
     const events = new Events();
     const eventDetail = new EventDetail();
     events.navigate();

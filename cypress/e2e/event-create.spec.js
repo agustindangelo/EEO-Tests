@@ -13,7 +13,7 @@ describe('Happy path when creating a new event', () => {
         cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
     })
 
-    it('should create a public event', () => {
+    it(['HappyPath'],'should create a public event', () => {
         const startHour = getInteger(0,23)
         const startMinute = getInteger(0,59)
         let date = new Date()
@@ -41,7 +41,7 @@ describe('Happy path when creating a new event', () => {
         events.getEventStateByEventName(nameOfNewEvent).should('not.contain.text', 'DRAFT')
     })
     
-    it('should create a draft event', function () {
+    it(['HappyPath'],'should create a draft event', function () {
         const startHour = getInteger(0,23)
         const startMinute = getInteger(0,59)
         let date = new Date()

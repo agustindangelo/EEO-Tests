@@ -191,7 +191,7 @@ class CreateEvent extends Page {
      * @param {string} image 
      * @param {string} description 
      * @param {string} additionalInfo 
-     * @param {int} day 
+     * @param {number} day 
      * @param {string} startTime 'HH:MM' format
      * @param {string} endTime 'HH:MM' format
      * @param {string} timezone Accepted values: 'ARG/URU', 'COL', 'MEX'

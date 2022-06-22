@@ -7,7 +7,7 @@ describe('Event registration functionality', () => {
     const explore = new Explore();
     var email = getRandomEmail()
 
-    it('should register as an attendee for the first event on the explore page', function () {
+    it(['HappyPath'],'should register as an attendee for the first event on the explore page', function () {
         //An event is created
         cy.createEventByApi(nameOfNewEvent, true)
 

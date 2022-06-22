@@ -8,6 +8,7 @@
     "wdio": "wdio run wdio.conf.js",
     "cy:ui": "npx cypress open",
     "cy:run": "node cypress/trigger-tests-and-report.js",
+    "cy:happyPath": "CYPRESS_INCLUDE_TAGS=HappyPath npx cypress run",
     "cy:dashboard": "npx cypress run --record --key 5b7ccc8c-feed-4cb9-99e8-d06e335c44f8"
   },
   "repository": {
@@ -35,6 +36,8 @@
   },
   "dependencies": {
     "cypress-file-upload": "^5.0.8",
+    "cypress-grep": "^2.14.0",
+    "cypress-tags": "^0.3.0",
     "wdio-video-reporter": "^3.2.1"
   }
 }

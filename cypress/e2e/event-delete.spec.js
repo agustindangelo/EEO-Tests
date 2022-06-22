@@ -14,7 +14,7 @@ describe('Event deletion related tests', () => {
             events.navigate()
         });
         
-        it('should cancel event deletion', function () { // make sure to use traditional function here
+        it(['HappyPath'],'should cancel event deletion', function () { // make sure to use traditional function here
     
             events.getEventByName(nameOfNewEvent).find('button').click()
             events.deleteEventOption.click()

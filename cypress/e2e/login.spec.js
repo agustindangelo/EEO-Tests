@@ -10,7 +10,7 @@ describe('Login tests', () => {
     const events = new Events()
 
     describe('Happy paths for loging in and loging out',()=>{
-        it('should log in', () => {
+        it(['HappyPath'],'should log in', () => {
             login.navigate()
             login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
             cy.url().should('include', 'events')
@@ -18,14 +18,14 @@ describe('Login tests', () => {
             events.userName.should('have.text', Cypress.env('USER_NAME'))
         })
     
-        it('should log out', () => {
+        it(['HappyPath'],'should log out', () => {
             login.navigate()
             login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
             events.logOut()
             cy.url().should('include', 'login')
         })
     
-        it.only('login using the API', () => {
+        it('login using the API', () => {
             cy.request('POST', 'http://localhost:4000/', {
                 "operationName": "LoginMutation",
                 "variables": {

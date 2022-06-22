@@ -14,6 +14,10 @@ module.exports = defineConfig({
   },
   e2e: {
     setupNodeEvents(on, config) {
+      //require('cypress-grep/src/plugin')(config)
+      const tagify = require('cypress-tags');
+      on('file:preprocessor', tagify(config));
+
       on("task", {
         
       })
