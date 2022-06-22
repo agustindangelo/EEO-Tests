@@ -13,7 +13,7 @@ describe('Happy path when creating a new event', () => {
         cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
     })
 
-    it.only('should create a public event', () => {
+    it('should create a public event', () => {
         const startHour = getInteger(0,23)
         const startMinute = getInteger(0,59)
 
@@ -57,11 +57,11 @@ describe('Happy path when creating a new event', () => {
         )
         events.navigate() //the new event shoud be added to the events page
         let eventDate = new Date().toDateString().split(' ') //the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
-        events.getNthEventDate(0).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
-        events.getNthEventDate(1).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
-        events.getNthEventName(1).should('contain.text', nameOfNewEvent)
-        events.getNthEventState(1).should('contain.text', 'DRAFT')
-    }) 
+        events.getEventDateByEventName(nameOfNewEvent).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
+        events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
+        //events.getNthEventName(1).should('contain.text', nameOfNewEvent)
+        events.getEventStateByEventName(nameOfNewEvent).should('contain.text', 'DRAFT')
+    })
 
     afterEach(function () {
         cy.deleteEventThroughAPI(nameOfNewEvent)

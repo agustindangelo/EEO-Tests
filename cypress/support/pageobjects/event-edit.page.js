@@ -25,8 +25,7 @@ class EventEdit extends Page {
             calendarBody: () => cy.get('div.calendarBody')
         },
         time:{
-            start: () => cy.get('.sc-hTtwUo > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root'),
-            end: () => cy.get(':nth-child(2) > .MuiFormControl-root > .MuiOutlinedInput-root')
+            start: () => cy.get('.MuiBox-root > .MuiFormControl-root > .MuiOutlinedInput-root')
         },
         timezone:{
             ddl: () => cy.get('div[aria-labelledby="timezone select-options"]'),
@@ -49,14 +48,6 @@ class EventEdit extends Page {
      */
      setStartTime(hour){
         this.eventInformation.time.start().click().clear().type(hour)
-    }
-
-    /**
-     * 
-     * @param {string} hour 'HH:MM' format
-     */
-    setEndTime(hour){
-        this.eventInformation.time.end().click().clear().type(hour)
     }
 
     /**
