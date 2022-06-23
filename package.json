@@ -8,7 +8,6 @@
     "wdio": "wdio run wdio.conf.js",
     "cy:ui": "npx cypress open",
     "cy:run": "node cypress/trigger-tests-and-report.js",
-    "cy:happyPath": "CYPRESS_INCLUDE_TAGS=HappyPath npx cypress run",
     "cy:dashboard": "npx cypress run --record --key 5b7ccc8c-feed-4cb9-99e8-d06e335c44f8"
   },
   "repository": {
