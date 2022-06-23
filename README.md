@@ -31,8 +31,6 @@ npm run cy:run
 ```
 tests execution reports should be available at `mochawesome-report/`
 
-```npm run cy:run```
-
 ## Run a tagged test suite
 To run a specific test suite specify its tag as follows:
 
