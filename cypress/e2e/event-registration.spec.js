@@ -7,13 +7,14 @@ describe('Event registration functionality', () => {
     const explore = new Explore();
     var email = getRandomEmail()
 
-    it(['HappyPath'],'should register as an attendee for the first event on the explore page', function () {
+    it.only(['HappyPath'],'should register as an attendee for the first event on the explore page', function () {
         //An event is created
         cy.createEventByApi(nameOfNewEvent, true)
 
         //Now the user navigates to the inscription form of the created event
         explore.navigate();
         explore.getEventByName(nameOfNewEvent).click()
+        cy.contains('asistente').first().invoke('text').as('prevAttendees')
         explore.inscribirseEventoBtn.click()
 
         // act
@@ -35,6 +36,15 @@ describe('Event registration functionality', () => {
         // assert
         cy.contains('¡Nos vemos allí!')
         cy.contains('Aceptar').click()
+        cy.reload()
+        cy.get('@prevAttendees').then(val=>{
+            cy.log(val)
+            let attendees = parseInt((val.split(' '))[0]) + 1
+            cy.log(attendees)
+            cy.contains('asistente').first().invoke('text').should('contains', ''+attendees)
+        })
+
+
     })
 
     it('should not be able to register twice to an event', () => {

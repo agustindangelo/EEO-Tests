@@ -3,7 +3,7 @@ import CreateEvent from '../support/pageobjects/events-create.page'
 import Events from '../support/pageobjects/events.page'
 import { getInteger, hourToAmPm } from '../support/util'
 
-describe('Happy path when creating a new event', () => {
+describe('Create-event tests', () => {
 
     const events = new Events();
     const createEvent = new CreateEvent();
@@ -11,64 +11,93 @@ describe('Happy path when creating a new event', () => {
 
     beforeEach(() => {
         cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
+        events.createEventBtn.click()
     })
 
-    it(['HappyPath'],'should create a public event', () => {
-        const startHour = getInteger(0,23)
-        const startMinute = getInteger(0,59)
-        let date = new Date()
-        date = date.getDate()
+    describe('Happy path when creating a new event', () => {
 
-        nameOfNewEvent = 'new event [AUT]';
+        const events = new Events();
+        const createEvent = new CreateEvent();
+        var nameOfNewEvent;
+    
+        beforeEach(() => {
+            cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
+            events.createEventBtn.click()
+        })
+    
+        it(['HappyPath'],'should create a public event', () => {
+            const startHour = getInteger(0,23)
+            const startMinute = getInteger(0,59)
+            let date = new Date()
+            date = date.getDate()
+    
+            nameOfNewEvent = 'new event [AUT]';
+    
+            createEvent.createNewEvent(
+                nameOfNewEvent,
+                './cypress/support/resources/newEvent.png',
+                'test description',
+                'test info',
+                date,
+                `${startHour}:${startMinute}`,
+                'newevent-automation.com',
+                true //set the event as public
+            )
+            events.navigate() //the new event shoud be added to the events page
+            events.getEventByName(nameOfNewEvent).should('be.visible')
+            let eventDate = new Date().toDateString().split(' ') //the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
+            events.getEventDateByEventName(nameOfNewEvent).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
+            events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
+            events.getEventStateByEventName(nameOfNewEvent).should('not.contain.text', 'DRAFT')
+            events.getEventAttendeesByEventName(nameOfNewEvent).should('contain.text', '0 attendees')
+    
+        })
         
-        events.createEventBtn.click()
-
-        createEvent.createNewEvent(
-            nameOfNewEvent,
-            './cypress/support/resources/newEvent.png',
-            'test description',
-            'test info',
-            date,
-            `${startHour}:${startMinute}`,
-            'newevent-automation.com',
-            true //set the event as public
-        )
-        events.navigate() //the new event shoud be added to the events page
-        events.getEventByName(nameOfNewEvent).should('be.visible')
-        let eventDate = new Date().toDateString().split(' ') //the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
-        events.getEventDateByEventName(nameOfNewEvent).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
-        events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
-        events.getEventStateByEventName(nameOfNewEvent).should('not.contain.text', 'DRAFT')
+        it(['HappyPath'],'should create a draft event', function () {
+            const startHour = getInteger(0,23)
+            const startMinute = getInteger(0,59)
+            let date = new Date()
+            date = date.getDate()
+            nameOfNewEvent = 'new draft event [AUT]';
+    
+            createEvent.createNewEvent(
+                nameOfNewEvent,
+                './cypress/support/resources/newEvent.png',
+                'test description',
+                'test info',
+                date,
+                `${startHour}:${startMinute}`,
+                'newevent-automation-draft.com',
+                false //set the event as draft
+            )
+            events.navigate() //the new event shoud be added to the events page
+            let eventDate = new Date().toDateString().split(' ') //the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
+            events.getEventDateByEventName(nameOfNewEvent).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
+            events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
+            //events.getNthEventName(1).should('contain.text', nameOfNewEvent)
+            events.getEventStateByEventName(nameOfNewEvent).should('contain.text', 'DRAFT')
+            events.getEventAttendeesByEventName(nameOfNewEvent).should('contain.text', '0 attendees')
+        })
+    
+        afterEach(function () {
+            cy.deleteEventThroughAPI(nameOfNewEvent)
+        })
     })
     
-    it(['HappyPath'],'should create a draft event', function () {
-        const startHour = getInteger(0,23)
-        const startMinute = getInteger(0,59)
-        let date = new Date()
-        date = date.getDate()
-        nameOfNewEvent = 'new draft event [AUT]';
-        
-        events.createEventBtn.click()
+    it('Event type radio buttons should work properly', ()=>{
+        createEvent.eventInformation.eventTypeOption.online().should('be.checked')
+        createEvent.eventInformation.location.ddl().should('not.exist')
+        createEvent.eventInformation.address().should('not.exist')
 
-        createEvent.createNewEvent(
-            nameOfNewEvent,
-            './cypress/support/resources/newEvent.png',
-            'test description',
-            'test info',
-            date,
-            `${startHour}:${startMinute}`,
-            'newevent-automation-draft.com',
-            false //set the event as draft
-        )
-        events.navigate() //the new event shoud be added to the events page
-        let eventDate = new Date().toDateString().split(' ') //the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
-        events.getEventDateByEventName(nameOfNewEvent).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
-        events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
-        //events.getNthEventName(1).should('contain.text', nameOfNewEvent)
-        events.getEventStateByEventName(nameOfNewEvent).should('contain.text', 'DRAFT')
+        createEvent.eventInformation.eventTypeOption.inplace().click()
+        createEvent.eventInformation.link().should('not.exist')
+        createEvent.eventInformation.location.ddl().should('be.visible')
+        createEvent.eventInformation.address().should('be.visible')
+
+        createEvent.eventInformation.eventTypeOption.hybrid().click()
+        createEvent.eventInformation.link().should('be.visible')
+        createEvent.eventInformation.location.ddl().should('be.visible')
+        createEvent.eventInformation.address().should('be.visible')
     })
 
-    afterEach(function () {
-        cy.deleteEventThroughAPI(nameOfNewEvent)
-    })
-}) 
+})

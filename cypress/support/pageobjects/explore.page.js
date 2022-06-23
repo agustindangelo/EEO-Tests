@@ -32,6 +32,10 @@ class Explore extends Page{
         return cy.get("ul[role='listbox']")
     }
 
+    geteventAttendees() {
+        return cy.contains('asistentes').first().invoke('text')
+    }
+
     formularioInscripcion = {
         nombre: {
             field: () => cy.get("input[name='name']"),

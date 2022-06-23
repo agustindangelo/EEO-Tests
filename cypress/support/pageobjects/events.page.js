@@ -43,6 +43,10 @@ class Events extends Page{
         return this.getEventByName(name).children('div').eq(1).children('div')
     }
 
+    getEventAttendeesByEventName(name){
+        return this.getEventByName(name).children('div').eq(5).children('div')
+    }
+
     getNthEventOptions(nth){
         return cy.get(`div.maxContainer .sc-jIkXHa.RvbSq:nth-child(${nth}) svg`).last()
     }
