@@ -1,10 +1,4 @@
-
-
 Cypress.Commands.add("loginByApi", (username, password = Cypress.env("defaultPassword")) => {
-//   return cy.request("POST", `${Cypress.env("apiUrl")}/login`, {
-//     username,
-//     password,
-//   });
     cy.request('POST', Cypress.env('LOCAL_API_URL'), {
         "operationName": "LoginMutation",
         "variables": {
@@ -19,13 +13,10 @@ Cypress.Commands.add("loginByApi", (username, password = Cypress.env("defaultPas
                     user {
                         name
                         email
-                        __typename
                     }
                     authentication {
                         token
-                        __typename
                     }
-                    __typename
                 }
             }`
     }).then(res => {
@@ -61,7 +52,12 @@ Cypress.Commands.add("registerToEventByApi", (eventId, email) => {
                     "personalData": true
                 }
             },
-            "query": "mutation addEventAttendee($addEventAttendeeInput: AddEventAttendeeInput!) {\n  addEventAttendee(input: $addEventAttendeeInput) {\n    recordId\n    __typename\n  }\n}\n"
+            "query": `
+                mutation addEventAttendee($addEventAttendeeInput: AddEventAttendeeInput!) {
+                    addEventAttendee(input: $addEventAttendeeInput) {
+                        recordId
+                    }
+                }`
         }).as('register')
         cy.get('@register').its('status').should('be.eq', 200)
         /* 
@@ -112,7 +108,12 @@ Cypress.Commands.add("registerToEventByApi", (eventId, email) => {
                 "published": isPublic
             }
         },
-        "query": "mutation createEvent($input: CreateEventInput!) {\n  createEvent(input: $input) {\n    recordId\n    __typename\n  }\n}\n"
+        "query": `
+            mutation createEvent($input: CreateEventInput!) {
+                createEvent(input: $input) {
+                    recordId 
+                }
+            }`
     })/*.as('create')
         cy.get('@create').its('status').should('be.eq', 200) 
         cy.get('@create').its('body').then(body => {
@@ -156,5 +157,4 @@ Cypress.Commands.add('deleteEventThroughAPI', (eventName) => {
             `
         })
     });
-
 });

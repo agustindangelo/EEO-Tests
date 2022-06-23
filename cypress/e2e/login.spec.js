@@ -9,7 +9,7 @@ describe('Login tests', () => {
     const login = new Login()
     const events = new Events()
 
-    describe(['Login'],'Happy paths for loging in and loging out',()=>{
+    describe(['Login'],'Happy paths for logging in and logging out',()=>{
         it(['HappyPath'],'should log in', () => {
             login.navigate()
             login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
@@ -40,18 +40,19 @@ describe('Login tests', () => {
                             user {
                                 name
                                 email
-                                __typename
                             }
                             authentication {
                                 token
-                                __typename
                             }
-                            __typename
                         }
                     }`
             }).then(res => {
                 localStorage.setItem(
-                   'authData' , JSON.stringify({"name": res.body.data.login.user.name,"token": res.body.data.login.authentication.token,"email": res.body.data.login.user.email})
+                   'authData' , JSON.stringify({
+                        "name": res.body.data.login.user.name,
+                        "token": res.body.data.login.authentication.token,
+                        "email": res.body.data.login.user.email
+                    })
                 )
             })
             events.navigate()
