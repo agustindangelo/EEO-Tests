@@ -114,7 +114,7 @@ describe('Event registration functionality', () => {
         
     })
 
-    it.only('should not be able to register when entering an invalid email', () => {
+    it('should not be able to register when entering an invalid email', () => {
         //An event is created
         cy.createEventByApi(nameOfNewEvent, true)
 
@@ -143,7 +143,7 @@ describe('Event registration functionality', () => {
             .should('have.text', 'Por favor completa los campos')
     })
 
-    it.only('should not be able to register when leaving the checkboxes unchecked', () => {
+    it('should not be able to register when leaving the checkboxes unchecked', () => {
         //An event is created
         cy.createEventByApi(nameOfNewEvent, true)
 
