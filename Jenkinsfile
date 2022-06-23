@@ -12,5 +12,6 @@ pipeline {
         sh 'npx cypress run'
       }
     }
+
   }
 }
