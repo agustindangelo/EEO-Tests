@@ -32,7 +32,7 @@ class Explore extends Page{
         return cy.get("ul[role='listbox']")
     }
 
-    geteventAttendees() {
+    get eventAttendees() {
         return cy.contains('asistentes').first().invoke('text')
     }
 

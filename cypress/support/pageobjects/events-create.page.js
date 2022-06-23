@@ -54,7 +54,7 @@ class CreateEvent extends Page {
         link: () => cy.get('input[name="link"]'),
         location: {
             ddl: () => cy.get('div[aria-labelledby="location select-options"]'),
-            option: (city) => cy.contains('city')
+            option: (city) => cy.contains(city)
         },
         address: () => cy.get('input[name="address"]'),
         makeItVisibleOption: () => cy.get('input[name="published"]'),
@@ -66,6 +66,17 @@ class CreateEvent extends Page {
         missingFields: {
             errorMessage: () => cy.contains('Missing fields'),
             okButton: () => cy.contains('OK')
+        },
+        mandatoyFieldsBlank: {
+            errorMessage: () => cy.contains('Some mandatory fields are blank'),
+            name: () => cy.get('ul > li').contains('Name'),
+            description: () => cy.get('ul > li').contains('Description'),
+            time: () => cy.get('ul > li').contains('Start Time'),
+            link: () => cy.get('ul > li').contains('Link'),
+            location: () => cy.get('ul > li').contains('Location'),
+            date: () => cy.get('ul > li').contains('Date'),
+            okButton: () => cy.get('button > span').contains('Got it!')
+            
         },
         eventPublished: {
             message: () => cy.contains('Event published successfully!'),
