@@ -18,19 +18,26 @@ Create a `cypress.env.json` file at the root of the project and paste with the f
   "LOCAL_API_URL": "http://localhost:4000"
 }
 ```
+Make sure to have both eeoweb and eeoservice up and running before running the tests on the local environment
 
-With the graphical test runner:
+Run tests from the graphical test runner:
 ```
 npm run cy:ui
 ```
 
-Run the tests from the CLI and generate Mochawesome report
+Run the tests from the CLI and generate a Mochawesome report
 ```
 npm run cy:run
 ```
 tests execution reports should be available at `mochawesome-report/`
 
-# Run WebdriverIO tests
-```
-npm run wdio
-```
+```npm run cy:run```
+
+## Run a tagged test suite
+To run a specific test suite specify its tag as follows:
+
+bash:
+```CYPRESS_INCLUDE_TAGS=HappyPath npm run cy:run```
+
+powershell:
+```cmd /C "set CYPRESS_INCLUDE_TAGS=HappyPath && npm run cy:run"```
