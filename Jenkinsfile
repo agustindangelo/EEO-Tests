@@ -22,9 +22,11 @@ pipeline {
     
     stages {
         stage('Install dependencies') {
-            sh "npm install"
-            dir("/home/adangelo/code/pass-it-on-demos") {
-                fileOperations([fileCopyOperation(excludes: '', flattenFiles: true, includes: 'cypress.env*', targetLocation: "${WORKSPACE}")])
+            steps {
+                sh "npm install"
+                dir("/home/adangelo/code/pass-it-on-demos") {
+                    fileOperations([fileCopyOperation(excludes: '', flattenFiles: true, includes: 'cypress.env*', targetLocation: "${WORKSPACE}")])
+                }
             }
         }
 
