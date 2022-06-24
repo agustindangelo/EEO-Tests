@@ -100,4 +100,75 @@ describe('Create-event tests', () => {
         createEvent.eventInformation.address().should('be.visible')
     })
 
+    it('verify default behaviour of timezone field', ()=>{
+        createEvent.eventInformation.timezone.ddl().should('have.attr', 'aria-disabled', 'true')
+        createEvent.eventInformation.timezone.ddl().should('have.text', '(GMT -3) ARG/URU')
+    })
+
+    it('verify behaviour of address field', ()=>{
+        createEvent.eventInformation.eventTypeOption.inplace().click()
+        
+        createEvent.eventInformation.address().should('have.attr', 'disabled')
+
+        createEvent.selectLocation('Buenos Aires')
+        createEvent.eventInformation.address().should('have.value', 'Carlos M. Della Paolera 261, C1001 CABA')
+
+        createEvent.selectLocation('Other')
+        createEvent.eventInformation.address().should('have.attr', 'autocomplete', 'off')
+        createEvent.eventInformation.address().should('not.have.attr', 'disabled')
+    })
+
+    describe('Error messages and warnings', ()=>{
+        it('shoud not be able to create a new draft event with an empty name', () =>{
+            createEvent.clickSaveButton()
+            createEvent.warnings.missingFields.errorMessage().should('be.visible')
+            createEvent.warnings.missingFields.okButton().should('be.visible')
+        })
+        it('shoud not be able to create a new public event with empty fields', () =>{
+            cy.log('For an online event')
+            createEvent.makeEventVisible()
+            createEvent.warnings.mandatoyFieldsBlank.errorMessage().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.date().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.name().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.time().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.link().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.description().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.okButton().should('be.visible')
+
+            cy.log('For an inplace event')
+            createEvent.warnings.mandatoyFieldsBlank.okButton().click()
+            createEvent.selectEventType('inplace')
+            createEvent.makeEventVisible()
+            createEvent.warnings.mandatoyFieldsBlank.errorMessage().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.date().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.name().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.time().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.location().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.description().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.okButton().should('be.visible')
+
+            cy.log('For an hybrid event')
+            createEvent.warnings.mandatoyFieldsBlank.okButton().click()
+            createEvent.selectEventType('hybrid')
+            createEvent.makeEventVisible()
+            createEvent.warnings.mandatoyFieldsBlank.errorMessage().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.date().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.name().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.time().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.link().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.location().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.description().should('be.visible')
+            createEvent.warnings.mandatoyFieldsBlank.okButton().should('be.visible')
+        })
+
+        it('should be able to cancel an event creation', () => {
+            createEvent.eventInformation.cancelButton().click()
+            createEvent.warnings.deleteEvent.message().should('be.visible')
+            createEvent.warnings.deleteEvent.yesButton().should('be.visible')
+            createEvent.warnings.deleteEvent.cancelButton().should('be.visible')
+            createEvent.warnings.deleteEvent.yesButton().click()
+            cy.url().should('include', 'events').and('not.include', 'create')
+        })
+    })
+
 })
