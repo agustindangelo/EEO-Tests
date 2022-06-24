@@ -1,3 +1,4 @@
+import { should } from 'chai'
 import EventDetail from '../support/pageobjects/event-detail.page'
 import EventEdit from '../support/pageobjects/event-edit.page'
 import Events from '../support/pageobjects/events.page'
@@ -7,7 +8,7 @@ describe('Happy path when editing an event', () => {
     const events = new Events();
     const eventDetails = new EventDetail();
     const eventEdit = new EventEdit();
-    var nameOfNewEvent = 'Event for inscription';
+    var nameOfNewEvent = 'Event to be edited';
     beforeEach(() => {
         cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
         cy.createEventByApi(nameOfNewEvent, false)
@@ -26,8 +27,33 @@ describe('Happy path when editing an event', () => {
         events.navigate()
         events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
     })
+
+    it.only(['HappyPath'],'should make public a draft event', () => {
+        
+        events.getEventByName(nameOfNewEvent).click()
+        eventDetails.shareLinkedIn.should('be.disabled')
+        eventDetails.copyUrl.should('be.disabled')
+
+        eventDetails.visibilitySwitch.click()
+        eventDetails.warnings.makeEventPublic.description().should('be.visible')
+        eventDetails.warnings.makeEventPublic.message().should('be.visible')
+        eventDetails.warnings.makeEventPublic.yesButton().should('be.visible')
+        eventDetails.warnings.makeEventPublic.noButton().should('be.visible')
+
+        eventDetails.warnings.makeEventPublic.yesButton().click()
+        cy.contains('Changes saved succesfully')
+        eventDetails.shareLinkedIn.should('be.enabled')
+        eventDetails.copyUrl.should('be.enabled')
+
+        events.navigate()
+        events.getEventStateByEventName(nameOfNewEvent).should('not.contain.text', 'DRAFT')
+    })
     
     afterEach(function () {
         cy.deleteEventThroughAPI(nameOfNewEvent)
     })
 }) 
+
+it.skip('delete event', ()=>{
+    cy.deleteEventThroughAPI('Event to be edited')
+})
