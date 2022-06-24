@@ -21,9 +21,15 @@ pipeline {
     /* } */
     
     stages {
+        stage('Install dependencies') {
+            sh "npm install"
+            dir("/home/adangelo/code/pass-it-on-demos") {
+                fileOperations([fileCopyOperation(excludes: '', flattenFiles: true, includes: 'cypress.env*', targetLocation: "${WORKSPACE}")])
+            }
+        }
+
         stage('Test') {
             steps {
-                sh "npm install"
                 sh "CYPRESS_INCLUDE_TAGS=HappyPath npm run cy:run"
             }
         }
@@ -37,8 +43,7 @@ pipeline {
                 keepAll: false,
                 reportDir: 'mochawesome-report',
                 reportFiles: 'mochawesome.html',
-                reportName: 'HTML Report',
-                reportTitles: 'E2E Tests Report'
+                reportName: 'HTML Report'
             ])
 
             deleteDir()
