@@ -6,7 +6,7 @@ module.exports = defineConfig({
     reporter: "mochawesome",
     reporterOptions: {
         // disable overwrite to generate many JSON reports
-        "overwrite": true,
+        "overwrite": false,
         // do not generate intermediate HTML reports
         "html": false,
         // generate intermediate JSON reports
