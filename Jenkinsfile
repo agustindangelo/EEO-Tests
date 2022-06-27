@@ -44,7 +44,7 @@ pipeline {
         stage('Run the entire test suite') {
             when {
                 expression {
-                    return params.tag == 'EntireSuite'
+                    return params.TAG == 'EntireSuite'
                 }
             }
             steps {
