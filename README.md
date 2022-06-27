@@ -39,3 +39,22 @@ bash:
 
 powershell:
 ```cmd /C "set CYPRESS_INCLUDE_TAGS=HappyPath && npm run cy:run"```
+
+<br>
+
+# Setup a Jenkins local instance
+1. Download the [latest stable Jenkins WAR file](https://www.jenkins.io/download/) to an appropriate directory on your machine.
+2. Run the jenkins instance with `java -Dhudson.model.DirectoryBrowserSupport.CSP="" -jar jenkins.war` and navigate to `http://localhost:8080`. The first time you will be asked for a password. Refer to the official documentation for any inconveniences: https://www.jenkins.io/doc/book/installing/war-file/
+3. Create a new pipeline by clicking the `New Item` button on the Jenkins' UI. You can name it "eeo-pipeline".
+4. On the pipeline configuration page, scroll down to the **Pipeline** section or click on the **Pipeline** tab.
+5. On the **Definition** field, select "Pipeline script from SCM" and configure as follows
+6. On the SCM field, select Git.
+7. On the repository URL, enter the GitHub repo URL: https://github.com/agustindangelo/EEO-Tests
+8. In order to grant access to Jenkins to fetch the remote repository, you need to create an access token on your Github account with scopes "repo" and "user". You can name it something like "jenkins-access-token". Copy the access token. 9. Going back to Jenkins, click on the **Add** button below the repository URL and select Jenkins to create a new credential.
+10. In the **Username** field, paste your GitHub username and paste the access token in the **Password** field.
+11. Save the credential. Now the red message saying that Jenkins couldn't connect to the repo should disappear from the screen.
+12. In the **Script Path** field, type "Jenkinsfile" and Save the pipeline.
+13. From the Jenkins Dashboard, go to `Manage Jenkins` > `Manage Plugins` and install the following plugins:
+- AnsiColor
+- File Operations Plugin
+14. From the Jenkins dashboard, click on your recently created pipeline and click on the **Build now** button.
