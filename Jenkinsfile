@@ -23,7 +23,7 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh "npm install"
-                dir("/home/adangelo/code/pass-it-on-demos") {
+                dir("/home/adangelo/code/eeo/eeo-tests") {
                     // bring on the environment variables from the local repo
                     fileOperations([fileCopyOperation(excludes: '', flattenFiles: true, includes: 'cypress.env*', targetLocation: "${WORKSPACE}")])
                 }
