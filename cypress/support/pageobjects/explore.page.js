@@ -78,14 +78,13 @@ class Explore extends Page{
             errorMessage: () => this.formularioInscripcion.nivelDeIngles.field().parent().siblings('p')
         },
         termsCheckbox: () => cy.get('input[name="terms"]'),
-        personalDataCheckbox: () => cy.get('input[name="personalData"]'),
         inscribirseBtn: () => cy.get('button[type="submit"]'),
         successInscriptionMessage: () => cy.contains('¡Nos vemos allí!'),
         addToCalendarBtn: () => cy.contains('Añadir al calendario'),
         googleCalendarOption: () => cy.contains('Google'),
         outlookCalendarOption: () => cy.contains('Outlook'),
         duplicatedInscription: () => cy.get('div#duplicated'),
-        emptyFieldsErrorMessage: () =>  cy.get('.errorMsg') 
+        emptyTermsErrorMessage: () =>  cy.get('.termsAndConditions')
     }
 
     /**
@@ -154,9 +153,6 @@ class Explore extends Page{
         this.formularioInscripcion.termsCheckbox().click()
     }
 
-    acceptPersonalDataCondition() {
-        this.formularioInscripcion.personalDataCheckbox().click()
-    }
 
     /**
      * Gets a name, an email, a country and a profession in order to fulfill the required fields to register an user to an event. Then, the 'Inscribirse' button is clicked.

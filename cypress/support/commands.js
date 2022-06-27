@@ -48,8 +48,7 @@ Cypress.Commands.add("registerToEventByApi", (eventId, email) => {
                     "englishLevel": "B2",
                     "knowsEndava": "yes",
                     "hearFromEvent": "employee",
-                    "terms": true,
-                    "personalData": true
+                    "terms": true
                 }
             },
             "query": `
