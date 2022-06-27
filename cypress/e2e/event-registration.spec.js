@@ -7,11 +7,7 @@ describe('Event registration functionality', () => {
     const explore = new Explore();
     var email = getRandomEmail()
 
-<<<<<<< HEAD
-    it.skip(['HappyPath'],'should register as an attendee for the first event on the explore page', function () {
-=======
     it(['HappyPath'], 'should register as an attendee for the first event on the explore page', function() {
->>>>>>> a3c65884eb626bd2acd72d6ada94c1427298e3fb
         //An event is created
         cy.createEventByApi(nameOfNewEvent, true)
 
@@ -50,7 +46,7 @@ describe('Event registration functionality', () => {
 
     })
 
-    it.skip('should not be able to register twice to an event', () => {
+    it('should not be able to register twice to an event', () => {
         //An event is created and an inscription is registered for this event
         cy.createEventByApi(nameOfNewEvent, true).its('body').then(body => {
             let eventId = body.data.createEvent.recordId

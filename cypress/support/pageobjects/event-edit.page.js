@@ -22,7 +22,11 @@ class EventEdit extends Page {
     eventInformation = {
         date:{
             toggler: () => cy.get('button.toggler'),
-            calendarBody: () => cy.get('div.calendarBody')
+            calendarBody: () => cy.get('div.calendarBody'),
+            calendarFooter: () => cy.get('footer.calendarFooter'),
+            currentDate: (day) => cy.get(`button[data-day="${day}"]`),//cy.get('.sc-dmRaPn.lbgGuQ'),
+            selectBtn: () => this.eventInformation.date.calendarFooter().contains('select'),
+            clearBtn: () => this.eventInformation.date.calendarFooter().contains('clear')
         },
         time:{
             start: () => cy.get('.MuiBox-root > .MuiFormControl-root > .MuiOutlinedInput-root')
@@ -32,15 +36,63 @@ class EventEdit extends Page {
             option: (zone) => cy.get('li[role="option"]').contains(zone)
         },
         eventTypeOption:{
-
+            online: () => cy.get('input[type="radio"]').eq(0),
+            inplace: () => cy.get('input[type="radio"]').eq(1),
+            hybrid: () => cy.get('input[type="radio"]').eq(2),
         },
-        location:null,
-        link:null,
-        address:null,
-        makeItVisibleOption:null,
+        link: () => cy.get('input[name="link"]'),
+        location: {
+            ddl: () => cy.get('div[aria-labelledby="location select-options"]'),
+            option: (city) => cy.contains(city)
+        },
+        address: () => cy.get('input[name="address"]'),
+        makeItVisibleOption: () => cy.get('input[name="published"]'),
         cancelButton: () => cy.contains('Cancel'),
         saveButton: () => cy.contains('Save'),
     }
+
+    warnings = {
+        missingFields: {
+            errorMessage: () => cy.contains('Missing fields'),
+            okButton: () => cy.contains('OK')
+        },
+        mandatoyFieldsBlank: {
+            errorMessage: () => cy.contains('Some mandatory fields are blank'),
+            name: () => cy.get('ul > li').contains('Name'),
+            description: () => cy.get('ul > li').contains('Description'),
+            time: () => cy.get('ul > li').contains('Start Time'),
+            link: () => cy.get('ul > li').contains('Link'),
+            location: () => cy.get('ul > li').contains('Location'),
+            date: () => cy.get('ul > li').contains('Date'),
+            okButton: () => cy.get('button > span').contains('Got it!')
+        },
+        discardChanges: {
+            message: () => cy.contains('Discard changes?'),
+            yesButton: () => cy.contains('Yes, discard'),
+            cancelButton: () => cy.contains('No, cancel'),
+        }
+    }
+
+    editEventName(name){
+        this.nameField.click().clear().type(name)
+    }
+
+    editEventDescription(description){
+        this.eventDescriptionField.click().clear().type(description)
+    }
+
+    editAdditionalInfo(info){
+        this.eventAdditionalInformationField.click().clear().type(info)
+    }
+
+    /**
+     * 
+     * @param {string} imgPath event's image file path
+     */
+    uploadNewEventImage(imgPath){
+        this.browseFileField.selectFile(imgPath)
+    }
+    
 
     /**
      * 
@@ -57,6 +109,53 @@ class EventEdit extends Page {
      selectTimezone(timezone){
         this.eventInformation.timezone.ddl().click()
         this.eventInformation.timezone.option(timezone).click()
+    }
+
+    /**
+     * 
+     * @param {string} timezone Accepted values: 'online', 'inplace', 'hybrid'
+     */
+     selectEventType(eventType){
+        switch(eventType.toLowerCase()){
+            case 'online': {
+                this.eventInformation.eventTypeOption.online().click()
+                break;
+            }
+            case 'inplace': {
+                this.eventInformation.eventTypeOption.inplace().click()
+                break;
+            }
+            case 'hybrid': {
+                this.eventInformation.eventTypeOption.hybrid().click()
+                break;
+            }
+            default: break;
+        }    
+    }
+    
+    /**
+     * 
+     * @param {string} link url of the online/hybrid event
+     */
+    editEventLink(link){
+        this.eventInformation.link().type(link)
+    }
+
+    /**
+     * 
+     * @param {string} city Accepted values:  'Bogotá', 'Buenos Aires', 'Medellin', 'Monterrey', 'Montevideo', 'Rosario', 'Other'
+     */
+    selectLocation(city){
+        this.eventInformation.location.ddl().click()
+        this.eventInformation.location.option(city).click()
+    }
+
+    editEventAddress(address){
+        this.eventInformation.address().click().clear().type(address)
+    }
+
+    makeEventVisible(){
+        this.eventInformation.makeItVisibleOption().click()
     }
 
     clickCancelButton(){
