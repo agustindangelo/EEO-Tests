@@ -50,9 +50,12 @@ powershell:
 5. On the **Definition** field, select "Pipeline script from SCM" and configure as follows
 6. On the SCM field, select Git.
 7. On the repository URL, enter the GitHub repo URL: https://github.com/agustindangelo/EEO-Tests
-8. In order to grant access to Jenkins to fetch the remote repository, you need to create an access token on your Github account with scopes "repo" and "user". You can name it something like "jenkins-access-token". Copy the access token. 9. Going back to Jenkins, click on the **Add** button below the repository URL and select Jenkins to create a new credential.
+8. In order to grant access to Jenkins to fetch the remote repository, you need to create an access token on your Github account with scopes "repo" and "user". You can name it something like "jenkins-access-token". Copy the access token.
+![Access token](docs/access-token.png)
+9. Copy the access token and go back to Jenkins. click on the **Add** button below the repository URL and select Jenkins to create a new credential.
 10. In the **Username** field, paste your GitHub username and paste the access token in the **Password** field.
 11. Save the credential. Now the red message saying that Jenkins couldn't connect to the repo should disappear from the screen.
+![SCM Pipeline setting](docs/pipeline-settings.png)
 12. In the **Script Path** field, type "Jenkinsfile" and Save the pipeline.
 13. From the Jenkins Dashboard, go to `Manage Jenkins` > `Manage Plugins` and install the following plugins:
 - AnsiColor
