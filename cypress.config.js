@@ -1,33 +1,33 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-  projectId: 'qnych8',
+    projectId: 'qnych8',
     // use mochawesome reporter as usually
-  reporter: "mochawesome",
-  reporterOptions: {
-    // disable overwrite to generate many JSON reports
-    "overwrite": false,
-    // do not generate intermediate HTML reports
-    "html": false,
-    // generate intermediate JSON reports
-    "json": true
-  },
-  e2e: {
-    setupNodeEvents(on, config) {
-      //require('cypress-grep/src/plugin')(config)
-      const tagify = require('cypress-tags');
-      on('file:preprocessor', tagify(config));
-
-      on("task", {
-        
-      })
+    reporter: "mochawesome",
+    reporterOptions: {
+        // disable overwrite to generate many JSON reports
+        "overwrite": true,
+        // do not generate intermediate HTML reports
+        "html": false,
+        // generate intermediate JSON reports
+        "json": true
     },
-    specPattern: 'cypress/e2e/**/*.spec.js',
-    baseUrl: 'http://localhost:3000/',
-    watchForFileChanges: true,
-    defaultCommandTimeout: 4000,
-    viewportHeight: 1080,
-    viewportWidth: 1920,
-    video: false
-  },
+    e2e: {
+        setupNodeEvents(on, config) {
+            //require('cypress-grep/src/plugin')(config)
+            const tagify = require('cypress-tags');
+            on('file:preprocessor', tagify(config));
+
+            on("task", {
+
+            })
+        },
+        specPattern: 'cypress/e2e/**/*.spec.js',
+        baseUrl: 'http://localhost:3000/',
+        watchForFileChanges: true,
+        defaultCommandTimeout: 4000,
+        viewportHeight: 1080,
+        viewportWidth: 1920,
+        video: false
+    },
 });
