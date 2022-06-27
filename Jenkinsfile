@@ -15,7 +15,6 @@ pipeline {
         choice(
             name: 'TAG',
             choices: ['EntireSuite', 'Login', 'HappyPath'],
-            defaultValue: 'EntireSuite',
             description: 'Specify which tests to run by providing a tag to the test runner'
         )
     }
