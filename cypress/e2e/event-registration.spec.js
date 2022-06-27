@@ -7,7 +7,7 @@ describe('Event registration functionality', () => {
     const explore = new Explore();
     var email = getRandomEmail()
 
-    it.only(['HappyPath'],'should register as an attendee for the first event on the explore page', function () {
+    it.skip(['HappyPath'],'should register as an attendee for the first event on the explore page', function () {
         //An event is created
         cy.createEventByApi(nameOfNewEvent, true)
 
@@ -30,7 +30,6 @@ describe('Event registration functionality', () => {
         explore.selectComoTeEnteraste('Soy Endavan')
 
         explore.acceptPolicies()
-        explore.acceptPersonalDataCondition()
         explore.formularioInscripcion.inscribirseBtn().click()
 
         // assert
@@ -47,7 +46,7 @@ describe('Event registration functionality', () => {
 
     })
 
-    it('should not be able to register twice to an event', () => {
+    it.skip('should not be able to register twice to an event', () => {
         //An event is created and an inscription is registered for this event
         cy.createEventByApi(nameOfNewEvent, true).its('body').then(body => {
             let eventId = body.data.createEvent.recordId
@@ -72,7 +71,6 @@ describe('Event registration functionality', () => {
         explore.selectConoceEndava('Si')
         explore.selectComoTeEnteraste('Soy Endavan')
         explore.acceptPolicies()
-        explore.acceptPersonalDataCondition()
         explore.formularioInscripcion.inscribirseBtn().click()
 
         // assert
@@ -92,8 +90,8 @@ describe('Event registration functionality', () => {
         explore.formularioInscripcion.inscribirseBtn().click()
 
         // assert
-        explore.formularioInscripcion.emptyFieldsErrorMessage()
-            .should('have.text', 'Por favor completa los campos')
+        explore.formularioInscripcion.emptyTermsErrorMessage()
+            .should('contain.text', 'Es necesario que aceptes los Términos y condiciones para poder inscribirte.')
         explore.formularioInscripcion.nombre.errorMessage()
             .should('be.visible')
                 .and('have.text', 'Completá este campo')
@@ -145,12 +143,12 @@ describe('Event registration functionality', () => {
         explore.selectConoceEndava('Si')
         explore.selectComoTeEnteraste('Soy Endavan')
         explore.acceptPolicies()
-        explore.acceptPersonalDataCondition()
         explore.formularioInscripcion.inscribirseBtn().click()
 
         // assert
-        explore.formularioInscripcion.emptyFieldsErrorMessage()
-            .should('have.text', 'Por favor completa los campos')
+        explore.formularioInscripcion.email.errorMessage()
+            .should('be.visible')
+                .and('have.text', 'Ingresá un email válido')
     })
 
     it('should not be able to register when leaving the checkboxes unchecked', () => {
@@ -176,11 +174,11 @@ describe('Event registration functionality', () => {
         explore.formularioInscripcion.inscribirseBtn().click()
 
         // assert
-        explore.formularioInscripcion.emptyFieldsErrorMessage()
-            .should('have.text', 'Por favor completa los campos')
+        explore.formularioInscripcion.emptyTermsErrorMessage()
+            .should('contain.text', 'Es necesario que aceptes los Términos y condiciones para poder inscribirte.')
     })
 
     afterEach(function () {
-        cy.deleteEventThroughAPI(nameOfNewEvent)
+        cy.deleteEventThroughAPI({nameOfNewEvent})
     })
 })

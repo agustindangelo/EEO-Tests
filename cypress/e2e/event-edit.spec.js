@@ -15,7 +15,9 @@ describe('Happy path when editing an event', () => {
         events.navigate()
     })
 
-    it(['HappyPath'],'should change the end time of the first event', () => {
+    it.only(['HappyPath'],'should change the end time of the first event', () => {
+        let today = (new Date).getDate()
+        const newDate = today >= 30 ? today : parseInt(getInteger(today, 30)) //to choose a new day only if the current is < 30 to simplify
         const startHour = getInteger(0,23)
         const startMinute= getInteger(0,59)
         
@@ -28,7 +30,7 @@ describe('Happy path when editing an event', () => {
         events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
     })
 
-    it.only(['HappyPath'],'should make public a draft event', () => {
+    it(['HappyPath'],'should make public a draft event', () => {
         
         events.getEventByName(nameOfNewEvent).click()
         eventDetails.shareLinkedIn.should('be.disabled')
@@ -52,8 +54,4 @@ describe('Happy path when editing an event', () => {
     afterEach(function () {
         cy.deleteEventThroughAPI(nameOfNewEvent)
     })
-}) 
-
-it.skip('delete event', ()=>{
-    cy.deleteEventThroughAPI('Event to be edited')
 })
