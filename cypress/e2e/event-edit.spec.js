@@ -50,8 +50,8 @@ describe('Happy path when editing an event', () => {
         events.navigate()
         events.getEventStateByEventName(nameOfNewEvent).should('not.contain.text', 'DRAFT')
     })
-    
-    afterEach(function () {
+
+    afterEach(function() {
         cy.deleteEventThroughAPI(nameOfNewEvent)
     })
 })
