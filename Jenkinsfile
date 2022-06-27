@@ -3,11 +3,6 @@ def COLOR_MAP = [
     'FAILURE': 'danger',
 ]
 
-/* def getBuildUser() { */
-/*     return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId() */
-/* } */
-
-
 pipeline {
 
     agent any
@@ -15,24 +10,46 @@ pipeline {
     options {
         ansiColor('xterm')
     }
-    
-    /* environment { */
 
-    /* } */
+    parameters {
+        choice(
+            name: 'TAG',
+            choices: ['EntireSuite', 'Login', 'HappyPath'],
+            defaultValue: 'EntireSuite',
+            description: 'Specify which tests to run by providing a tag to the test runner'
+        ),
+    }
     
     stages {
         stage('Install dependencies') {
             steps {
                 sh "npm install"
                 dir("/home/adangelo/code/pass-it-on-demos") {
+                    // bring on the environment variables from the local repo
                     fileOperations([fileCopyOperation(excludes: '', flattenFiles: true, includes: 'cypress.env*', targetLocation: "${WORKSPACE}")])
                 }
             }
         }
 
-        stage('Test') {
+        stage('Run tests with a tag') {
+            when {
+                expression {
+                    return params.TAG != 'EntireSuite'
+                }
+            }
             steps {
-                sh "CYPRESS_INCLUDE_TAGS=HappyPath npm run cy:run"
+                sh "CYPRESS_INCLUDE_TAGS=${TAG} npm run cy:run"
+            }
+        }
+
+        stage('Run the entire test suite') {
+            when {
+                expression {
+                    return params.tag == 'EntireSuite'
+                }
+            }
+            steps {
+                sh "npm run cy:run"
             }
         }
     }
@@ -40,9 +57,9 @@ pipeline {
     post {
         always{
             publishHTML([
-                allowMissing: true,
+                allowMissing: false,
                 alwaysLinkToLastBuild: false,
-                keepAll: false,
+                keepAll: true,
                 reportDir: 'mochawesome-report',
                 reportFiles: 'mochawesome.html',
                 reportName: 'HTML Report'

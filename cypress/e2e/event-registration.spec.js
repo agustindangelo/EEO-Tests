@@ -7,7 +7,7 @@ describe('Event registration functionality', () => {
     const explore = new Explore();
     var email = getRandomEmail()
 
-    it.only(['HappyPath'],'should register as an attendee for the first event on the explore page', function () {
+    it(['HappyPath'], 'should register as an attendee for the first event on the explore page', function() {
         //An event is created
         cy.createEventByApi(nameOfNewEvent, true)
 
@@ -37,11 +37,11 @@ describe('Event registration functionality', () => {
         cy.contains('¡Nos vemos allí!')
         cy.contains('Aceptar').click()
         cy.reload()
-        cy.get('@prevAttendees').then(val=>{
+        cy.get('@prevAttendees').then(val => {
             cy.log(val)
             let attendees = parseInt((val.split(' '))[0]) + 1
             cy.log(attendees)
-            cy.contains('asistente').first().invoke('text').should('contains', ''+attendees)
+            cy.contains('asistente').first().invoke('text').should('contains', '' + attendees)
         })
 
 
@@ -52,8 +52,8 @@ describe('Event registration functionality', () => {
         cy.createEventByApi(nameOfNewEvent, true).its('body').then(body => {
             let eventId = body.data.createEvent.recordId
             cy.registerToEventByApi(eventId, email)
-            })
-        
+        })
+
         //Now, an user using the same email tries to register to the same event 
         const explore = new Explore();
         explore.navigate();
@@ -79,7 +79,7 @@ describe('Event registration functionality', () => {
         explore.formularioInscripcion.duplicatedInscription().should('contain.text', email).and('contain.text', ' ya esta registrado para este evento.')
     })
 
-    it('should not be able to register to an event when leaving the fields empty', function () {
+    it('should not be able to register to an event when leaving the fields empty', function() {
         //An event is created
         cy.createEventByApi(nameOfNewEvent, true)
 
@@ -96,32 +96,32 @@ describe('Event registration functionality', () => {
             .should('have.text', 'Por favor completa los campos')
         explore.formularioInscripcion.nombre.errorMessage()
             .should('be.visible')
-                .and('have.text', 'Completá este campo')
+            .and('have.text', 'Completá este campo')
         explore.formularioInscripcion.email.errorMessage()
             .should('be.visible')
-                .and('have.text', 'Completá este campo')
+            .and('have.text', 'Completá este campo')
         explore.formularioInscripcion.pais.errorMessage()
             .should('be.visible')
-                .and('have.text', 'Completá este campo')
+            .and('have.text', 'Completá este campo')
         explore.formularioInscripcion.ciudad.errorMessage()
             .should('be.visible')
-                .and('have.text', 'Completá este campo')
+            .and('have.text', 'Completá este campo')
         explore.formularioInscripcion.profesion.errorMessage()
             .should('be.visible')
-                .and('have.text', 'Completá este campo')
+            .and('have.text', 'Completá este campo')
         explore.formularioInscripcion.experiencia.errorMessage()
             .should('be.visible')
-                .and('have.text', 'Completá este campo')
+            .and('have.text', 'Completá este campo')
         explore.formularioInscripcion.nivelDeIngles.errorMessage()
             .should('be.visible')
-                .and('have.text', 'Completá este campo')
+            .and('have.text', 'Completá este campo')
         explore.formularioInscripcion.conocesEndava.errorMessage()
             .should('be.visible')
-                .and('have.text', 'Completá este campo')
+            .and('have.text', 'Completá este campo')
         explore.formularioInscripcion.comoTeEnteraste.errorMessage()
             .should('be.visible')
-                .and('have.text', 'Completá este campo')
-        
+            .and('have.text', 'Completá este campo')
+
     })
 
     it('should not be able to register when entering an invalid email', () => {
@@ -180,7 +180,7 @@ describe('Event registration functionality', () => {
             .should('have.text', 'Por favor completa los campos')
     })
 
-    afterEach(function () {
+    afterEach(function() {
         cy.deleteEventThroughAPI(nameOfNewEvent)
     })
 })

@@ -15,10 +15,10 @@ describe('Happy path when editing an event', () => {
         events.navigate()
     })
 
-    it(['HappyPath'],'should change the end time of the first event', () => {
-        const startHour = getInteger(0,23)
-        const startMinute= getInteger(0,59)
-        
+    it(['HappyPath'], 'should change the end time of the first event', () => {
+        const startHour = getInteger(0, 23)
+        const startMinute = getInteger(0, 59)
+
         events.getEventByName(nameOfNewEvent).click()
         eventDetails.openEditForm()
         eventEdit.setStartTime(`${startHour}:${startMinute}`)
@@ -28,8 +28,8 @@ describe('Happy path when editing an event', () => {
         events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
     })
 
-    it.only(['HappyPath'],'should make public a draft event', () => {
-        
+    it(['HappyPath'], 'should make public a draft event', () => {
+
         events.getEventByName(nameOfNewEvent).click()
         eventDetails.shareLinkedIn.should('be.disabled')
         eventDetails.copyUrl.should('be.disabled')
@@ -48,12 +48,12 @@ describe('Happy path when editing an event', () => {
         events.navigate()
         events.getEventStateByEventName(nameOfNewEvent).should('not.contain.text', 'DRAFT')
     })
-    
-    afterEach(function () {
+
+    afterEach(function() {
         cy.deleteEventThroughAPI(nameOfNewEvent)
     })
-}) 
+})
 
-it.skip('delete event', ()=>{
+it.skip('delete event', () => {
     cy.deleteEventThroughAPI('Event to be edited')
 })
