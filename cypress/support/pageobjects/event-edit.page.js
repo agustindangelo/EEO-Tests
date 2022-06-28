@@ -12,11 +12,11 @@ class EventEdit extends Page {
     }
 
     get eventDescriptionField(){
-        return cy.get('#description')
+        return cy.get('.ql-editor').eq(0)
     }
 
     get eventAdditionalInformationField() {
-        return cy.get('#additionalInformation')
+        return cy.get('.ql-editor').eq(1)
     }
 
     eventInformation = {
@@ -24,7 +24,7 @@ class EventEdit extends Page {
             toggler: () => cy.get('button.toggler'),
             calendarBody: () => cy.get('div.calendarBody'),
             calendarFooter: () => cy.get('footer.calendarFooter'),
-            currentDate: (day) => cy.get(`button[data-day="${day}"]`),//cy.get('.sc-dmRaPn.lbgGuQ'),
+            day: (day) => cy.get(`button[data-day="${day}"]`),//cy.get('.sc-dmRaPn.lbgGuQ'),
             selectBtn: () => this.eventInformation.date.calendarFooter().contains('select'),
             clearBtn: () => this.eventInformation.date.calendarFooter().contains('clear')
         },
@@ -91,6 +91,12 @@ class EventEdit extends Page {
      */
     uploadNewEventImage(imgPath){
         this.browseFileField.selectFile(imgPath)
+    }
+
+    setNewDate(day) {
+        this.eventInformation.date.toggler().click()
+        this.eventInformation.date.day(day).click()
+        this.eventInformation.date.selectBtn().click()
     }
     
 
