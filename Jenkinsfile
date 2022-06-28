@@ -5,10 +5,10 @@ pipeline {
     /* triggers{ cron('H/5 * * * *') } */
 
     environment {
-        USER_EMAIL='agustin.dangelo@endava.com'
-        USER_NAME='Agustin Dangelo'
-        USER_PASSWORD=credentials('USER_PASSWORD')
-        LOCAL_API_URL="http://localhost:4000"
+        USER_EMAIL = 'agustin.dangelo@endava.com'
+        USER_NAME = 'Agustin Dangelo'
+        USER_PASSWORD = credentials('USER_PASSWORD')
+        LOCAL_API_URL = 'http://localhost:4000'
     }
 
     options {
@@ -38,12 +38,12 @@ pipeline {
             }
             steps {
                 sh '''
-                    CYPRESS_INCLUDE_TAGS=${TAG}
-                    CYPRESS_USER_EMAIL=${USER_EMAIL}
-                    CYPRESS_USER_PASSWORD=${USER_PASSWORD}
-                    CYPRESS_LOCAL_API_URL=${LOCAL_API_URL}
+                    CYPRESS_INCLUDE_TAGS=${TAG} \
+                    CYPRESS_USER_EMAIL=${USER_EMAIL} \
+                    CYPRESS_USER_PASSWORD=${USER_PASSWORD} \
+                    CYPRESS_LOCAL_API_URL=${LOCAL_API_URL} \
                     npm run cy:run
-                ''''
+                '''
             }
         }
 
@@ -55,11 +55,11 @@ pipeline {
             }
             steps {
                 sh '''
-                    CYPRESS_USER_EMAIL=${USER_EMAIL}
-                    CYPRESS_USER_PASSWORD=${USER_PASSWORD}
-                    CYPRESS_LOCAL_API_URL=${LOCAL_API_URL}
+                    CYPRESS_USER_EMAIL=${USER_EMAIL} \
+                    CYPRESS_USER_PASSWORD=${USER_PASSWORD} \
+                    CYPRESS_LOCAL_API_URL=${LOCAL_API_URL} \
                     npm run cy:run
-                ''''
+                '''
             }
         }
     }
