@@ -14,7 +14,14 @@ class Explore extends Page{
     }
 
     getEventByName = (name) => cy.get('a.eventCard').contains(name)
+    
+    getEventCardDateByName(name){
+        return cy.contains(name).children('.eventCardDate')
+    }
 
+    getEventCardTimeByName(name){
+        return this.getEventCardDateByName(name).siblings('div').eq(1).children('span').eq(4)
+    }
     
     /** Gest the state of the 'nth' event displayed in the explore page
      * @param {string} nth The number of a registered event, which is displayed sorted for the user
@@ -22,6 +29,36 @@ class Explore extends Page{
      */
     getNthEventState(nth){
         return cy.get(`.sc-kDTinF:nth-child(${nth}) .eventCardBadges > span`)
+    }
+
+    get name(){
+        return cy.get('h1').first()
+    }
+
+    get attendees() {
+        return cy.contains('asistentes')
+    }
+
+    get about(){
+        return cy.get('h3').contains('Acerca del evento').next()
+    }
+
+    get additionalInformation() {
+        return cy.get('h3').contains('Información adicional').next()
+    }
+
+    get eventDate(){
+        return cy.contains('Fecha y hora').siblings('div').children('div').eq(1)
+    }
+
+    time = { 
+        mexicanTime: () => this.eventDate.children('span').eq(0),
+        colombianTime: () => this.eventDate.children('span').eq(1),
+        argUruTime: () => this.eventDate.children('span').eq(2)
+    }
+
+    get link() {
+        return cy.contains('virtual').find('a')
     }
 
     get inscribirseEventoBtn(){

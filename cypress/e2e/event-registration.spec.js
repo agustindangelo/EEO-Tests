@@ -7,6 +7,38 @@ describe('Event registration functionality', () => {
     const explore = new Explore();
     var email = getRandomEmail()
 
+    it.only(['HappyPath'], 'should be able to expand the details of an event in order to register to it', function() {
+        //An event is created
+        cy.createEventByApi(nameOfNewEvent, true)
+
+        //Now the user navigates to the inscription form of the created event
+        explore.navigate();
+       
+        explore.getEventCardDateByName(nameOfNewEvent).then(date =>{
+            
+            explore.getEventCardTimeByName(nameOfNewEvent).then(time => {
+                
+                explore.getEventByName(nameOfNewEvent).click()
+                
+                // validating event info and page content
+                explore.eventDate.should('contain.text', date.text())
+                explore.eventDate.should('contain.text', time.text())
+                explore.name.should('have.text', nameOfNewEvent);
+                explore.attendees.should('contain.text', '0 asistentes');
+                explore.about.should('have.text', 'description');
+                explore.link.should('have.text', 'event-api.com');
+                explore.additionalInformation.should('have.text', 'bla');
+
+                explore.time.argUruTime().should('be.visible')
+                explore.time.colombianTime().should('be.visible')
+                explore.time.mexicanTime().should('be.visible')
+                
+                explore.inscribirseEventoBtn.should('be.visible') 
+            })
+        })
+    })
+
+
     it(['HappyPath'], 'should register as an attendee for the first event on the explore page', function() {
         //An event is created
         cy.createEventByApi(nameOfNewEvent, true)
@@ -42,8 +74,6 @@ describe('Event registration functionality', () => {
             cy.log(attendees)
             cy.contains('asistente').first().invoke('text').should('contains', '' + attendees)
         })
-
-
     })
 
     it('should not be able to register twice to an event', () => {
@@ -181,4 +211,8 @@ describe('Event registration functionality', () => {
     afterEach(function() {
         cy.deleteEventThroughAPI(nameOfNewEvent)
     })
+})
+
+it.skip('sadsa',function() {
+    cy.deleteEventThroughAPI('Event for inscription')
 })

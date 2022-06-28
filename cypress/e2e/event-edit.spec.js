@@ -15,7 +15,7 @@ describe('Happy path when editing an event', () => {
         events.navigate()
     })
 
-    it.only(['HappyPath'],'should change the end time of the first event', () => {
+    it(['HappyPath'],'should change the end time of the first event', () => {
         let today = (new Date).getDate()
         const newDate = today >= 30 ? today : parseInt(getInteger(today, 30)) //to choose a new day only if the current is < 30 to simplify
         const startHour = getInteger(0,23)
