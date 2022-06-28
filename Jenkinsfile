@@ -48,7 +48,7 @@ pipeline {
                     CYPRESS_USER_EMAIL=${USER_EMAIL} \
                     CYPRESS_USER_PASSWORD=${USER_PASSWORD} \
                     CYPRESS_LOCAL_API_URL=${LOCAL_API_URL} \
-                    node cypress/trigger-tests-and-report \
+                    node cypress/trigger-tests-and-report cypress run \
                     --browser ${BROWSER}
                     --record
                     --key ${CYPRESS_DASHBOARD_API_KEY}
@@ -67,7 +67,7 @@ pipeline {
                     CYPRESS_USER_EMAIL=${USER_EMAIL} \
                     CYPRESS_USER_PASSWORD=${USER_PASSWORD} \
                     CYPRESS_LOCAL_API_URL=${LOCAL_API_URL} \
-                    node cypress/trigger-tests-and-report \
+                    node cypress/trigger-tests-and-report cypress run \
                     --browser ${BROWSER}
                     --record
                     --key ${CYPRESS_DASHBOARD_API_KEY}
