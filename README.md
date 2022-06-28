@@ -47,10 +47,10 @@ powershell:
 2. Run the jenkins instance with `java -Dhudson.model.DirectoryBrowserSupport.CSP="" -jar jenkins.war` and navigate to `http://localhost:8080`. The first time you will be asked for a password. Refer to the official documentation for any inconveniences: https://www.jenkins.io/doc/book/installing/war-file/
 3. Create a new pipeline by clicking the `New Item` button on the Jenkins' UI. You can name it "eeo-pipeline".
 4. On the pipeline configuration page, scroll down to the **Pipeline** section or click on the **Pipeline** tab.
-5. On the **Definition** field, select "Pipeline script from SCM" and configure as follows
+5. On the **Definition** field, select "Pipeline script from SCM"
 6. On the SCM field, select Git.
-7. On the repository URL, enter the GitHub repo URL: https://github.com/agustindangelo/EEO-Tests
-8. In order to grant access to Jenkins to fetch the remote repository, you need to create an access token on your Github account with scopes "repo" and "user". You can name it something like "jenkins-access-token". Copy the access token.
+7. On the repository URL, enter the GitHub repo URL: https://github.com/agustindangelo/EEO-Tests. A red message saying that Jenkins couldn't connect to the repository may appear. That's why we need to grant Jenkins access to read the repository and your GitHub account user information.
+8. In order to grant access to Jenkins, you need to create an access token on your Github account with scopes "repo" and "user". You can name it something like "jenkins-access-token".
 ![Access token](docs/access-token.png)
 9. Copy the access token and go back to Jenkins. click on the **Add** button below the repository URL and select Jenkins to create a new credential.
 10. In the **Username** field, paste your GitHub username and paste the access token in the **Password** field.
