@@ -57,7 +57,6 @@ powershell:
 11. Save the credential. Now the red message saying that Jenkins couldn't connect to the repo should disappear from the screen.
 ![SCM Pipeline setting](docs/pipeline-settings.png)
 12. In the **Script Path** field, type "Jenkinsfile" and Save the pipeline.
-13. From the Jenkins Dashboard, go to `Manage Jenkins` > `Manage Plugins` and install the following plugins:
-- AnsiColor
-- File Operations Plugin
+13. From the Jenkins Dashboard, go to `Manage Jenkins` > `Manage Plugins` and install the plugin **AnsiColor** to colorize commands output during the build.
+14. From the Jenkins Dashboard, navigate to `Manage Jenkins` > `Credentials`, click on the Jenkins entry below the **Stores scoped to Jenkins** dialog, click on `Global credentials (unrestricted)`, click on `+ Add Credentials` and create a **Secret text** type of credential with ID `USER_PASSWORD` and type your EEO password as secret value.
 14. From the Jenkins dashboard, click on your recently created pipeline and click on the **Build now** button.
