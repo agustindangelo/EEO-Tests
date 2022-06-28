@@ -1,13 +1,15 @@
-/* def COLOR_MAP = [ */
-/*     'SUCCESS': 'good',  */
-/*     'FAILURE': 'danger', */
-/* ] */
-
 pipeline {
 
     agent any
 
     /* triggers{ cron('H/5 * * * *') } */
+
+    environment {
+        USER_EMAIL='agustin.dangelo@endava.com'
+        USER_NAME='Agustin Dangelo'
+        USER_PASSWORD=credentials('USER_PASSWORD')
+        LOCAL_API_URL="http://localhost:4000"
+    }
 
     options {
         ansiColor('xterm')
@@ -25,10 +27,6 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh "npm install"
-                dir("/home/adangelo/code/eeo/eeo-tests") {
-                    // bring on the environment variables from the local repo
-                    fileOperations([fileCopyOperation(excludes: '', flattenFiles: true, includes: 'cypress.env*', targetLocation: "${WORKSPACE}")])
-                }
             }
         }
 
@@ -39,7 +37,13 @@ pipeline {
                 }
             }
             steps {
-                sh "CYPRESS_INCLUDE_TAGS=${TAG} npm run cy:run"
+                sh '''
+                    CYPRESS_INCLUDE_TAGS=${TAG}
+                    CYPRESS_USER_EMAIL=${USER_EMAIL}
+                    CYPRESS_USER_PASSWORD=${USER_PASSWORD}
+                    CYPRESS_LOCAL_API_URL=${LOCAL_API_URL}
+                    npm run cy:run
+                ''''
             }
         }
 
@@ -50,7 +54,12 @@ pipeline {
                 }
             }
             steps {
-                sh "npm run cy:run"
+                sh '''
+                    CYPRESS_USER_EMAIL=${USER_EMAIL}
+                    CYPRESS_USER_PASSWORD=${USER_PASSWORD}
+                    CYPRESS_LOCAL_API_URL=${LOCAL_API_URL}
+                    npm run cy:run
+                ''''
             }
         }
     }
