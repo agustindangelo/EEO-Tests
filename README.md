@@ -1,15 +1,12 @@
 # EEO Demos
 
-Two automated test suites are going to be developed. 
-Cypress tests are located in `cypress/e2e` and WebdriverIO tests are located in `wdio/test/specs`
-
-# Install dependencies
+## Install dependencies
 ```
 npm install
 ```
 
 # Run Cypress tests
-Create a `cypress.env.json` file at the root of the project and paste with the following content:
+1. Create a `cypress.env.json` file at the root of the project and paste with the following content:
 ```json
 {
   "USER_EMAIL": "<your-email>",
@@ -18,9 +15,9 @@ Create a `cypress.env.json` file at the root of the project and paste with the f
   "LOCAL_API_URL": "http://localhost:4000"
 }
 ```
-Make sure to have both eeoweb and eeoservice up and running before running the tests on the local environment
+2. Make sure to have both eeoweb and eeoservice up and running before running the tests on the local environment
 
-Run tests from the graphical test runner:
+To run the tests from the graphical test runner:
 ```
 npm run cy:ui
 ```
