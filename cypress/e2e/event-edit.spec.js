@@ -53,7 +53,7 @@ describe('Happy path when editing an event', () => {
         events.getEventStateByEventName(nameOfNewEvent).should('not.contain.text', 'DRAFT')
     })
 
-    it('should not be able to make public a draft event with empty mandatory fields', () => {
+    it.only('should not be able to make public a draft event with empty mandatory fields', () => {
         
         events.getEventByName(nameOfNewEvent).click()
         eventDetails.openEditForm()
@@ -69,7 +69,7 @@ describe('Happy path when editing an event', () => {
             eventEdit.warnings.mandatoyFieldsBlank.name().should('be.visible')
             eventEdit.warnings.mandatoyFieldsBlank.time().should('be.visible')
             eventEdit.warnings.mandatoyFieldsBlank.link().should('be.visible')
-            //eventEdit.warnings.mandatoyFieldsBlank.description().should('be.visible')
+            eventEdit.warnings.mandatoyFieldsBlank.description().should('be.visible')
             eventEdit.warnings.mandatoyFieldsBlank.okButton().should('be.visible')
 
         cy.log('For an inplace event')
@@ -82,7 +82,7 @@ describe('Happy path when editing an event', () => {
             eventEdit.warnings.mandatoyFieldsBlank.name().should('be.visible')
             eventEdit.warnings.mandatoyFieldsBlank.time().should('be.visible')
             eventEdit.warnings.mandatoyFieldsBlank.location().should('be.visible')
-            //eventEdit.warnings.mandatoyFieldsBlank.description().should('be.visible')
+            eventEdit.warnings.mandatoyFieldsBlank.description().should('be.visible')
             eventEdit.warnings.mandatoyFieldsBlank.okButton().should('be.visible')
 
         cy.log('For an hybrid event')
@@ -96,11 +96,11 @@ describe('Happy path when editing an event', () => {
             eventEdit.warnings.mandatoyFieldsBlank.time().should('be.visible')
             eventEdit.warnings.mandatoyFieldsBlank.link().should('be.visible')
             eventEdit.warnings.mandatoyFieldsBlank.location().should('be.visible')
-            //eventEdit.warnings.mandatoyFieldsBlank.description().should('be.visible')
+            eventEdit.warnings.mandatoyFieldsBlank.description().should('be.visible')
             eventEdit.warnings.mandatoyFieldsBlank.okButton().should('be.visible')
     })
 
-    it.skip('shoud not be able to delete the name of an event', () =>{
+    it('shoud not be able to delete the name of an event', () =>{
         events.getEventByName(nameOfNewEvent).click()
         eventDetails.openEditForm()
         eventEdit.nameField.clear()
@@ -109,7 +109,7 @@ describe('Happy path when editing an event', () => {
         createEvent.warnings.missingFields.okButton().should('be.visible')
     })
 
-    it.only('should be able to discard all changes to an event', () => {
+    it('should be able to discard all changes to an event', () => {
         events.getEventByName(nameOfNewEvent).click()
         eventDetails.openEditForm()
         

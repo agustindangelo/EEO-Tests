@@ -68,7 +68,7 @@ describe('Login tests', () => {
             cy.url().should('include', '/login')
         })
 
-        it('should display an error message when leaving fields empty', ()=>{
+        it('should display an error message when entering invalid credentials', ()=>{
             login.navigate()
             login.login(getRandomEmail(), Cypress.env('USER_PASSWORD'))
             login.errorMessage.should('have.text', 'Email or password are incorrect')
