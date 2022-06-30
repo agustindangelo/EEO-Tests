@@ -1,3 +1,8 @@
+/**
+* It takes an email and a password as credentials to complete a login through the API
+* @param {string} email 
+* @param {string} password 
+*/
 Cypress.Commands.add("loginByApi", (username, password = Cypress.env("defaultPassword")) => {
     cy.request('POST', Cypress.env('LOCAL_API_URL'), {
         "operationName": "LoginMutation",
@@ -20,6 +25,7 @@ Cypress.Commands.add("loginByApi", (username, password = Cypress.env("defaultPas
                 }
             }`
     }).then(res => {
+        //save the generated token in localstorage to save the session. THIS TOKEN WILL BE REQUIRED FOR THE REST OF COMMANDS IN THIS FILE IN A FUTURE.
         localStorage.setItem(
         'authData' , JSON.stringify({"name": res.body.data.login.user.name,"token": res.body.data.login.authentication.token,"email": res.body.data.login.user.email})
         )
@@ -63,13 +69,13 @@ Cypress.Commands.add("registerToEventByApi", (eventId, email) => {
         cy.get('@register').its('body').then(body => {
             expect(body.data.addEventAttendee).to.have.property(recordId)
         })
-        */
+        */ //fix this validation
 })
 
 /**
- * Create an event using harcoded data
+ * Create an event using harcoded data, just to simplify. Only the event name and isPublic are passed as a parameter
  * @param {String} eventName
- * @param {boolean} isPublic
+ * @param {boolean} isPublic It defines the behaviuor of the event in the app. When isPublic==false, a DRAFT event is created and it is not displayed to external users
  */
  Cypress.Commands.add("createEventByApi", (eventName, isPublic) => {
     let date = new Date();
@@ -77,9 +83,9 @@ Cypress.Commands.add("registerToEventByApi", (eventId, email) => {
     let dateArray = date.toLocaleDateString().split('/') //[MM,DD,YYYY]
 
     //to follow the format the API uses
-    let day =  (dateArray[1].length == 1) ? ('0' + dateArray[1]) : dateArray[1] 
-    let month = (dateArray[0].length == 1) ? ('0'+ dateArray[0]) : dateArray[0]
-    let year = dateArray[2]
+    let day =  (dateArray[1].length == 1) ? ('0' + dateArray[1]) : dateArray[1] //Ex. to turn the day '9' into '09'
+    let month = (dateArray[0].length == 1) ? ('0'+ dateArray[0]) : dateArray[0] //Ex. to turn the month '6' into '06'
+    let year = dateArray[2] 
     let eventDate = year + '-' + month + '-' + day + "T16:50:10.274Z" 
     let eventDateStarts = year + '-' + month + '-' + day + "T09:00:00.245-03:00"
 
@@ -118,10 +124,14 @@ Cypress.Commands.add("registerToEventByApi", (eventId, email) => {
         cy.get('@create').its('body').then(body => {
             expect(body.data.createEvent).to.have.property(recordId)
         })
-        */
+        */ //fix this validation
         
 })
 
+/**
+* It takes the event name as a parameter in order to delete an event with that name through de API
+* @param {string} eventName 
+*/
 Cypress.Commands.add('deleteEventThroughAPI', (eventName) => {
     var eventId;
     // get event ID by event name

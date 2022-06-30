@@ -11,7 +11,6 @@ describe('Create-event tests', () => {
 
     beforeEach(() => {
         cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
-        events.createEventBtn.click()
     })
 
     describe('Happy path when creating a new event', () => {
