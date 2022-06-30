@@ -7,10 +7,11 @@ describe('Create-event tests', () => {
 
     const events = new Events();
     const createEvent = new CreateEvent();
-    var nameOfNewEvent;
 
     beforeEach(() => {
         cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
+        events.navigate()
+        events.createEventBtn.click()
     })
 
     describe('Happy path when creating a new event', () => {
@@ -18,20 +19,15 @@ describe('Create-event tests', () => {
         const events = new Events();
         const createEvent = new CreateEvent();
         var nameOfNewEvent;
-    
-        beforeEach(() => {
-            cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
-            events.createEventBtn.click()
-        })
-    
-        it(['HappyPath'],'should create a public event', () => {
-            const startHour = getInteger(0,23)
-            const startMinute = getInteger(0,59)
+
+        it(['HappyPath'], 'should create a public event', () => {
+            const startHour = getInteger(0, 23)
+            const startMinute = getInteger(0, 59)
             let date = new Date()
             date = date.getDate()
-    
+
             nameOfNewEvent = 'new event [AUT]';
-    
+
             createEvent.createNewEvent(
                 nameOfNewEvent,
                 './cypress/support/resources/newEvent.png',
@@ -40,73 +36,75 @@ describe('Create-event tests', () => {
                 date,
                 `${startHour}:${startMinute}`,
                 'newevent-automation.com',
-                true //set the event as public
+                true // set the event as public
             )
-            events.navigate() //the new event shoud be added to the events page
+            events.navigate() // the new event shoud be added to the events page
             events.getEventByName(nameOfNewEvent).should('be.visible')
-            let eventDate = new Date().toDateString().split(' ') //the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
+            let eventDate = new Date().toDateString().split(' ') // the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
             events.getEventDateByEventName(nameOfNewEvent).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
             events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
             events.getEventStateByEventName(nameOfNewEvent).should('not.contain.text', 'DRAFT')
             events.getEventAttendeesByEventName(nameOfNewEvent).should('contain.text', '0 attendees')
-    
+
         })
-        
-        it(['HappyPath'],'should create a draft event', function () {
-            const startHour = getInteger(0,23)
-            const startMinute = getInteger(0,59)
-            let date = new Date()
-            date = date.getDate()
+
+        it(['HappyPath'], 'should create a draft event', () => {
+            const startHour = getInteger(0, 23)
+            const startMinute = getInteger(0, 59)
+            let currentDate = new Date().getDate()
             nameOfNewEvent = 'new draft event [AUT]';
-    
+
             createEvent.createNewEvent(
                 nameOfNewEvent,
                 './cypress/support/resources/newEvent.png',
                 'test description',
                 'test info',
-                date,
+                currentDate,
                 `${startHour}:${startMinute}`,
                 'newevent-automation-draft.com',
-                false //set the event as draft
+                false // set the event as draft
             )
-            events.navigate() //the new event shoud be added to the events page
-            let eventDate = new Date().toDateString().split(' ') //the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
+            events.navigate() // the new event shoud be added to the events page
+            let eventDate = new Date().toDateString().split(' ') // the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
             events.getEventDateByEventName(nameOfNewEvent).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
             events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
-            //events.getNthEventName(1).should('contain.text', nameOfNewEvent)
             events.getEventStateByEventName(nameOfNewEvent).should('contain.text', 'DRAFT')
             events.getEventAttendeesByEventName(nameOfNewEvent).should('contain.text', '0 attendees')
         })
-    
-        afterEach(function () {
+
+        afterEach(function() {
             cy.deleteEventThroughAPI(nameOfNewEvent)
         })
     })
-    
-    it('Event type radio buttons should work properly', ()=>{
+
+    it('Event type radio buttons should work properly', () => {
+        // When online is selected, Location and Address field should not be shown
         createEvent.eventInformation.eventTypeOption.online().should('be.checked')
         createEvent.eventInformation.location.ddl().should('not.exist')
         createEvent.eventInformation.address().should('not.exist')
 
+        // When In-place is selected, the Link field should not be shown but Location and Address fields should
         createEvent.eventInformation.eventTypeOption.inplace().click()
         createEvent.eventInformation.link().should('not.exist')
         createEvent.eventInformation.location.ddl().should('be.visible')
         createEvent.eventInformation.address().should('be.visible')
 
+        // When Hybrid is selected, Link, Location and Address fields should be shown
         createEvent.eventInformation.eventTypeOption.hybrid().click()
         createEvent.eventInformation.link().should('be.visible')
         createEvent.eventInformation.location.ddl().should('be.visible')
         createEvent.eventInformation.address().should('be.visible')
     })
 
-    it('verify default behaviour of timezone field', ()=>{
+    it('Verify default behaviour of timezone field', () => {
         createEvent.eventInformation.timezone.ddl().should('have.attr', 'aria-disabled', 'true')
         createEvent.eventInformation.timezone.ddl().should('have.text', '(GMT -3) ARG/URU')
     })
 
-    it('verify behaviour of address field', ()=>{
+    it('Verify behaviour of address field', () => {
+        // When a Location is selected from the dropdown list, the Address should be autocompleted with the corresponding address
         createEvent.eventInformation.eventTypeOption.inplace().click()
-        
+
         createEvent.eventInformation.address().should('have.attr', 'disabled')
 
         createEvent.selectLocation('Buenos Aires')
@@ -117,13 +115,16 @@ describe('Create-event tests', () => {
         createEvent.eventInformation.address().should('not.have.attr', 'disabled')
     })
 
-    describe('Error messages and warnings', ()=>{
-        it('shoud not be able to create a new draft event with an empty name', () =>{
+    describe('Error messages and warnings', () => {
+
+        it('shoud not be able to create a new draft event with an empty name', () => {
             createEvent.clickSaveButton()
             createEvent.warnings.missingFields.errorMessage().should('be.visible')
             createEvent.warnings.missingFields.okButton().should('be.visible')
         })
-        it('shoud not be able to create a new public event with empty fields', () =>{
+
+        it('shoud not be able to create a new public event with empty fields', () => {
+            // This test ensures all error messages are displayed as expected
             cy.log('For an online event')
             createEvent.makeEventVisible()
             createEvent.warnings.mandatoyFieldsBlank.errorMessage().should('be.visible')
@@ -169,5 +170,4 @@ describe('Create-event tests', () => {
             cy.url().should('include', 'events').and('not.include', 'create')
         })
     })
-
 })
