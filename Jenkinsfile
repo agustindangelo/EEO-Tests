@@ -2,13 +2,11 @@ pipeline {
 
     agent any
 
-    /* triggers{ cron('H/5 * * * *') } */
-
     environment {
         USER_EMAIL = 'agustin.dangelo@endava.com'
-        USER_NAME = 'Agustin Dangelo'
-        USER_PASSWORD = credentials('USER_PASSWORD')
-        LOCAL_API_URL = 'http://localhost:4000'
+        CYPRESS_USER_NAME = 'Agustin Dangelo'
+        CYPRESS_USER_PASSWORD = credentials('USER_PASSWORD')
+        CYPRESS_LOCAL_API_URL = 'http://localhost:4000'
         CYPRESS_DASHBOARD_API_KEY = credentials('CYPRESS_DASHBOARD_API_KEY')
     }
 
@@ -45,9 +43,6 @@ pipeline {
             steps {
                 sh '''
                     CYPRESS_INCLUDE_TAGS=${TAG} \
-                    CYPRESS_USER_EMAIL=${USER_EMAIL} \
-                    CYPRESS_USER_PASSWORD=${USER_PASSWORD} \
-                    CYPRESS_LOCAL_API_URL=${LOCAL_API_URL} \
                     node cypress/trigger-tests-and-report cypress run \
                     --browser ${BROWSER} \
                     --record \
@@ -64,9 +59,6 @@ pipeline {
             }
             steps {
                 sh '''
-                    CYPRESS_USER_EMAIL=${USER_EMAIL} \
-                    CYPRESS_USER_PASSWORD=${USER_PASSWORD} \
-                    CYPRESS_LOCAL_API_URL=${LOCAL_API_URL} \
                     node cypress/trigger-tests-and-report cypress run \
                     --browser ${BROWSER} \
                     --record \
