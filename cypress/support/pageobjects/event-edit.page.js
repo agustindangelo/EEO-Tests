@@ -1,24 +1,42 @@
 /// <reference types="Cypress"/>
 const Page = require('./page');
 
+/**
+* Methods, properties and selectors for the Edit Event page
+*/
 class EventEdit extends Page {
 
+    /**
+     * @returns the Name field of the event
+     */
     get nameField(){
         return cy.get('#name')
     }
 
+    /**
+     * @returns the Browse Files field of the event
+     */
     get browseFileField() {
         return cy.get('input[type="file"]')
     }
 
+    /**
+     * @returns the 'About this event' field of the event
+     */
     get eventDescriptionField(){
         return cy.get('.ql-editor').eq(0)
     }
 
+    /**
+     * @returns the 'Additional Information' field of the event
+     */
     get eventAdditionalInformationField() {
         return cy.get('.ql-editor').eq(1)
     }
 
+    /**
+     * Fields to set the event information, related to the Date, Start time, Timezone, Event Type and link and/or location
+     */
     eventInformation = {
         date:{
             toggler: () => cy.get('button.toggler'),
@@ -48,9 +66,12 @@ class EventEdit extends Page {
         address: () => cy.get('input[name="address"]'),
         makeItVisibleOption: () => cy.get('input[name="published"]'),
         cancelButton: () => cy.contains('Cancel'),
-        saveButton: () => cy.contains('Save'),
+        saveButton: () => cy.contains('Save')
     }
 
+    /**
+     * Warning and error messages when editing the event information with invalid values and when the changes made will be discarded
+     */
     warnings = {
         missingFields: {
             errorMessage: () => cy.contains('Missing fields'),
@@ -73,26 +94,42 @@ class EventEdit extends Page {
         }
     }
 
+    /**
+     * It receives as a parameter the new name of the event
+     * @param {string} name 
+     */
     editEventName(name){
         this.nameField.click().clear().type(name)
     }
 
+    /**
+     * It receives as a parameter the new description of the event
+     * @param {string} name 
+     */
     editEventDescription(description){
         this.eventDescriptionField.click().clear().type(description)
     }
 
+    /**
+     * It receives as a parameter the new aditional information of the event
+     * @param {string} name 
+     */
     editAdditionalInfo(info){
         this.eventAdditionalInformationField.click().clear().type(info)
     }
 
     /**
-     * 
+     * It puts a new image for the event
      * @param {string} imgPath event's image file path
      */
     uploadNewEventImage(imgPath){
         this.browseFileField.selectFile(imgPath)
     }
 
+    /**
+     * Receives as a parameter the number of a day to be selected in order to set a new date with the same month
+     * @param {number} day 
+     */
     setNewDate(day) {
         this.eventInformation.date.toggler().click()
         this.eventInformation.date.day(day).click()
@@ -101,7 +138,7 @@ class EventEdit extends Page {
     
 
     /**
-     * 
+     * It sets a new hour for the start time of the event
      * @param {string} hour 'HH:MM' format
      */
      setStartTime(hour){
@@ -109,7 +146,7 @@ class EventEdit extends Page {
     }
 
     /**
-     * 
+     * It sets a new timezone for the start time of the event
      * @param {string} timezone Accepted values: 'ARG/URU', 'COL', 'MEX'
      */
      selectTimezone(timezone){
@@ -118,8 +155,8 @@ class EventEdit extends Page {
     }
 
     /**
-     * 
-     * @param {string} timezone Accepted values: 'online', 'inplace', 'hybrid'
+     * It changes the event type
+     * @param {string} eventType Accepted values: 'online', 'inplace', 'hybrid'
      */
      selectEventType(eventType){
         switch(eventType.toLowerCase()){
@@ -140,7 +177,7 @@ class EventEdit extends Page {
     }
     
     /**
-     * 
+     * It sets a new url of an online/hybrid event
      * @param {string} link url of the online/hybrid event
      */
     editEventLink(link){
@@ -148,7 +185,7 @@ class EventEdit extends Page {
     }
 
     /**
-     * 
+     * It sets a new city for the event
      * @param {string} city Accepted values:  'Bogotá', 'Buenos Aires', 'Medellin', 'Monterrey', 'Montevideo', 'Rosario', 'Other'
      */
     selectLocation(city){
@@ -156,18 +193,31 @@ class EventEdit extends Page {
         this.eventInformation.location.option(city).click()
     }
 
+    /**
+     * It sets a new address of an in place/hybrid event
+     * @param {string} link url of the online/hybrid event
+     */
     editEventAddress(address){
         this.eventInformation.address().click().clear().type(address)
     }
 
+    /**
+     * It makes public a DRAFT event
+     */
     makeEventVisible(){
         this.eventInformation.makeItVisibleOption().click()
     }
 
+    /**
+     * It discards all changes made to the event
+     */
     clickCancelButton(){
         this.eventInformation.cancelButton().click()
     }
 
+    /**
+     * It saves all changes made to the event
+     */
     clickSaveButton(){
         this.eventInformation.saveButton().click()
     }

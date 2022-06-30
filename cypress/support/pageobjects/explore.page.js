@@ -1,6 +1,12 @@
 /// <reference types="Cypress"/>
 const Page = require('./page');
 
+/**
+* Methods, properties and selectors for the page in the view of an external user. 
+* It contains the page to explore the public events (baseURL/events), 
+* the page to expand the details of an event (baseURL/events/:id) where an external user can register an inscription
+* and finally the registration form
+*/
 class Explore extends Page{
 
     url = ''
@@ -13,12 +19,27 @@ class Explore extends Page{
         return cy.get('a.eventCard').eq(nth-1);
     }
 
+    /**
+     * Takes the a name of an existing event as input in order to select the card related to that event
+     * @param {string} name 
+     * @returns the DOM element of event's card
+     */
     getEventByName = (name) => cy.get('a.eventCard').contains(name)
     
+    /**
+     * Takes the date of an existing event that matches with the name passed as parameter, as input in order to select the card related to that event
+     * @param {string} name 
+     * @returns the DOM element of event's card
+     */
     getEventCardDateByName(name){
         return cy.contains(name).children('.eventCardDate')
     }
 
+    /**
+     * Takes the time of an existing event that matches with the name passed as parameter, as input in order to select the card related to that event
+     * @param {string} name 
+     * @returns the DOM element of event's card
+     */
     getEventCardTimeByName(name){
         return this.getEventCardDateByName(name).siblings('div').eq(1).children('span').eq(4)
     }
@@ -31,36 +52,60 @@ class Explore extends Page{
         return cy.get(`.sc-kDTinF:nth-child(${nth}) .eventCardBadges > span`)
     }
 
+    /**
+     * @returns the name of an event in the details view
+     */
     get name(){
         return cy.get('h1').first()
     }
 
+    /**
+     * @returns the number of attendees of an event in the details view
+     */
     get attendees() {
         return cy.contains('asistentes')
     }
 
+    /**
+     * @returns the description of an event in the details view
+     */
     get about(){
         return cy.get('h3').contains('Acerca del evento').next()
     }
 
+    /**
+     * @returns the additional information of an event in the details view
+     */
     get additionalInformation() {
         return cy.get('h3').contains('Información adicional').next()
     }
 
+    /**
+     * @returns the div element that contains the date and time (with the respective timezone) of an event in the details view
+     */
     get eventDate(){
         return cy.contains('Fecha y hora').siblings('div').children('div').eq(1)
     }
 
+    /**
+     * @returns the time in a specific timezone (Mexican, Colombian or Argentinean/Uruguayan) of an event in the details view
+     */
     time = { 
         mexicanTime: () => this.eventDate.children('span').eq(0),
         colombianTime: () => this.eventDate.children('span').eq(1),
         argUruTime: () => this.eventDate.children('span').eq(2)
     }
 
+    /**
+     * @returns the link of an online or hybrid event in the details view
+     */
     get link() {
         return cy.contains('virtual').find('a')
     }
 
+    /**
+     * @returns the 'Inscribirse' button in the details view
+     */
     get inscribirseEventoBtn(){
         return cy.contains('Inscribirse').first() //cy.get('button > span:nth-child(1)')
     }
@@ -69,10 +114,16 @@ class Explore extends Page{
         return cy.get("ul[role='listbox']")
     }
 
+    /**
+     * @returns the string of the number of attendees (Ex. 'x asistentes') of an event in the details view
+     */
     get eventAttendees() {
         return cy.contains('asistentes').first().invoke('text')
     }
 
+    /**
+     * The different fields required to register an event inscription in th Registration form, along with the respectives error warnings and messages.
+     */
     formularioInscripcion = {
         nombre: {
             field: () => cy.get("input[name='name']"),
@@ -147,45 +198,80 @@ class Explore extends Page{
         this.formularioInscripcion.email.field().type(email)
     }
 
-   selectPais(pais) {
+    /**
+     * It receives as a parameter the name of a country to be chosen in the dropdown-list
+     * @param {string} pais Accepted values: 'Argentina', 'Uruguay', 'Ireland'
+     */
+    selectPais(pais) {
         this.formularioInscripcion.pais.field().click()
         this.dropdownList.contains(pais).click()
     }
 
+    /**
+     * It receives as a parameter the name of a city of the chosen country in order to select it with the dropdown-list
+     * @param {string} ciudad Accepted values: For Argentina: 'Buenos Aires', 'Rosario', 'Paraná' and 'Tucumán'; for Uruguay; 'Montevideo'; for Ireland: 'Dublin'
+     */
     selectCiudad(ciudad) {
         this.formularioInscripcion.ciudad.field().click()
         cy.contains(ciudad).click()
     }
     
+    /**
+     * It receives as a parameter the name of a company
+     * @param {string} empresa
+     */
     enterEmpresa(empresa) {
         this.formularioInscripcion.empresa.field().type(empresa)
     }
 
+    /**
+     * It receives as a parameter the name of a profession to be chosen in the dropdown-list
+     * @param {string} profesion Accepted values: 'Developer', 'Tester', 'CEO'
+     */
     selectProfesion(profesion) {
         this.formularioInscripcion.profesion.field().click()
         this.dropdownList.contains(profesion).click()
     }
 
+    /**
+     * It receives as a parameter the years of experience in the profession chosen, in order to select it with the dropdown-list
+     * @param {string} experiencia Accepted values: '1 año', '2-3 años', '4-8 años', '8+ años', '10+ años'
+     */
     selectExperiencia(experiencia) {
         this.formularioInscripcion.experiencia.field().click()
         this.dropdownList.contains(experiencia).click()
     }
 
+    /**
+     * It receives as a parameter the english level of the exteral user, in order to select it with the dropdown-list
+     * @param {string} nivel Accepted values: 'O - Principiante', 'A1 - Básico', 'A2 - Pre-intermedio', 'B1 - Intermedio', 'B2 - Intermedio-alto', 'C1 - Avanzado', 'C2 - Bilingue'
+     */
     selectNivelDeIngles(nivel) {
         this.formularioInscripcion.nivelDeIngles.field().click()
         this.dropdownList.contains(nivel).click()
     }
 
+    /**
+     * It receives as a parameter a string to answer the question : Do you know Endava?, in order to select it with the dropdown-list
+     * @param {string} conoce Accepted values: 'Si' and 'No'
+     */
     selectConoceEndava(conoce) {
         this.formularioInscripcion.conocesEndava.field().click()
         this.dropdownList.contains(conoce).click()
     }
 
+    /**
+     * It receives as a parameter a string to answer the question : How did you find out about the event?, in order to select it with the dropdown-list
+     * @param {string} comoSeEntero Accepted values: 'Redes Sociales', 'MeetUp', 'Email', 'Soy Endavan', 'Me invitó un conocido'
+     */
     selectComoTeEnteraste(comoSeEntero) {
         this.formularioInscripcion.comoTeEnteraste.field().click()
         this.dropdownList.contains(comoSeEntero).click({ force: true })
     }
 
+    /**
+     * It clicks the Endava's privacy policies checkbox
+     */
     acceptPolicies() {
         this.formularioInscripcion.termsCheckbox().click()
     }
