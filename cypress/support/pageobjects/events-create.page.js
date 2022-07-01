@@ -26,36 +26,36 @@ class CreateEvent extends Page {
     /**
      * @returns the Name field of the event
      */
-    get nameField(){
+    get nameField() {
         return cy.get('#name')
     }
 
     /**
      * @returns the Browse Files field of the event
      */
-    get browseFileField(){
+    get browseFileField() {
         return cy.get('input[type="file"]')
     }
 
     /**
      * @returns the 'About this event' field of the event
      */
-    get eventDescriptionField(){
+    get eventDescriptionField() {
         return cy.get('.ql-editor').eq(0)
     }
 
     /**
      * @returns the 'Additional Information' field of the event
      */
-    get eventAdditionalInformationField(){
+    get eventAdditionalInformationField() {
         return cy.get('.ql-editor').eq(1)
     }
 
     /**
      * Fields to set the event information, related to the Date, Start time, Timezone, Event Type and link and/or location
      */
-    eventInformation={
-        date:{
+    eventInformation = {
+        date: {
             toggler: () => cy.get('button.toggler'),
             calendarBody: () => cy.get('div.calendarBody'),
             calendarFooter: () => cy.get('footer.calendarFooter'),
@@ -63,11 +63,11 @@ class CreateEvent extends Page {
             selectBtn: () => this.eventInformation.date.calendarFooter().contains('select'),
             clearBtn: () => this.eventInformation.date.calendarFooter().contains('clear')
         },
-        time: () => cy.get('input[type="tel"]'),
+        time: () => cy.get('#time-input'),
         timezone: {
             ddl: () => cy.get('#select-options'),
         },
-        eventTypeOption:{
+        eventTypeOption: {
             online: () => cy.get('input[type="radio"]').eq(0),
             inplace: () => cy.get('input[type="radio"]').eq(1),
             hybrid: () => cy.get('input[type="radio"]').eq(2),
@@ -102,7 +102,7 @@ class CreateEvent extends Page {
             location: () => cy.get('ul > li').contains('Location'),
             date: () => cy.get('ul > li').contains('Date'),
             okButton: () => cy.get('button > span').contains('Got it!')
-            
+
         },
         eventPublished: {
             message: () => cy.contains('Event published successfully!'),
@@ -124,7 +124,7 @@ class CreateEvent extends Page {
      * It receives as a parameter the name of the new event
      * @param {string} name 
      */
-    enterEventName(name){
+    enterEventName(name) {
         this.nameField.type(name)
     }
 
@@ -132,7 +132,7 @@ class CreateEvent extends Page {
      * It receives as a parameter the description of the new event
      * @param {string} description 
      */
-    enterEventDescription(description){
+    enterEventDescription(description) {
         this.eventDescriptionField.type(description)
     }
 
@@ -140,7 +140,7 @@ class CreateEvent extends Page {
      * It receives as a parameter the aditional information of the new event
      * @param {string} info 
      */
-    enterAdditionalInfo(info){
+    enterAdditionalInfo(info) {
         this.eventAdditionalInformationField.type(info)
     }
 
@@ -148,7 +148,7 @@ class CreateEvent extends Page {
      * It puts an image for the new event
      * @param {string} imgPath event's image file path
      */
-    uploadEventImage(imgPath){
+    uploadEventImage(imgPath) {
         this.browseFileField.selectFile(imgPath)
     }
 
@@ -156,7 +156,7 @@ class CreateEvent extends Page {
      * It sets an hour for the start time of the new event
      * @param {string} time 'HH:MM' format
      */
-    setStartTime(time){
+    setStartTime(time) {
         this.eventInformation.time().click().type(time)
     }
 
@@ -173,8 +173,8 @@ class CreateEvent extends Page {
      * It sets the event type
      * @param {string} timezone Accepted values: 'online', 'inplace', 'hybrid'
      */
-    selectEventType(eventType){
-        switch(eventType.toLowerCase()){
+    selectEventType(eventType) {
+        switch (eventType.toLowerCase()) {
             case 'online': {
                 this.eventInformation.eventTypeOption.online().click()
                 break;
@@ -188,14 +188,14 @@ class CreateEvent extends Page {
                 break;
             }
             default: break;
-        }    
+        }
     }
-    
+
     /**
      * It sets the url of an online/hybrid event
      * @param {string} link url of the online/hybrid event
      */
-    enterEventLink(link){
+    enterEventLink(link) {
         this.eventInformation.link().type(link)
     }
 
@@ -203,7 +203,7 @@ class CreateEvent extends Page {
      * It sets the city for the new event
      * @param {string} city Accepted values:  'Bogotá', 'Buenos Aires', 'Medellin', 'Monterrey', 'Montevideo', 'Rosario', 'Other'
      */
-    selectLocation(city){
+    selectLocation(city) {
         this.eventInformation.location.ddl().click()
         this.eventInformation.location.option(city).click()
     }
@@ -212,35 +212,35 @@ class CreateEvent extends Page {
      * It sets the address of an in place/hybrid event
      * @param {string} link url of the online/hybrid event
      */
-    enterEventAddress(address){
+    enterEventAddress(address) {
         this.eventInformation.address().type(address)
     }
 
     /**
      * It makes public the new event
      */
-    makeEventVisible(){
+    makeEventVisible() {
         this.eventInformation.makeItVisibleOption().click()
     }
 
     /**
      * It clicks the 'Cancel' button
      */
-    clickCancelButton(){
+    clickCancelButton() {
         this.eventInformation.cancelButton().click()
     }
 
     /**
      * It saves the created event
      */
-    clickSaveButton(){
+    clickSaveButton() {
         this.eventInformation.saveButton().click()
     }
 
     /**
      * It accepts saving the new event as a Draft
      */
-    saveEventAsDraft(){
+    saveEventAsDraft() {
         this.warnings.saveAsDraft.okButton().click()
     }
 
@@ -267,7 +267,7 @@ class CreateEvent extends Page {
      * @param {string} link the link for a virtual or hybrid event
      * @param {boolean} makeItVisible To make pulic the event or publish it as a Draft
      */
-    createNewEvent(name, image, description, additionalInfo, day, startTime, link, makeItVisible){
+    createNewEvent(name, image, description, additionalInfo, day, startTime, link, makeItVisible) {
         this.enterEventName(name)
         if (image) {
             this.uploadEventImage(image)
@@ -278,22 +278,22 @@ class CreateEvent extends Page {
         this.setStartTime(startTime)
         // this.selectTimezone(timezone) //It is selected with ARG/URU value by default
         this.enterEventLink(link)
-        if (makeItVisible) { 
-            this.makeEventVisible() 
+        if (makeItVisible) {
+            this.makeEventVisible()
             this.clickSaveButton()
             this.warnings.eventPublished.okButton().click()
         }
-        else{
+        else {
             this.clickSaveButton()
-            this.saveEventAsDraft() 
+            this.saveEventAsDraft()
         }
-        
+
     }
 
     /**
      * It cancels the creation of the event
      */
-    cancelEventCreation(){
+    cancelEventCreation() {
         this.cancelButton().click()
         this.warnings.deleteEvent.yesButton().click()
     }

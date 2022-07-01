@@ -20,6 +20,10 @@ describe('Create-event tests', () => {
         const createEvent = new CreateEvent();
         var nameOfNewEvent;
 
+        it.only('search for time picker', () => {
+            createEvent.eventInformation.time().type('12:12')
+        })
+
         it(['HappyPath'], 'should create a public event', () => {
             const startHour = getInteger(0, 23)
             const startMinute = getInteger(0, 59)
