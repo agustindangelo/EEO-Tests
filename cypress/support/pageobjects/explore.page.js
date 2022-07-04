@@ -49,42 +49,42 @@ class Explore extends Page{
      * @returns the DOM element of event state label
      */
     getNthEventState(nth){
-        return cy.get(`.sc-kDTinF:nth-child(${nth}) .eventCardBadges > span`)
+        return cy.get(`.eventCardBadges:nth-child(${nth}) > span`)
     }
 
     /**
      * @returns the name of an event in the details view
      */
     get name(){
-        return cy.get('h1').first()
+        return cy.get('h1[data-testid="name-event"]')
     }
 
     /**
      * @returns the number of attendees of an event in the details view
      */
     get attendees() {
-        return cy.contains('asistentes')
+        return cy.get('[data-testid="attendees-count"]')
     }
 
     /**
      * @returns the description of an event in the details view
      */
     get about(){
-        return cy.get('h3').contains('Acerca del evento').next()
+        return cy.get('[data-testid="about-event"]')
     }
 
     /**
      * @returns the additional information of an event in the details view
      */
     get additionalInformation() {
-        return cy.get('h3').contains('Información adicional').next()
+        return cy.get('[data-testid="additional-information-event"]')
     }
 
     /**
      * @returns the div element that contains the date and time (with the respective timezone) of an event in the details view
      */
     get eventDate(){
-        return cy.contains('Fecha y hora').siblings('div').children('div').eq(1)
+        return cy.get('aside h3').siblings('div').children('div').eq(1)
     }
 
     /**
@@ -100,14 +100,14 @@ class Explore extends Page{
      * @returns the link of an online or hybrid event in the details view
      */
     get link() {
-        return cy.contains('virtual').find('a')
+        return cy.get('aside a')
     }
 
     /**
      * @returns the 'Inscribirse' button in the details view
      */
     get inscribirseEventoBtn(){
-        return cy.contains('Inscribirse').first() //cy.get('button > span:nth-child(1)')
+        return cy.get('[data-testid="register-button"]')
     }
 
     get dropdownList() {
@@ -118,7 +118,7 @@ class Explore extends Page{
      * @returns the string of the number of attendees (Ex. 'x asistentes') of an event in the details view
      */
     get eventAttendees() {
-        return cy.contains('asistentes').first().invoke('text')
+        return this.attendees.invoke('text')
     }
 
     /**
@@ -167,8 +167,8 @@ class Explore extends Page{
         },
         termsCheckbox: () => cy.get('input[name="terms"]'),
         inscribirseBtn: () => cy.get('button[type="submit"]'),
-        successInscriptionMessage: () => cy.contains('¡Nos vemos allí!'),
-        addToCalendarBtn: () => cy.contains('Añadir al calendario'),
+        successInscriptionMessage: () => cy.contains('¡Nos vemos allí!'), //fix selector adding an ID
+        addToCalendarBtn: () => cy.contains('Añadir al calendario'), //fix selector adding an ID
         googleCalendarOption: () => cy.contains('Google'),
         outlookCalendarOption: () => cy.contains('Outlook'),
         duplicatedInscription: () => cy.get('div#duplicated'),

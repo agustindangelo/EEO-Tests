@@ -33,7 +33,7 @@ class Events extends Page{
      * Gets the 'Log Out' displayed after clicking the user button in the navbar
      */
     get logOutBtn(){
-        return cy.contains('Log out')
+        return cy.get('div.actions > button').first()
     }
 
     /**
@@ -108,7 +108,7 @@ class Events extends Page{
      * @returns the DOM element of the event's options
      */
     getNthEventOptions(nth){
-        return cy.get(`div.maxContainer .sc-jIkXHa.RvbSq:nth-child(${nth}) svg`).last() //the selector could be better
+        return cy.get(`div.maxContainer div.MuiGrid-container:nth-child(${nth}) svg`).last()
     }
 
     /**
@@ -125,7 +125,7 @@ class Events extends Page{
      * @returns the DOM element the export option
      */
     get exportEventOption(){
-        return cy.contains('Export attendee list')
+        return cy.get('ul[role="menu"] > li').eq(0)
     }
 
     /**
@@ -133,17 +133,17 @@ class Events extends Page{
      * @returns the DOM element the delete option
      */
     get deleteEventOption(){
-        return cy.contains('Delete')
+        return cy.get('ul[role="menu"] > li').eq(1)
     }
 
     /**
      * The prompt and its fields and elements referred to the deletion of a chosen event
      */
-    deletePrompt = {
-        message: () => cy.contains('Delete this event?'),
-        label: () => cy.contains('This action cannot be restored'),
-        yesOption: () => cy.contains('Yes, delete'),
-        noOption: () => cy.contains('No, cancel'),
+    deletePrompt = { //Add an ID
+        message: () => cy.get('[data-cy="modal-title"]'),
+        label: () => cy.get('[data-cy="modal-description"]'),
+        yesOption: () => cy.get('[data-cy="modal-accept"]'),
+        noOption: () => cy.get('[data-cy="modal-cancel"]')
     }
 
     /**
