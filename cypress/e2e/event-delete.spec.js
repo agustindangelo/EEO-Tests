@@ -14,7 +14,7 @@ describe('Event deletion related tests', () => {
             events.navigate()
         });
         
-        it(['HappyPath'],'should cancel event deletion', function () { // make sure to use traditional function here
+        it(['HappyPath'],'should cancel event deletion', function () {
     
             events.getEventByName(nameOfNewEvent).find('button').click()
             events.deleteEventOption.click()
@@ -28,7 +28,7 @@ describe('Event deletion related tests', () => {
             events.navigate()
         })
     
-        it('should delete an draft event', function () { // make sure to use traditional function here
+        it('should delete a draft event', function () {
     
             events.getEventByName(nameOfNewEvent).find('button').click()
             events.deleteEventOption.click()
@@ -46,7 +46,7 @@ describe('Event deletion related tests', () => {
             events.navigate()
         });
 
-        it('should not be able to delete a public event', function () { // make sure to use traditional function here
+        it('should not be able to delete a public event', function () {
             events.getEventByName(nameOfNewEvent).find('button').click()
             events.deleteEventOption.should('not.exist')
             
@@ -54,6 +54,5 @@ describe('Event deletion related tests', () => {
             cy.deleteEventThroughAPI(nameOfNewEvent)
             events.navigate()
         })    
-       
     })
 })

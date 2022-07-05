@@ -54,7 +54,7 @@ class EventDetail extends Page {
      * @returns the edit button in order to modify the event information
      */
     get editButton() {
-        return cy.get('.MuiButton-root').contains('Edit')
+        return cy.get('[data-testid="edit-button"]')
     }
 
     /**

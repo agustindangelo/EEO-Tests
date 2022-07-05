@@ -1,4 +1,7 @@
 /// <reference types="Cypress"/>
+
+import { find } from 'cypress/types/lodash';
+
 const Page = require('./page');
 
 /**
@@ -12,7 +15,7 @@ class Events extends Page{
      * Gets the '+ Create New Event' button
      */
     get createEventBtn(){
-        return cy.get('main .maxContainer').eq(0).find('button')
+        return cy.get('[data-testid="create-event"]')
     }
     
     /**
@@ -78,7 +81,7 @@ class Events extends Page{
     getNthEventName = (nth) => cy.get('div .eventCardTitle').eq(nth-1)
 
     /**
-     * Receives as a parameter the number of the event in order to get the name of the selected event. DRAFT events are displayed first sorted by creating date
+     * Receives as a parameter the number of the event in order to get the name of the selected event. DRAFT events are displayed first sorted by creation date
      * @param {number} nth 
      * @returns the DOM element of the event's name
      */
@@ -103,12 +106,12 @@ class Events extends Page{
     }
 
     /**
-     * Receives as a parameter the number of the date in order to get the option button of the selected event. DRAFT events are displayed first sorted by creating date
+     * opens the options menu of the Nth event
      * @param {number} nth 
      * @returns the DOM element of the event's options
      */
-    getNthEventOptions(nth){
-        return cy.get(`div.maxContainer div.MuiGrid-container:nth-child(${nth}) svg`).last()
+    openNthEventOptions(nth){
+        this.getNthEvent().find('[data-testid="open-options-button"]').click()
     }
 
     /**
@@ -125,7 +128,7 @@ class Events extends Page{
      * @returns the DOM element the export option
      */
     get exportEventOption(){
-        return cy.get('ul[role="menu"] > li').eq(0)
+        return cy.get('[data-testid="export-option"]')
     }
 
     /**
@@ -133,7 +136,7 @@ class Events extends Page{
      * @returns the DOM element the delete option
      */
     get deleteEventOption(){
-        return cy.get('ul[role="menu"] > li').eq(1)
+        return cy.get('[data-testid="delete-option"]')
     }
 
     /**
@@ -147,7 +150,7 @@ class Events extends Page{
     }
 
     /**
-     *Opens a sub page of the page
+     * Opens a sub page of the page
      */
     navigate(){
         super.navigate(this.url)
@@ -191,14 +194,6 @@ class Events extends Page{
     }
 
     /**
-     * It gets the nth event and the its options are opened
-     * @param {number} event number of the event. DRAFT events are displayed first sorted by creating date
-     */
-    openEventOptions(event){
-        this.getNthEventOptions(event).click()
-    }
-
-    /**
      * It clicks the export option in order to export the attendee list of a chosen event
      * @param {number} event number of the event. 
      */
@@ -211,10 +206,9 @@ class Events extends Page{
      * @param {number} event number of the event. 
      */
     clickDeleteEventOption(event){
-        this.openEventOptions(event)
+        this.openNthEventOptions(event)
         this.deleteEventOption.click()
     }
-
 }
 
 export default Events;

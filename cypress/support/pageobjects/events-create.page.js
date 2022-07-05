@@ -15,14 +15,6 @@ class CreateEvent extends Page {
         super.navigate(this.url)
     }
 
-    // get userInitialsButton(){
-    //     return cy.get('button.initials')
-    // }
-
-    // get logOutBtn(){
-    //     return cy.contains('Log out')
-    // }
-
     /**
      * @returns the Name field of the event
      */
@@ -59,11 +51,11 @@ class CreateEvent extends Page {
             toggler: () => cy.get('button.toggler'),
             calendarBody: () => cy.get('div.calendarBody'),
             calendarFooter: () => cy.get('footer.calendarFooter'),
-            currentDate: (day) => cy.get(`button[data-day="${day}"]`),//cy.get('.sc-dmRaPn.lbgGuQ'),
+            currentDate: (day) => cy.get(`button[data-day="${day}"]`),
             selectBtn: () => this.eventInformation.date.calendarFooter().contains('select'),
             clearBtn: () => this.eventInformation.date.calendarFooter().contains('clear')
         },
-        time: () => cy.get('#time-input'),
+        time: () => cy.get('[data-testid="time-picker"]'),
         timezone: {
             ddl: () => cy.get('#select-options'),
         },
@@ -79,45 +71,16 @@ class CreateEvent extends Page {
         },
         address: () => cy.get('input[name="address"]'),
         makeItVisibleOption: () => cy.get('input[name="published"]'),
-        cancelButton: () => cy.contains('Cancel'),
-        saveButton: () => cy.contains('Save'),
+        cancelButton: () => cy.get('[data-testid="form-cancel"]'),
+        saveButton: () => cy.get('[data-testid="form-submit"]')
     }
 
-    /**
-     * Warning and error messages when entering the new event information with invalid values, 
-     * when making public the new event, when the event is successfully published 
-     * and when the event creation is canceled
-     */
-    warnings = {
-        missingFields: {
-            errorMessage: () => cy.contains('Missing fields'),
-            okButton: () => cy.contains('OK')
-        },
-        mandatoyFieldsBlank: {
-            errorMessage: () => cy.contains('Some mandatory fields are blank'),
-            name: () => cy.get('ul > li').contains('Name'),
-            description: () => cy.get('ul > li').contains('Description'),
-            time: () => cy.get('ul > li').contains('Start Time'),
-            link: () => cy.get('ul > li').contains('Link'),
-            location: () => cy.get('ul > li').contains('Location'),
-            date: () => cy.get('ul > li').contains('Date'),
-            okButton: () => cy.get('button > span').contains('Got it!')
-
-        },
-        eventPublished: {
-            message: () => cy.contains('Event published successfully!'),
-            okButton: () => cy.contains('OK, got it!')
-        },
-        saveAsDraft: {
-            message: () => cy.contains('Save as draft'),
-            okButton: () => cy.contains('Ok, save as draft'),
-            cancelButton: () => cy.contains('No, cancel'),
-        },
-        deleteEvent: {
-            message: () => cy.contains('Delete this event?'),
-            yesButton: () => cy.contains('Yes, delete'),
-            cancelButton: () => cy.contains('No, cancel'),
-        }
+    modal = {
+        title: () => cy.get('[data-testid="modal-title"]'),
+        description: () => cy.get('[data-testid="modal-description"]'),
+        blankFieldsList: () => cy.get('[data-testid="modal-description"]').siblings('ul').find('li'),
+        cancelButton: () => cy.get('[data-testid="modal-cancel"]'),
+        acceptButton: () => cy.get('[data-testid="modal-accept"]')
     }
 
     /**
@@ -160,15 +123,6 @@ class CreateEvent extends Page {
         this.eventInformation.time().click().type(time)
     }
 
-    // /**
-    //  * It sets a timezone for the start time of the new event
-    //  * @param {string} timezone Accepted values: 'ARG/URU', 'COL', 'MEX'
-    //  */
-    // selectTimezone(timezone){
-    //     this.eventInformation.timezone.ddl().click()
-    //     this.eventInformation.timezone.option(timezone).click()
-    // }
-
     /**
      * It sets the event type
      * @param {string} timezone Accepted values: 'online', 'inplace', 'hybrid'
@@ -201,7 +155,7 @@ class CreateEvent extends Page {
 
     /**
      * It sets the city for the new event
-     * @param {string} city Accepted values:  'Bogotá', 'Buenos Aires', 'Medellin', 'Monterrey', 'Montevideo', 'Rosario', 'Other'
+     * @param {string} city Accepted values:  'Bogotá', 'Buenos Aires', 'Medellin', 'Monterrey', 'Montevideo', 'Rosario'
      */
     selectLocation(city) {
         this.eventInformation.location.ddl().click()
@@ -241,7 +195,7 @@ class CreateEvent extends Page {
      * It accepts saving the new event as a Draft
      */
     saveEventAsDraft() {
-        this.warnings.saveAsDraft.okButton().click()
+        this.modal.acceptButton().click()
     }
 
     /**
@@ -281,7 +235,7 @@ class CreateEvent extends Page {
         if (makeItVisible) {
             this.makeEventVisible()
             this.clickSaveButton()
-            this.warnings.eventPublished.okButton().click()
+            this.modal.acceptButton().click()
         }
         else {
             this.clickSaveButton()
@@ -295,7 +249,7 @@ class CreateEvent extends Page {
      */
     cancelEventCreation() {
         this.cancelButton().click()
-        this.warnings.deleteEvent.yesButton().click()
+        this.modal.acceptButton().click()
     }
 }
 
