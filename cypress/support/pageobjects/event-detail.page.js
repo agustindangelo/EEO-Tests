@@ -17,28 +17,28 @@ class EventDetail extends Page {
      * @returns the number of attendees of an event in the details view
      */
     get attendees() {
-        return cy.contains('asistentes')
+        return cy.get('[data-testid="attendees-count"]')
     }
 
     /**
      * @returns the description of an event in the details view
      */
     get about(){
-        return cy.get('h3').contains('Acerca del evento').next()
+        return cy.get('[data-testid="about-event"]')
     }
 
     /**
      * @returns the additional information of an event in the details view
      */
     get additionalInformation() {
-        return cy.get('h3').contains('Información adicional').next()
+        return cy.get('[data-testid="additional-information-event"]')
     }
 
     /**
      * @returns the div element that contains the date and time (with the respective timezone) of an event in the details view
      */
      get eventDate(){
-        return cy.contains('Fecha y hora').siblings('div').children('div').eq(1)
+        return cy.get('aside h3').first().siblings('div').children('div').eq(1)
     }
 
     /**
