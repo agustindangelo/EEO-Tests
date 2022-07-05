@@ -119,13 +119,7 @@ Cypress.Commands.add("registerToEventByApi", (eventId, email) => {
                     recordId 
                 }
             }`
-    })/*.as('create')
-        cy.get('@create').its('status').should('be.eq', 200) 
-        cy.get('@create').its('body').then(body => {
-            expect(body.data.createEvent).to.have.property(recordId)
-        })
-        */ //fix this validation
-        
+    })
 })
 
 /**

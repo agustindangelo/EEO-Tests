@@ -10,12 +10,24 @@ describe('Event deletion related tests', () => {
     })
 
     describe('Draft event', () => {
-        beforeEach(() => {
+        before(() => {
             cy.createEventByApi(nameOfNewEvent, false)
             events.navigate()
         });
+
+        it('should delete a draft event', () => {
+            let event = events.getEventByName(nameOfNewEvent)
+
+            events.openEventOptions(event)
+            events.deleteEventOption.click()
+            events.deletePrompt.message().should('be.visible')
+            events.deletePrompt.yesOption().click()
+
+            event.should('not.be', 'visible')
+        })
+ 
         
-        it(['HappyPath'],'should cancel event deletion', () => {
+        it.only(['HappyPath'], 'should cancel event deletion', () => {
             let event = events.getEventByName(nameOfNewEvent)
 
             events.openEventOptions(event)
@@ -29,18 +41,7 @@ describe('Event deletion related tests', () => {
             cy.deleteEventThroughAPI(nameOfNewEvent)
             events.navigate()
         })
-    
-        it('should delete a draft event', () => {
-            let event = events.getEventByName(nameOfNewEvent)
-
-            events.openEventOptions(event)
-            events.deleteEventOption.click()
-            events.deletePrompt.message().should('be.visible')
-            events.deletePrompt.yesOption().click()
-
-            event.should('not.be', 'visible')
-        })
-    })
+   })
 
     describe('Public event', () => {
         beforeEach(() => {
@@ -53,10 +54,6 @@ describe('Event deletion related tests', () => {
 
             events.openEventOptions(event)
             events.deleteEventOption.should('not.exist')
-            
-            //delete the created event
-            cy.deleteEventThroughAPI(nameOfNewEvent)
-            events.navigate()
         })    
 
         afterEach(function() {
