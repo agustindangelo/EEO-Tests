@@ -74,23 +74,24 @@ class EventEdit extends Page {
      */
     warnings = {
         missingFields: {
-            errorMessage: () => cy.contains('Missing fields'),
-            okButton: () => cy.contains('OK')
+            errorMessage: () => cy.get('[data-testid="modal-title"]'),
+            okButton: () =>  cy.get('[data-testid="modal-accept"]')
         },
         mandatoyFieldsBlank: {
-            errorMessage: () => cy.contains('Some mandatory fields are blank'),
-            name: () => cy.get('ul > li').contains('Name'),
-            description: () => cy.get('ul > li').contains('Description'),
-            time: () => cy.get('ul > li').contains('Start Time'),
-            link: () => cy.get('ul > li').contains('Link'),
-            location: () => cy.get('ul > li').contains('Location'),
-            date: () => cy.get('ul > li').contains('Date'),
-            okButton: () => cy.get('button > span').contains('Got it!')
+            errorMessage: () => cy.get('[data-testid="modal-title"]'),
+            fieldsList: () => cy.get('ul > li'),
+            // name: () => cy.get('ul > li').contains('Name'),
+            // description: () => cy.get('ul > li').contains('Description'),
+            // time: () => cy.get('ul > li').contains('Start Time'),
+            // link: () => cy.get('ul > li').contains('Link'),
+            // location: () => cy.get('ul > li').contains('Location'),
+            // date: () => cy.get('ul > li').contains('Date'),
+            okButton: () => cy.get('[data-testid="modal-accept"]')
         },
         discardChanges: {
-            message: () => cy.contains('Discard changes?'),
-            yesButton: () => cy.contains('Yes, discard'),
-            cancelButton: () => cy.contains('No, cancel'),
+            message: () => cy.get('[data-testid="modal-title"]'),
+            yesButton: () => cy.get('[data-testid="modal-accept"]'),
+            cancelButton: () => cy.get('[data-testid="modal-cancel"]'),
         }
     }
 

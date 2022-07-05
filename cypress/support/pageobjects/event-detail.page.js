@@ -17,28 +17,28 @@ class EventDetail extends Page {
      * @returns the number of attendees of an event in the details view
      */
     get attendees() {
-        return cy.contains('asistentes')
+        return cy.get('[data-testid="attendees-count"]')
     }
 
     /**
      * @returns the description of an event in the details view
      */
     get about(){
-        return cy.get('h3').contains('Acerca del evento').next()
+        return cy.get('[data-testid="about-event"]')
     }
 
     /**
      * @returns the additional information of an event in the details view
      */
     get additionalInformation() {
-        return cy.get('h3').contains('Información adicional').next()
+        return cy.get('[data-testid="additional-information-event"]')
     }
 
     /**
      * @returns the div element that contains the date and time (with the respective timezone) of an event in the details view
      */
      get eventDate(){
-        return cy.contains('Fecha y hora').siblings('div').children('div').eq(1)
+        return cy.get('aside h3').first().siblings('div').children('div').eq(1)
     }
 
     /**
@@ -69,10 +69,10 @@ class EventDetail extends Page {
      */
     warnings = {
         makeEventPublic:{
-            message: () => cy.contains('Make this event public?'),
-            description: () => cy.contains('Making this event public means it will be visible to anyone outside Endava who visits eeo.com or has the event URL.'),
-            yesButton: () => cy.get('button > span').contains('Yes, make public'),
-            noButton: () => cy.get('button > span').contains('No, cancel')
+            message: () => cy.get('[data-testid="modal-title"]'),
+            description: () => cy.get('[data-testid="modal-description"]'),
+            yesButton: () => cy.get('[data-testid="modal-accept"]'),
+            noButton: () => cy.get('[data-testid="modal-cancel"]')
         }
     }
 
@@ -80,21 +80,21 @@ class EventDetail extends Page {
      * @returns the link of an online or hybrid event in the details view
      */
     get link() {
-        return cy.contains('virtual').find('a')
+        return cy.get('aside h3').first().siblings('div').eq(1).find('a')
     }
 
     /**
      * @returns the 'Share LinkedIn' button
      */
     get shareLinkedIn() {
-        return cy.contains('Visibility & Sharing').siblings('button').eq(0)
+        return cy.get('aside h3').eq(1).siblings('button').eq(0)
     }
 
     /**
      * @returns the 'Copy URL' button
      */
     get copyUrl() {
-        return cy.contains('Visibility & Sharing').siblings('button').eq(1)
+        return cy.get('aside h3').eq(1).siblings('button').eq(1)
     }
 
     /**

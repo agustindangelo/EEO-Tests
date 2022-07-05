@@ -20,10 +20,10 @@ describe('Verify data displayed on the event details page', () => {
     events.getEventByName(eventName).click();
 
     eventDetail.name.should('have.text', eventName);
-    eventDetail.attendees.should('contain.text', '0 asistentes');
+    eventDetail.attendees.should('contain.text', '0');
     eventDetail.about.should('have.text', 'description');
     eventDetail.link.should('have.text', 'event-api.com');
-    eventDetail.additionalInformation.should('have.text', 'bla');
+    eventDetail.additionalInformation.should('contain.text', 'bla');
     eventDetail.visibilitySwitch.should('not.be.checked');
   })
 
