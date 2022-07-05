@@ -69,10 +69,10 @@ class EventDetail extends Page {
      */
     warnings = {
         makeEventPublic:{
-            message: () => cy.contains('Make this event public?'),
-            description: () => cy.contains('Making this event public means it will be visible to anyone outside Endava who visits eeo.com or has the event URL.'),
-            yesButton: () => cy.get('button > span').contains('Yes, make public'),
-            noButton: () => cy.get('button > span').contains('No, cancel')
+            message: () => cy.get('[data-testid="modal-title"]'),
+            description: () => cy.get('[data-testid="modal-description"]'),
+            yesButton: () => cy.get('[data-testid="modal-accept"]'),
+            noButton: () => cy.get('[data-testid="modal-cancel"]')
         }
     }
 
@@ -80,21 +80,21 @@ class EventDetail extends Page {
      * @returns the link of an online or hybrid event in the details view
      */
     get link() {
-        return cy.contains('virtual').find('a')
+        return cy.get('aside h3').first().siblings('div').eq(1).find('a')
     }
 
     /**
      * @returns the 'Share LinkedIn' button
      */
     get shareLinkedIn() {
-        return cy.contains('Visibility & Sharing').siblings('button').eq(0)
+        return cy.get('aside h3').eq(1).siblings('button').eq(0)
     }
 
     /**
      * @returns the 'Copy URL' button
      */
     get copyUrl() {
-        return cy.contains('Visibility & Sharing').siblings('button').eq(1)
+        return cy.get('aside h3').eq(1).siblings('button').eq(1)
     }
 
     /**
