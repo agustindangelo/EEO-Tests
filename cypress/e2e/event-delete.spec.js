@@ -4,19 +4,21 @@ import Events from '../support/pageobjects/events.page'
 describe('Event deletion related tests', () => {
     const events = new Events();
     var nameOfNewEvent = 'Event to be deleted';
-    beforeEach(()=>{
+
+    beforeEach(() => {
         cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
     })
 
-    describe('Draft event', ()=>{
+    describe('Draft event', () => {
         beforeEach(() => {
             cy.createEventByApi(nameOfNewEvent, false)
             events.navigate()
         });
         
-        it(['HappyPath'],'should cancel event deletion', function () {
-    
-            events.getEventByName(nameOfNewEvent).find('button').click()
+        it(['HappyPath'],'should cancel event deletion', () => {
+            let event = events.getEventByName(nameOfNewEvent)
+
+            events.openEventOptions(event)
             events.deleteEventOption.click()
             events.deletePrompt.message().should('be.visible')
             events.deletePrompt.noOption().click()
@@ -28,31 +30,37 @@ describe('Event deletion related tests', () => {
             events.navigate()
         })
     
-        it('should delete a draft event', function () {
-    
-            events.getEventByName(nameOfNewEvent).find('button').click()
+        it('should delete a draft event', () => {
+            let event = events.getEventByName(nameOfNewEvent)
+
+            events.openEventOptions(event)
             events.deleteEventOption.click()
             events.deletePrompt.message().should('be.visible')
             events.deletePrompt.yesOption().click()
-            cy.contains('Changes saved succesfully')
-    
+
+            event.should('not.be', 'visible')
         })
     })
 
-    describe('Public event', ()=>{
-        
+    describe('Public event', () => {
         beforeEach(() => {
             cy.createEventByApi(nameOfNewEvent, true)
             events.navigate()
         });
 
         it('should not be able to delete a public event', function () {
-            events.getEventByName(nameOfNewEvent).find('button').click()
+            let event = events.getEventByName(nameOfNewEvent)
+
+            events.openEventOptions(event)
             events.deleteEventOption.should('not.exist')
             
             //delete the created event
             cy.deleteEventThroughAPI(nameOfNewEvent)
             events.navigate()
         })    
+
+        afterEach(function() {
+            cy.deleteEventThroughAPI(nameOfNewEvent)
+        })
     })
 })

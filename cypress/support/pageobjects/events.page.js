@@ -114,6 +114,10 @@ class Events extends Page{
         this.getNthEvent().find('[data-testid="open-options-button"]').click()
     }
 
+    openEventOptions(event) {
+        event.find('[data-testid="open-options-button"]').click()
+    }
+
     /**
      * Receives as a parameter the number of the date in order to get the title of the selected event. DRAFT events are displayed first sorted by creating date
      * @param {number} nth 
@@ -143,10 +147,10 @@ class Events extends Page{
      * The prompt and its fields and elements referred to the deletion of a chosen event
      */
     deletePrompt = { //Add an ID
-        message: () => cy.get('[data-cy="modal-title"]'),
-        label: () => cy.get('[data-cy="modal-description"]'),
-        yesOption: () => cy.get('[data-cy="modal-accept"]'),
-        noOption: () => cy.get('[data-cy="modal-cancel"]')
+        message: () => cy.get('[data-testid="modal-title"]'),
+        label: () => cy.get('[data-testid="modal-description"]'),
+        yesOption: () => cy.get('[data-testid="modal-accept"]'),
+        noOption: () => cy.get('[data-testid="modal-cancel"]')
     }
 
     /**
