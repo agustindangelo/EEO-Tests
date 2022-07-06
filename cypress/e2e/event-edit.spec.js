@@ -32,7 +32,7 @@ describe('Happy path when editing an event', () => {
         events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
     })
 
-    it.only(['HappyPath'],'should make public a draft event', () => {
+    it.skip(['HappyPath'],'should make public a draft event', () => {
         
         events.getEventByName(nameOfNewEvent).click()
         eventDetails.shareLinkedIn.should('be.disabled')
@@ -96,6 +96,7 @@ describe('Happy path when editing an event', () => {
         eventDetails.openEditForm()
         eventEdit.nameField.clear()
         eventEdit.clickSaveButton()
+        cy.log('BUG')
         eventEdit.warnings.missingFields.errorMessage().should('be.visible')
         eventEdit.warnings.missingFields.okButton().should('be.visible')
     })

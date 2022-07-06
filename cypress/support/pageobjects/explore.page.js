@@ -56,7 +56,7 @@ class Explore extends Page{
      * @returns the name of an event in the details view
      */
     get name(){
-        return cy.get('h1[data-testid="name-event"]')
+        return cy.get('[data-testid="event-name"]')
     }
 
     /**
@@ -253,11 +253,11 @@ class Explore extends Page{
 
     /**
      * It receives as a parameter a string to answer the question : Do you know Endava?, in order to select it with the dropdown-list
-     * @param {string} conoce Accepted values: 'Si' and 'No'
+     * @param {number} conoce Accepted values: 0 for Affirmative and 1 for Negative
      */
     selectConoceEndava(conoce) {
         this.formularioInscripcion.conocesEndava.field().click()
-        this.dropdownList.contains(conoce).click()
+        this.dropdownList.find('li').eq(conoce).click()
     }
 
     /**

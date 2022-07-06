@@ -49,3 +49,30 @@ export const hourToAmPm = (hour) => {
     let email = emails[randomPos]
     return email
   }
+
+  /**
+   * It turn a date into a MM/DD/YYYY format
+   * @param {string} date A date with the 'Day, Mon DD, YYYY' format, ex. 'Monday, May 5, 2022'
+   * @returns {string} The formated date
+   */ 
+  export const changeDateFormatToMMDDYYY = (date) =>{
+    let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    let dateArray = date.split(' ') //['Day,', 'Month', 'day,', 'year']
+    let month = dateArray[1]
+    let day = dateArray[2].split(',')[0] //to erase the ',' from the day
+    month = months.indexOf(month) + 1 //get the position of the month in the array and add 1 because the array index starts with 0
+    let year = dateArray[3]
+    return month + '/' + day + '/' + year
+  }
+
+  /**
+   * It get today's date and put it into an array. It also erases the '0' in one-digit days (Ex. '06' --> '6')
+   * @returns An array with today's date, [Mon, DD, YYYY]. Ex ['May', '15', '2022']
+   */
+  export const getTodayDateArray = () => {
+    let today = new Date().toDateString().split(' ') // the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
+    let month = today[1]
+    let day = ((today[2])[0] =='0')?(today[2])[1]:(today[2]) //Ex. turn day '06' to '6'
+    let year = today[3]
+    return [month, day, year]
+  }

@@ -2,7 +2,7 @@
 import { create } from 'cypress/types/lodash';
 import CreateEvent from '../support/pageobjects/events-create.page'
 import Events from '../support/pageobjects/events.page'
-import { getInteger, hourToAmPm } from '../support/util'
+import { getInteger, hourToAmPm, getTodayDateArray } from '../support/util'
 
 describe('Create-event tests', () => {
 
@@ -15,13 +15,13 @@ describe('Create-event tests', () => {
         events.createEventBtn.click()
     })
 
-    describe.only('Happy path when creating a new event', () => {
+    describe('Happy path when creating a new event', () => {
 
         const events = new Events();
         const createEvent = new CreateEvent();
         var nameOfNewEvent;
 
-        it.only(['HappyPath'], 'should create a public event', () => {
+        it(['HappyPath'], 'should create a public event', () => {
             const startHour = getInteger(0, 23)
             const startMinute = getInteger(0, 59)
             let date = new Date()
@@ -41,15 +41,15 @@ describe('Create-event tests', () => {
             )
             events.navigate() // the new event shoud be added to the events page
             events.getEventByName(nameOfNewEvent).should('be.visible')
-            // let eventDate = new Date().toDateString().split(' ') // the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
-            // events.getEventDateByEventName(nameOfNewEvent).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
-            // events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
+
+            events.getEventDateByEventName(nameOfNewEvent).should('contain.text', getTodayDateArray()[0]).and('contain.text',  getTodayDateArray()[1]).and('contain.text',  getTodayDateArray()[2]) //validating the Month, day and year
+            events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
             events.getEventStateByEventName(nameOfNewEvent).should('not.contain.text', 'DRAFT')
             events.getEventAttendeesByEventName(nameOfNewEvent).should('contain.text', '0 attendees')
 
         })
 
-        it(['HappyPath'], 'should create a draft event', () => {
+        it.only(['HappyPath'], 'should create a draft event', () => {
             const startHour = getInteger(0, 23)
             const startMinute = getInteger(0, 59)
             let currentDate = new Date().getDate()
@@ -66,9 +66,9 @@ describe('Create-event tests', () => {
                 false // set the event as draft
             )
             events.navigate() // the new event shoud be added to the events page
-            // let eventDate = new Date().toDateString().split(' ') // the event was created with today's date. Ex. of eventDate: ['Wed', 'Jun', '15', '2022']
-            // events.getEventDateByEventName(nameOfNewEvent).should('contain.text', eventDate[1]).and('contain.text', eventDate[2]).and('contain.text', eventDate[3]) //validating the Month, day and year
-            // events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
+
+            events.getEventDateByEventName(nameOfNewEvent).should('contain.text', getTodayDateArray()[0]).and('contain.text',  getTodayDateArray()[1]).and('contain.text',  getTodayDateArray()[2]) //validating the Month, day and year
+            events.getEventDateByEventName(nameOfNewEvent).should('contain.text', `${hourToAmPm(startHour)}:${startMinute}`)
             events.getEventStateByEventName(nameOfNewEvent).should('contain.text', 'DRAFT')
             events.getEventAttendeesByEventName(nameOfNewEvent).should('contain.text', '0 attendees')
         })
