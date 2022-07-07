@@ -38,8 +38,7 @@ describe('Event registration functionality', () => {
         })
     })
 
-    //FIX when the app works
-    it.skip(['HappyPath'], 'should register as an attendee for the first event on the explore page', function() {
+    it(['HappyPath'], 'should register as an attendee for the first event on the explore page', function() {
         //An event is created
         cy.createEventByApi(nameOfNewEvent, true)
 
@@ -51,7 +50,7 @@ describe('Event registration functionality', () => {
 
         // act
         explore.enterNombre('agustin')
-        explore.enterEmail(invalidEmail())
+        explore.enterEmail(getRandomEmail())
         explore.selectPais('Argentina')
         explore.selectCiudad('Paraná')
         explore.enterEmpresa('en la fortaleza')
@@ -64,8 +63,10 @@ describe('Event registration functionality', () => {
         explore.formularioInscripcion.inscribirseBtn().click()
 
         // assert
-        cy.contains('¡Nos vemos allí!')
-        cy.contains('Aceptar').click()
+        explore.formularioInscripcion.addToCalendarBtn().should('be.visible')
+        explore.formularioInscripcion.addToCalendarBtn().click()
+        explore.formularioInscripcion.googleCalendarOption().should('be.visible')
+        explore.formularioInscripcion.outlookCalendarOption().should('be.visible')
         cy.reload()
         cy.get('@prevAttendees').then(val => {
             cy.log(val)
@@ -75,8 +76,7 @@ describe('Event registration functionality', () => {
         })
     })
 
-    //FIX when the app works
-    it.skip('should not be able to register twice to an event', () => {
+    it.only('should not be able to register twice to an event', () => {
         //An event is created and an inscription is registered for this event
         cy.createEventByApi(nameOfNewEvent, true).its('body').then(body => {
             let eventId = body.data.createEvent.recordId
@@ -91,7 +91,7 @@ describe('Event registration functionality', () => {
 
         // event registration
         explore.enterNombre('agustin')
-        explore.enterEmail(invalidEmail())
+        explore.enterEmail(email)
         explore.selectPais('Argentina')
         explore.selectCiudad('Paraná')
         explore.enterEmpresa('en la fortaleza')
@@ -211,8 +211,5 @@ describe('Event registration functionality', () => {
     afterEach(function() {
         cy.deleteEventThroughAPI(nameOfNewEvent)
     })
-})
-
-it.skip('sadsa',function() {
-    cy.deleteEventThroughAPI('Event for inscription')
+    
 })

@@ -168,9 +168,9 @@ class Explore extends Page{
         termsCheckbox: () => cy.get('input[name="terms"]'),
         inscribirseBtn: () => cy.get('button[type="submit"]'),
         successInscriptionMessage: () => cy.contains('¡Nos vemos allí!'), //fix selector adding an ID
-        addToCalendarBtn: () => cy.contains('Añadir al calendario'), //fix selector adding an ID
-        googleCalendarOption: () => cy.contains('Google'),
-        outlookCalendarOption: () => cy.contains('Outlook'),
+        addToCalendarBtn: () => cy.get('[data-testid="add-to-calendar-button"]'), //fix selector adding an ID
+        googleCalendarOption: () => cy.get('ul > li').contains('Google'),
+        outlookCalendarOption: () => cy.get('ul > li').contains('Outlook'),
         duplicatedInscription: () => cy.get('div#duplicated'),
         emptyTermsErrorMessage: () =>  cy.get('.termsAndConditions')
     }
