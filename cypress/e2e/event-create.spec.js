@@ -49,7 +49,7 @@ describe('Create-event tests', () => {
 
         })
 
-        it.only(['HappyPath'], 'should create a draft event', () => {
+        it(['HappyPath'], 'should create a draft event', () => {
             const startHour = getInteger(0, 23)
             const startMinute = getInteger(0, 59)
             let currentDate = new Date().getDate()

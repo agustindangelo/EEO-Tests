@@ -10,10 +10,6 @@ pipeline {
         CYPRESS_DASHBOARD_API_KEY = credentials('CYPRESS_DASHBOARD_API_KEY')
     }
 
-    options {
-        ansiColor('xterm')
-    }
-
     parameters {
         choice(
             name: 'TAG',
