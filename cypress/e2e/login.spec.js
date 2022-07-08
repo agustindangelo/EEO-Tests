@@ -18,7 +18,7 @@ describe('Login tests', () => {
             events.userName.should('have.text', Cypress.env('USER_NAME'))
         })
     
-        it(['HappyPath'],'should log out', () => {
+        it.only(['HappyPath'],'should log out', () => {
             login.navigate()
             login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
             events.logOut()

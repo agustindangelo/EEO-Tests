@@ -10,12 +10,12 @@ describe('Event deletion related tests', () => {
     })
 
     describe('Draft event', () => {
-        before(() => {
+        beforeEach(() => {
             cy.createEventByApi(nameOfNewEvent, false)
             events.navigate()
         });
 
-        it('should delete a draft event', () => {
+        it(['HappyPath'],'should delete a draft event', () => {
             let event = events.getEventByName(nameOfNewEvent)
 
             events.openEventOptions(event)
@@ -27,7 +27,7 @@ describe('Event deletion related tests', () => {
         })
  
         
-        it.only(['HappyPath'], 'should cancel event deletion', () => {
+        it('should cancel event deletion', () => {
             let event = events.getEventByName(nameOfNewEvent)
 
             events.openEventOptions(event)

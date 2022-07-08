@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "cy:ui": "npx cypress open",
-        "cy:run": "node cypress/trigger-tests-and-report.js"
+        "cy:run": "node cypress/trigger-tests-and-report cypress run"
     },
     "repository": {
         "type": "git",
