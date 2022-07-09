@@ -24,9 +24,16 @@ pipeline {
     }
     
     stages {
-        stage('Install dependencies') {
+        stage('Build') {
             steps {
-                sh 'npm ci'
+                dir('/home/adangelo/code/eeo/eeoservice') {
+                    sh 'npm ci'
+                    sh 'node App.js'
+                }
+                dir('/home/adangelo/code/eeo/eeoweb') {
+                    sh 'npm run build'
+                    sh 'npx serve -s build'
+                }
             }
         }
 
