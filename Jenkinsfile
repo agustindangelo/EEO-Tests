@@ -52,37 +52,36 @@ pipeline {
         }
       }
 
-      stage('Run tests with a tag') {
-        when {
-          expression {
-            return params.TAG != 'EntireSuite'
-          }
-        }
-        steps {
-          sh '''
-            CYPRESS_INCLUDE_TAGS=${TAG} \
-            node cypress/trigger-tests-and-report cypress run \
-            --browser ${BROWSER} \
-            --record \
-            --key ${CYPRESS_DASHBOARD_API_KEY}
-          '''
+    stage('Run tests with a tag') {
+      when {
+        expression {
+          return params.TAG != 'EntireSuite'
         }
       }
+      steps {
+        sh '''
+          CYPRESS_INCLUDE_TAGS=${TAG} \
+          node cypress/trigger-tests-and-report cypress run \
+          --browser ${BROWSER} \
+          --record \
+          --key ${CYPRESS_DASHBOARD_API_KEY}
+        '''
+      }
+    }
 
-      stage('Run the entire test suite') {
-        when {
-          expression {
-            return params.TAG == 'EntireSuite'
-          }
+    stage('Run the entire test suite') {
+      when {
+        expression {
+          return params.TAG == 'EntireSuite'
         }
-        steps {
-          sh '''
-            node cypress/trigger-tests-and-report cypress run \
-            --browser ${BROWSER} \
-            --record \
-            --key ${CYPRESS_DASHBOARD_API_KEY}
-          '''
-        }
+      }
+      steps {
+        sh '''
+          node cypress/trigger-tests-and-report cypress run \
+          --browser ${BROWSER} \
+          --record \
+          --key ${CYPRESS_DASHBOARD_API_KEY}
+        '''
       }
     }
   }
