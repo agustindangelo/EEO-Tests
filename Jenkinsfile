@@ -26,17 +26,24 @@ pipeline {
     }
     
     stages {
-        parallel {
-            stage('Build') {
-                steps {
-                    dir('/home/adangelo/code/eeo/eeoservice') {
-                        sh 'npm ci'
-                        sh 'node App.js'
+        stage('Build') {
+            parallel {
+                stage('Run service') {
+                    steps {
+                        dir('/home/adangelo/code/eeo/eeoservice') {
+                            sh 'npm ci'
+                            sh 'node App.js'
+                        }
                     }
-                    dir('/home/adangelo/code/eeo/eeoweb') {
-                        sh 'npm run build'
-                        sh 'npx serve -s build'
-                    }
+                }
+
+                stage('Build and run web app') {
+                    steps {
+                        dir('/home/adangelo/code/eeo/eeoweb') {
+                            sh 'npm run build'
+                            sh 'npx serve -s build'
+                        }
+                    }  
                 }
             }
         }
