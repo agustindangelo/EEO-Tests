@@ -10,7 +10,7 @@ pipeline {
     }
 
     environment {
-        USER_EMAIL = 'agustin.dangelo@endava.com'
+        CYPRESS_USER_EMAIL = 'agustin.dangelo@endava.com'
         CYPRESS_USER_NAME = 'Agustin Dangelo'
         CYPRESS_USER_PASSWORD = credentials('USER_PASSWORD')
         CYPRESS_LOCAL_API_URL = 'http://localhost:4000'
