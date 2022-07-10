@@ -49,6 +49,12 @@ pipeline {
             }  
         }
 
+        stage('install dependencies for EEO-Tests project') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+
         stage('Run tests with a tag') {
             when {
                 expression {
