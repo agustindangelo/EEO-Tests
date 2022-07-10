@@ -5,6 +5,10 @@ pipeline {
     nodejs 'local-16.15.0'    
   }
 
+  options {
+    ansiColor('xterm')
+  }
+
   environment {
     USER_EMAIL = 'agustin.dangelo@endava.com'
     CYPRESS_USER_NAME = 'Agustin Dangelo'
