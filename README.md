@@ -42,18 +42,18 @@ powershell:
 # Setup a Jenkins local instance
 1. Download the [latest stable Jenkins WAR file](https://www.jenkins.io/download/) to an appropriate directory on your machine.
 2. Run the jenkins instance with `java -Dhudson.model.DirectoryBrowserSupport.CSP="" -jar jenkins.war` and navigate to `http://localhost:8080`. The first time you will be asked for a password. Refer to the official documentation for any inconveniences: https://www.jenkins.io/doc/book/installing/war-file/
-3. Create a new pipeline by clicking the `New Item` button on the Jenkins' UI. You can name it "eeo-pipeline".
-4. On the pipeline configuration page, scroll down to the **Pipeline** section or click on the **Pipeline** tab.
-5. On the **Definition** field, select "Pipeline script from SCM"
-6. On the SCM field, select Git.
-7. On the repository URL, enter the GitHub repo URL: https://github.com/agustindangelo/EEO-Tests. A red message saying that Jenkins couldn't connect to the repository may appear. That's why we need to grant Jenkins access to read the repository and your GitHub account user information.
-8. In order to grant access to Jenkins, you need to create an access token on your Github account with scopes "repo" and "user". You can name it something like "jenkins-access-token".
-![Access token](docs/access-token.png)
-9. Copy the access token and go back to Jenkins. click on the **Add** button below the repository URL and select Jenkins to create a new credential.
-10. In the **Username** field, paste your GitHub username and paste the access token in the **Password** field.
-11. Save the credential. Now the red message saying that Jenkins couldn't connect to the repo should disappear from the screen.
+3. Once you have logged into Jenkins, go to `Manage Jenkins` > `Manage Plugins` > Click on `Available` and install the following plugins:
+- AnsiColor: to colorize jobs terminal output on the Jenkins UI.
+- NodeJS plugin: to set up Node in your Jenkins instance in order to run Node commands during build steps.
+- HTML publisher: to publish HTML test reports after the builds. 
+4. After restarting Go to `Manage Jenkins` > `Global Tool Configuration` > Scroll down to NodeJS and Add a NodeJS installation. You can use the one available in your system by unchecking `Install automatically` and providing the path to your NodeJS installation. As I was running Ubuntu and I installed NodeJS with NVM, my NodeJS installation was in `/home/adangelo/.nvm/versions/node/v16.15.0/` so I named the installation `local-16.15.0`. We will use this later name in our pipeline definition. If you are on Windows, you can check where your NodeJS installation is located by executing `where.exe node` from the command line.
+5. Now, go back to the Jenkins Dashboard and create a new pipeline by clicking the `New Item` button on the Jenkins' UI. You can name something like it "eeo-pipeline".
+6. On the pipeline configuration page, scroll down to the **Pipeline** section or click on the **Pipeline** tab.
+7. On the **Definition** field, select "Pipeline script from SCM"
+8. On the SCM field, select Git.
+9. On the repository URL, enter the GitHub repo URL: https://github.com/agustindangelo/EEO-Tests.
 ![SCM Pipeline setting](docs/pipeline-settings.png)
-12. In the **Script Path** field, type "Jenkinsfile" and Save the pipeline.
-13. From the Jenkins Dashboard, go to `Manage Jenkins` > `Manage Plugins` and install the plugin **AnsiColor** to colorize commands output during the build.
-14. From the Jenkins Dashboard, navigate to `Manage Jenkins` > `Credentials`, click on the Jenkins entry below the **Stores scoped to Jenkins** dialog, click on `Global credentials (unrestricted)`, click on `+ Add Credentials` and create a **Secret text** type of credential with ID `USER_PASSWORD` and type your EEO password as secret value.
-14. From the Jenkins dashboard, click on your recently created pipeline and click on the **Build now** button.
+10. In the **Script Path** field, type "Jenkinsfile" and Save the pipeline.
+11. From the Jenkins Dashboard, navigate to `Manage Jenkins` > `Credentials`, click on the Jenkins entry below the **Stores scoped to Jenkins** dialog, click on `Global credentials (unrestricted)`, click on `+ Add Credentials` and create a **Secret text** type of credential with ID `USER_PASSWORD` and type your EEO password as secret value.
+12. Repeat the previous step and create a credential to store Cypress dashboard API key. Name it `CYPRESS_DASHBOARD_API_KEY`.
+13. From the Jenkins dashboard, click on your recently created pipeline and click on the **Build now** button. The first build will fail as Jenkins continues the build without assigning the pipeline parameters. From now on, the **Build now** button should display **Build now with parameters**.
