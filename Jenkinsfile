@@ -1,6 +1,8 @@
 pipeline {
 
-    agent any
+    agent {
+        docker { image 'node:16.13.1-alpine' }
+    }
 
     environment {
         USER_EMAIL = 'agustin.dangelo@endava.com'
@@ -24,15 +26,17 @@ pipeline {
     }
     
     stages {
-        stage('Build') {
-            steps {
-                dir('/home/adangelo/code/eeo/eeoservice') {
-                    sh 'npm ci'
-                    sh 'node App.js'
-                }
-                dir('/home/adangelo/code/eeo/eeoweb') {
-                    sh 'npm run build'
-                    sh 'npx serve -s build'
+        parallel {
+            stage('Build') {
+                steps {
+                    dir('/home/adangelo/code/eeo/eeoservice') {
+                        sh 'npm ci'
+                        sh 'node App.js'
+                    }
+                    dir('/home/adangelo/code/eeo/eeoweb') {
+                        sh 'npm run build'
+                        sh 'npx serve -s build'
+                    }
                 }
             }
         }
