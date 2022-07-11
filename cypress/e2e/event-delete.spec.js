@@ -41,6 +41,7 @@ describe('Event deletion related tests', () => {
             cy.deleteEventThroughAPI(nameOfNewEvent)
             events.navigate()
         })
+        
    })
 
     describe('Public event', () => {
