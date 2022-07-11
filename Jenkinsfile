@@ -31,26 +31,37 @@ pipeline {
     }
     
     stages {
-        stage('run api background node process') {
+        stage('checkout and run API node process') {
             steps {
-                dir('/home/adangelo/code/eeo/eeoservice') {
-                    sh 'npm ci'
+                dir('eeoservice') {
+                    git branch: 'develop', credentialsId: '057f3261-bca7-4ffe-abf1-4065193405ab', url: 'https://github.com/manupalacios/eeoservice'
+                    sh 'yarn install'
+                    withCredentials([file(credentialsId: 'eeoservice_env_file', variable: 'FILE')]) {
+                        sh 'cp \$FILE ./.env'
+                    }
                     sh 'node app.js &'
                 }
             }
         }
       
-        stage('build and run client web app') {
+        stage('checkout, build and run client web app') {
             steps {
-                dir('/home/adangelo/code/eeo/eeoweb') {
-                  sh 'npm run build'
-                  sh 'npx serve -s build &'
+                dir('eeoweb') {
+                    git branch: 'develop', credentialsId: '057f3261-bca7-4ffe-abf1-4065193405ab', url: 'https://github.com/manupalacios/eeoweb'
+                    sh 'yarn install'
+                    sh 'npm run build'
+                    withCredentials([file(credentialsId: 'eeoweb_env_file', variable: 'FILE')]) {
+                        sh 'cp \$FILE ./.env'
+                    }
+                    sh 'yarn add serve'
+                    sh './node_modules/serve/bin/serve.js -s build &'
                 }
             }  
         }
 
         stage('install dependencies for EEO-Tests project') {
             steps {
+                git branch: 'main', url: 'https://github.com/agustindangelo/EEO-Tests'
                 sh 'npm ci'
             }
         }
@@ -100,7 +111,12 @@ pipeline {
                 reportFiles: 'mochawesome.html',
                 reportName: 'HTML Report'
             ])
-            deleteDir()
+            dir('eeoservice') {
+                deleteDir()
+            }
+            dir('eeoweb') {
+                deleteDir()
+            }
         }
     }
 }
