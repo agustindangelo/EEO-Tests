@@ -9,6 +9,24 @@ describe('Event deletion related tests', () => {
         cy.loginByApi(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
     })
 
+    describe('Public event', () => {
+        beforeEach(() => {
+            cy.createEventByApi(nameOfNewEvent, true)
+            events.navigate()
+        });
+
+        it('should not be able to delete a public event', function () {
+            let event = events.getEventByName(nameOfNewEvent)
+
+            events.openEventOptions(event)
+            events.deleteEventOption.should('not.exist')
+        })    
+
+        afterEach(function() {
+            cy.deleteEventThroughAPI(nameOfNewEvent)
+        })
+    })
+
     describe('Draft event', () => {
         beforeEach(() => {
             cy.createEventByApi(nameOfNewEvent, false)
@@ -38,27 +56,13 @@ describe('Event deletion related tests', () => {
             events.getEventByName(nameOfNewEvent).should('be.visible')
     
             //delete the created event
+            //cy.deleteEventThroughAPI(nameOfNewEvent)
+        })
+
+        after(function() {
             cy.deleteEventThroughAPI(nameOfNewEvent)
-            events.navigate()
         })
         
    })
 
-    describe('Public event', () => {
-        beforeEach(() => {
-            cy.createEventByApi(nameOfNewEvent, true)
-            events.navigate()
-        });
-
-        it('should not be able to delete a public event', function () {
-            let event = events.getEventByName(nameOfNewEvent)
-
-            events.openEventOptions(event)
-            events.deleteEventOption.should('not.exist')
-        })    
-
-        afterEach(function() {
-            cy.deleteEventThroughAPI(nameOfNewEvent)
-        })
-    })
 })
