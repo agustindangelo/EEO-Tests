@@ -104,8 +104,8 @@ pipeline {
         always {
             sh 'pkill node'
             publishHTML([
-                allowMissing: true,
-                alwaysLinkToLastBuild: true,
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
                 keepAll: true,
                 reportDir: 'mochawesome-report',
                 reportFiles: 'mochawesome.html',
