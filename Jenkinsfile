@@ -49,10 +49,10 @@ pipeline {
                 dir('eeoweb') {
                     git branch: 'develop', credentialsId: '057f3261-bca7-4ffe-abf1-4065193405ab', url: 'https://github.com/manupalacios/eeoweb'
                     sh 'yarn install'
-                    sh 'npm run build'
                     withCredentials([file(credentialsId: 'eeoweb_env_file', variable: 'FILE')]) {
                         sh 'cp \$FILE ./.env'
                     }
+                    sh 'npm run build'
                     sh 'yarn add serve'
                     sh './node_modules/serve/bin/serve.js -s build &'
                 }
