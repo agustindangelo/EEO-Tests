@@ -66,7 +66,7 @@ describe('Happy path when editing an event', () => {
             eventEdit.makeEventVisible()
             
             eventEdit.warnings.mandatoyFieldsBlank.errorMessage().should('be.visible')
-            eventEdit.warnings.mandatoyFieldsBlank.fieldsList().should('have.not.length', 0)
+            eventEdit.warnings.mandatoyFieldsBlank.fieldsList().should('have.length', 3)
             eventEdit.warnings.mandatoyFieldsBlank.okButton().should('be.visible')
 
         cy.log('For an inplace event')
@@ -76,7 +76,7 @@ describe('Happy path when editing an event', () => {
             eventEdit.makeEventVisible()
             
             eventEdit.warnings.mandatoyFieldsBlank.errorMessage().should('be.visible')
-            eventEdit.warnings.mandatoyFieldsBlank.fieldsList().should('have.not.length', 0)
+            eventEdit.warnings.mandatoyFieldsBlank.fieldsList().should('have.length', 3)
             eventEdit.warnings.mandatoyFieldsBlank.okButton().should('be.visible')
 
         cy.log('For an hybrid event')
@@ -86,7 +86,7 @@ describe('Happy path when editing an event', () => {
             eventEdit.makeEventVisible()
             
             eventEdit.warnings.mandatoyFieldsBlank.errorMessage().should('be.visible')
-            eventEdit.warnings.mandatoyFieldsBlank.fieldsList().should('have.not.length', 0)
+            eventEdit.warnings.mandatoyFieldsBlank.fieldsList().should('have.length', 4)
             eventEdit.warnings.mandatoyFieldsBlank.okButton().should('be.visible')
     })
 
