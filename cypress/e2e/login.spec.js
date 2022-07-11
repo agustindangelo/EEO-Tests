@@ -10,7 +10,7 @@ describe('Login tests', () => {
     const events = new Events()
 
     describe(['Login'],'Happy paths for logging in and logging out',()=>{
-        it(['HappyPath'],'should log in', () => {
+        it.only(['HappyPath'],'should log in', () => {
             login.navigate()
             login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
             cy.url().should('include', 'events')
@@ -18,7 +18,7 @@ describe('Login tests', () => {
             events.userName.should('have.text', Cypress.env('USER_NAME'))
         })
     
-        it.only(['HappyPath'],'should log out', () => {
+        it(['HappyPath'],'should log out', () => {
             login.navigate()
             login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
             events.logOut()
