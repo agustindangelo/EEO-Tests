@@ -10,7 +10,7 @@ describe('Login tests', () => {
     const events = new Events()
 
     describe(['Login'],'Happy paths for logging in and logging out',()=>{
-        it.only(['HappyPath'],'should log in', () => {
+        it(['HappyPath'],'should log in', () => {
             login.navigate()
             login.login(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'))
             cy.url().should('include', 'events')
@@ -25,7 +25,7 @@ describe('Login tests', () => {
             cy.url().should('include', 'login')
         })
     
-        it('login using the API', () => {
+        it.only('login using the API', () => {
             cy.request('POST', 'http://localhost:4000/', {
                 "operationName": "LoginMutation",
                 "variables": {
