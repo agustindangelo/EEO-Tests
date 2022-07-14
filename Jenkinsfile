@@ -54,7 +54,7 @@ pipeline {
                     }
                     sh 'npm run build'
                     sh 'yarn add serve'
-                    sh './node_modules/serve/bin/serve.js -s build &'
+                    sh './node_modules/serve/build/main.js -s build &'
                 }
             }  
         }
